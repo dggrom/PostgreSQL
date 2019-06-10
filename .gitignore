@@ -1,0 +1,7 @@
+.idea/
+PostgreSQL.iml
+out/
+bin/
+.settings/
+.classpath
+.project
