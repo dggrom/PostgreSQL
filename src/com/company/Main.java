@@ -1,26 +1,24 @@
 package com.company;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-import sql.Connect;
-import sql.SelectPost;
+public class Main extends Application {
 
-public class Main {
+	@Override
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("FormLogin.fxml"));
+        primaryStage.setTitle("Connect PostgreSQL");
+        primaryStage.setScene(new Scene(root, 610, 190));
+        primaryStage.show();
+    }
 
-    static Connection ConnectSQL = null;
 
-    public static void main(String[] args) throws SQLException {
-        Connect NewConnect = new Connect();
-        ConnectSQL = NewConnect.ConnectPostgre();
-
-        if (ConnectSQL == null){
-            System.out.println("null");
-            return;
-        }else{
-            System.out.println("not null");
-            SelectPost.SelectKontragent(ConnectSQL);
-        }
+    public static void main(String[] args) {
+        launch(args);
     }
 
 }

@@ -6,12 +6,19 @@ import java.sql.SQLException;
 
 public class Connect {
 
-    static final String DB_URL = "jdbc:postgresql://127.0.0.1:5432/HellowPost";
-    static final String USER = "postgres";
-    static final String PASS = "12481248";
+	static String DB_URL = "jdbc:postgresql://127.0.0.1:5432/HellowPost";
+    static String USER = "postgres";
+    static String PASS = "12481248";
     static Connection connection = null;
 
-    public static Connection ConnectPostgre(){
+    public Connect(String Base_URL, String Base_USER, String Base_PASS ){
+    	DB_URL = Base_URL;
+    	USER = Base_USER;
+    	PASS = Base_PASS;
+    }
+    
+
+	public Boolean ConnectPostgre(){
         System.out.println("Testing connection to PostgreSQL JDBC");
 
         try {
@@ -19,7 +26,7 @@ public class Connect {
         } catch (ClassNotFoundException e) {
             System.out.println("PostgreSQL JDBC Driver is not found. Include it in your library path ");
             e.printStackTrace();
-            return connection;
+            return false;
         }
 
         System.out.println("PostgreSQL JDBC Driver successfully connected");
@@ -30,7 +37,7 @@ public class Connect {
         } catch (SQLException e) {
             System.out.println("Connection Failed");
             e.printStackTrace();
-            return connection;
+            return false;
         }
 
         if (connection != null) {
@@ -39,7 +46,7 @@ public class Connect {
             System.out.println("Failed to make connection to database");
         }
 
-        return connection;
+        return true;
     }
 
 }
