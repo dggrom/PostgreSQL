@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Point3D?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -8,29 +9,31 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="1079.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <AnchorPane prefHeight="619.0" prefWidth="1079.0">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="1079.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" >
+    <children>
+      <AnchorPane cache="true" focusTraversable="true" prefHeight="619.0" prefWidth="1079.0">
          <children>
-            <MenuBar layoutX="-1.0" prefHeight="25.0" prefWidth="1079.0">
+            <MenuBar fx:id="MenyBar" prefHeight="25.0" prefWidth="1079.0" AnchorPane.rightAnchor="0.0">
               <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu fx:id="MenuFiles" mnemonicParsing="false" text="File">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
+                    <MenuItem fx:id="MenuFilesClose" mnemonicParsing="false" text="Close" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
+                <Menu fx:id="MenuNSI" mnemonicParsing="false" text="NSI">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
+                    <MenuItem fx:id="MenuNASIKontragent" mnemonicParsing="false" text="Kontragent" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Help">
+                <Menu fx:id="MenuDocument" mnemonicParsing="false" text="Dokument">
                   <items>
                     <MenuItem mnemonicParsing="false" text="About" />
                   </items>
                 </Menu>
               </menus>
+               <rotationAxis>
+                  <Point3D />
+               </rotationAxis>
             </MenuBar>
             <ImageView fitHeight="150.0" fitWidth="200.0" layoutY="462.0" pickOnBounds="true" preserveRatio="true">
                <image>

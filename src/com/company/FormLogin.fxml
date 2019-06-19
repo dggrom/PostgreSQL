@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="185.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="185.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.Controller">
    <children>
       <AnchorPane prefHeight="185.0" prefWidth="637.0">
          <children>
@@ -18,7 +18,8 @@
             <Label fx:id="id_label3" layoutX="316.0" layoutY="17.0" text="Имя пользователя" />
             <TextField fx:id="id_EditPassAdmin" layoutX="316.0" layoutY="107.0" prefHeight="26.0" prefWidth="284.0" text="12481248" />
             <Label fx:id="id_label4" layoutX="316.0" layoutY="82.0" text="Пароль пользователя" />
-            <Button fx:id="ButtonConnect" layoutX="250.0" layoutY="139.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="113.0" text="Connect" />
+            <Button fx:id="ButtonConnect" layoutX="185.0" layoutY="139.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="113.0" text="Connect" />
+            <Button fx:id="ButtonExit" layoutX="320.0" layoutY="139.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="113.0" text="Exit" />
          </children>
       </AnchorPane>
    </children>

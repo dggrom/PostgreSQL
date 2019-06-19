@@ -1,20 +1,24 @@
 package com.company;
 
-import java.awt.Window;
+import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
 
-import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
+import Sempel.MainForm.ControllerMainForm;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import sql.Connect;
+import sql.SettingConnectSQL;
 
 public class Controller {
 
@@ -52,19 +56,52 @@ public class Controller {
     private Button ButtonConnect;
 
     @FXML
+    private Button ButtonExit;
+
+    @FXML
     void initialize() {
     	ButtonConnect.setOnAction(Event -> {
     		ConnectToSQL(id_EditADresServer.getText(), id_EditNameBase.getText(), id_EditNameAdmin.getText(), id_EditPassAdmin.getText());
     	});
+
+    	ButtonExit.setOnAction(Event -> {
+           Platform.exit();
+        });
     }
     
-    static void ConnectToSQL(String URL,String NameBase,String Login,String pass) {
+    void ConnectToSQL(String URL,String NameBase,String Login,String pass) {
     	Connect ConnectSQL = new Connect("jdbc:postgresql://"+URL+"/"+NameBase,Login,pass);
     	Boolean ResConnect = ConnectSQL.ConnectPostgre();
     	if (ResConnect) {
-    		JOptionPane.showMessageDialog(null, "Connect creat","Connect creat",JOptionPane.INFORMATION_MESSAGE);
-		} else {
+            try {
+                OpenMainForm(URL,NameBase,Login,pass);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
     		JOptionPane.showMessageDialog(null, "Connect false","Connect false",JOptionPane.ERROR_MESSAGE);
 		}
     }
+
+    void OpenMainForm(String URL,String NameBase,String Login,String pass) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Controller.class.getResource("../../Sempel/MainForm/MainForm.fxml"));
+
+        //Запоминаем настройки что бы передать их дальше.
+        SettingConnectSQL SettConn = new SettingConnectSQL("jdbc:postgresql://"+URL+"/"+NameBase,Login,pass);
+        //
+
+        ControllerMainForm CntMF = new ControllerMainForm(SettConn);
+        fxmlLoader.setController(CntMF);
+
+        Parent root1 = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root1));
+        stage.show();
+
+        Stage stageButt = (Stage) ButtonExit.getScene().getWindow();
+        stageButt.close();
+    }
 }
+
+
+

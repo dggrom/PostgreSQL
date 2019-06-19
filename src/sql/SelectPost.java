@@ -12,7 +12,7 @@ public class SelectPost {
         ResultSet Res = Stat.executeQuery("SELECT id_kont, name_kont FROM public.\"Konteagent\";");
 
         while (Res.next()){
-            System.out.println("УНикальный Идентификатор: " + Res.getString(1) + " Имя: " + Res.getString(2));
+            System.out.println("Уyикальный Идентификатор: " + Res.getString(1) + " Имя: " + Res.getString(2));
         }
     }
 
