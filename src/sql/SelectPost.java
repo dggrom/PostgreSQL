@@ -7,13 +7,15 @@ import java.sql.Statement;
 
 public class SelectPost {
 
-    public static void SelectKontragent(Connection Con) throws SQLException {
+    public ResultSet SelectKontragent(Connection Con) throws SQLException {
         Statement Stat = Con.createStatement();
-        ResultSet Res = Stat.executeQuery("SELECT id_kont, name_kont FROM public.\"Konteagent\";");
+        ResultSet Res = Stat.executeQuery("SELECT id_kont, name_kont FROM public.\"Kontragent\";");
 
-        while (Res.next()){
-            System.out.println("Уyикальный Идентификатор: " + Res.getString(1) + " Имя: " + Res.getString(2));
-        }
+        return Res;
+
+//        while (Res.next()){
+//            System.out.println("Уyикальный Идентификатор: " + Res.getString(1) + " Имя: " + Res.getString(2));
+//        }
     }
 
 }

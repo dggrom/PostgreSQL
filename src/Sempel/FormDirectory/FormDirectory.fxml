@@ -4,13 +4,12 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView fx:id="Table" prefHeight="400.0" prefWidth="600.0">
+      <TableView fx:id="Table" prefHeight="400.0" prefWidth="334.0">
         <columns>
-          <TableColumn fx:id="TableColumId" prefWidth="87.0" text="id" />
-          <TableColumn fx:id="TableColumName" minWidth="3.0" prefWidth="274.0" text="Name" />
+          <TableColumn fx:id="TableColumId" prefWidth="112.0" text="id" />
+          <TableColumn fx:id="TableColumName" minWidth="3.0" prefWidth="218.0" text="Name" />
         </columns>
       </TableView>
    </children>

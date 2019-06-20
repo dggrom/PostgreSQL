@@ -16,7 +16,6 @@ public class Connect {
     	USER = Base_USER;
     	PASS = Base_PASS;
     }
-    
 
 	public Boolean ConnectPostgre(){
         System.out.println("Testing connection to PostgreSQL JDBC");
