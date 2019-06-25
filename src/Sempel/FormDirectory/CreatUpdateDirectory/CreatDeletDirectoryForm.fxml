@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="113.0" prefWidth="393.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Sempel.FormDirectory.CreatUpdateDirectory.CreatDeletDirectoryForm">
+   <children>
+      <TextField fx:id="EditID" disable="true" layoutX="25.0" layoutY="34.0" />
+      <TextField fx:id="Editname" layoutX="215.0" layoutY="34.0" />
+      <Label fx:id="LabelID" layoutX="25.0" layoutY="14.0" text="ID" />
+      <Label fx:id="LabelName" layoutX="215.0" layoutY="14.0" text="Name" />
+      <Button fx:id="ButtonSave" layoutX="174.0" layoutY="74.0" mnemonicParsing="false" text="Save" />
+   </children>
+</AnchorPane>

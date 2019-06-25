@@ -1,16 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="491.0" prefWidth="708.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView fx:id="Table" prefHeight="400.0" prefWidth="334.0">
+      <TableView fx:id="Table" prefHeight="491.0" prefWidth="557.0">
         <columns>
           <TableColumn fx:id="TableColumId" prefWidth="112.0" text="id" />
-          <TableColumn fx:id="TableColumName" minWidth="3.0" prefWidth="218.0" text="Name" />
+          <TableColumn fx:id="TableColumName" minWidth="3.0" prefWidth="356.0" text="Name" />
+            <TableColumn fx:id="TableColumnDeleted" prefWidth="88.0" text="Deleted" />
         </columns>
       </TableView>
+      <VBox alignment="TOP_CENTER" layoutX="577.0" layoutY="6.0" prefHeight="480.0" prefWidth="131.0">
+         <children>
+          <Button fx:id="ButtonRegresh" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" text="Изменить">
+               <opaqueInsets>
+                  <Insets bottom="5.0" top="5.0" />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="ButtonDeleted" mnemonicParsing="false" prefHeight="32.0" prefWidth="108.0" text="Удалить">
+               <opaqueInsets>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="ButtonCreat" mnemonicParsing="false" prefHeight="32.0" prefWidth="108.0" text="Создать ">
+               <opaqueInsets>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
    </children>
 </AnchorPane>
