@@ -12,10 +12,13 @@ public class SelectPost {
         ResultSet Res = Stat.executeQuery("SELECT id_kont, name_kont, deleted_kont FROM public.\"Kontragent\";");
 
         return Res;
+    }
 
-//        while (Res.next()){
-//            System.out.println("Уyикальный Идентификатор: " + Res.getString(1) + " Имя: " + Res.getString(2));
-//        }
+    public Boolean UpdateCreatTable(Connection Con, String textSQL) throws SQLException {
+        Statement Stat = Con.createStatement();
+        boolean Res = Stat.execute(textSQL);
+
+        return Res;
     }
 
 }

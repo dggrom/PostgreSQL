@@ -1,16 +1,24 @@
 package Sempel.FormDirectory;
 
+import Sempel.FormDirectory.CreatUpdateDirectory.ControllerDeletCreatDirectory;
+import Sempel.MainForm.ControllerMainForm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import sql.SelectPost;
 import sql.SettingConnectSQL;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -62,14 +70,44 @@ public class ControllerFormDirectory {
 
         Table.setItems(Kontragents);
 
-        ButtonCreat.setOnAction(Event -> {
+        ButtonCreat.setOnAction(event -> {
+            try {
+                OpenFormRefreshCreat(false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
 
+        ButtonRegresh.setOnAction(event -> {
+            try {
+                OpenFormRefreshCreat(true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         });
 
     }
 
     public ControllerFormDirectory(SettingConnectSQL SetCon){
         this.SetCon = SetCon;
+    }
+
+    public void OpenFormRefreshCreat(boolean updateKontr) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(ControllerMainForm.class.getResource("/Sempel/FormDirectory/CreatUpdateDirectory/CreatDeletDirectoryForm.fxml"));
+
+        PersenKontragent PersSRT = Table.getSelectionModel().getSelectedItem();
+
+        ControllerDeletCreatDirectory ContrCreatRefresh = new ControllerDeletCreatDirectory(PersSRT.getId(),PersSRT.getName(),updateKontr,SetCon.CreatConnect());
+        fxmlLoader.setController(ContrCreatRefresh);
+
+        Parent root1 = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root1));
+        stage.show();
     }
 
     public void refrashTableKontragent() throws SQLException {

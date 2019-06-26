@@ -72,7 +72,4 @@ public class ControllerMainForm {
         this.SettConn = Loog;
     }
 
-    public ControllerMainForm(){
-        //
-    }
 }

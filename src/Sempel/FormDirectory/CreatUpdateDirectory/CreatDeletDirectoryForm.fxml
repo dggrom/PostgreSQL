@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="113.0" prefWidth="393.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Sempel.FormDirectory.CreatUpdateDirectory.CreatDeletDirectoryForm">
+<AnchorPane prefHeight="113.0" prefWidth="393.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" >
    <children>
       <TextField fx:id="EditID" disable="true" layoutX="25.0" layoutY="34.0" />
       <TextField fx:id="Editname" layoutX="215.0" layoutY="34.0" />
