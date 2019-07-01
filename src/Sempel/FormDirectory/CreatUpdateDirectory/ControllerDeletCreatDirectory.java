@@ -1,15 +1,19 @@
 package Sempel.FormDirectory.CreatUpdateDirectory;
 
+import java.awt.*;
+import java.beans.EventHandler;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import sql.SelectPost;
-import sun.misc.resources.Messages;
 
 import javax.swing.*;
 
@@ -58,7 +62,10 @@ public class ControllerDeletCreatDirectory {
                                 "WHERE id_kont = "+EditID.getText()+";";
                 boolean updateRes = updateSQL.UpdateCreatTable(ConSQL, textSQL);
                 if (updateRes == false){
-                    JOptionPane.showMessageDialog(null,"Good", "Удачно", JOptionPane.ERROR_MESSAGE);
+                    // get a handle to the stage
+                    Stage stage = (Stage) ButtonSave.getScene().getWindow();
+                    // do what you have to do
+                    stage.close();
                 } else {
                     JOptionPane.showMessageDialog(null,"False", "не Удачно", JOptionPane.ERROR_MESSAGE);
                 }

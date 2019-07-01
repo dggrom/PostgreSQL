@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import sql.SelectPost;
 import sql.SettingConnectSQL;
 
@@ -107,10 +109,19 @@ public class ControllerFormDirectory {
         Parent root1 = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
         stage.setScene(new Scene(root1));
+        stage.setOnCloseRequest(event -> {
+                try {
+                    refrashTableKontragent();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+        });
         stage.show();
     }
 
     public void refrashTableKontragent() throws SQLException {
+
+        Kontragents.clear();
 
         Connection connection = SetCon.CreatConnect();
 
