@@ -1,13 +1,10 @@
 package Sempel.FormDirectory.CreatUpdateDirectory;
 
-import java.awt.*;
-import java.beans.EventHandler;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -43,6 +40,7 @@ public class ControllerDeletCreatDirectory {
     private Integer IdNumber;
     private String  NameKont;
     private Connection ConSQL;
+    private boolean updateKontr;
 
     @FXML
     void initialize() {
@@ -50,33 +48,46 @@ public class ControllerDeletCreatDirectory {
         if (IdNumber != 0) {
             EditID.setText(this.IdNumber.toString());
         } else {
-            EditID.setText("Код будет сгенерирован");
+            EditID.setText("Autoinkrement");
         }
         Editname.setText(this.NameKont);
 
         ButtonSave.setOnAction(event -> {
-            SelectPost updateSQL = new SelectPost();
-            try {
-                String textSQL = "UPDATE public.\"Kontragent\" " +
-                                "SET name_kont='"+Editname.getText()+"' " +
-                                "WHERE id_kont = "+EditID.getText()+";";
-                boolean updateRes = updateSQL.UpdateCreatTable(ConSQL, textSQL);
-                if (updateRes == false){
-                    // get a handle to the stage
-                    Stage stage = (Stage) ButtonSave.getScene().getWindow();
-                    // do what you have to do
-                    stage.close();
-                } else {
-                    JOptionPane.showMessageDialog(null,"False", "не Удачно", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
 
+            String textSQL = "";
+
+            if ( this.updateKontr ) {
+                textSQL = "UPDATE public.\"Kontragent\" " +
+                        "SET name_kont='" + Editname.getText() + "' " +
+                        "WHERE id_kont = " + EditID.getText() + ";";
+            } else {
+                textSQL = "INSERT INTO public.\"Kontragent\"(" +
+                        " name_kont, deleted_kont)" +
+                        " VALUES ('"+ Editname.getText() +"', false);";
+            }
+            RefrashCreatKontrSQL(textSQL);
         });
 
 
 
+    }
+
+    private void RefrashCreatKontrSQL(String textSQL){
+        SelectPost updateSQL = new SelectPost();
+        try {
+
+            boolean updateRes = updateSQL.UpdateCreatTable(ConSQL, textSQL);
+            if (updateRes == false){
+                // get a handle to the stage
+                Stage stage = (Stage) ButtonSave.getScene().getWindow();
+                // do what you have to do
+                stage.close();
+            } else {
+                JOptionPane.showMessageDialog(null,"False", "не Удачно", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public ControllerDeletCreatDirectory(Integer IdNumber, String NameKont, Boolean updateKontr, Connection ConSQL){
@@ -84,14 +95,13 @@ public class ControllerDeletCreatDirectory {
                 this.IdNumber = IdNumber;
                 this.NameKont = NameKont;
                 this.ConSQL = ConSQL;
+                this.updateKontr = updateKontr;
             } else {
                 this.IdNumber = 0;
                 this.NameKont = "";
                 this.ConSQL = ConSQL;
+                this.updateKontr = updateKontr;
             }
     }
 
-    private void  updateKontragentSQL(){
-
-    }
 }
