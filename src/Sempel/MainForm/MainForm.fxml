@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="1079.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" >
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="1079.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
       <AnchorPane cache="true" focusTraversable="true" prefHeight="619.0" prefWidth="1079.0">
          <children>
@@ -23,6 +23,7 @@
                 <Menu fx:id="MenuNSI" mnemonicParsing="false" text="NSI">
                   <items>
                     <MenuItem fx:id="MenuNASIKontragent" mnemonicParsing="false" text="Kontragent" />
+                        <MenuItem fx:id="MenuNASIViewComCon" mnemonicParsing="false" text="View Coming/Consts" />
                   </items>
                 </Menu>
                 <Menu fx:id="MenuDocument" mnemonicParsing="false" text="Dokument">
@@ -35,9 +36,9 @@
                   <Point3D />
                </rotationAxis>
             </MenuBar>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutY="462.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="313.0" fitWidth="281.0" layoutY="310.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../Users/User/Desktop/521c4cad00d6a0f64cd3b758b0346b75.png" />
+                  <Image url="@ImageMain.png" />
                </image>
             </ImageView>
          </children>

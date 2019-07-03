@@ -1,4 +1,4 @@
-package Sempel.FormDirectory;
+package Sempel.FormDirectory.DirectoryKontragent;
 
 import Sempel.FormDirectory.CreatUpdateDirectory.ControllerDeletCreatDirectory;
 import Sempel.MainForm.ControllerMainForm;
@@ -158,7 +158,7 @@ public class ControllerFormDirectory {
     }
 
     public void OpenFormRefreshCreat(boolean updateKontr) throws IOException, SQLException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ControllerMainForm.class.getResource("/Sempel/FormDirectory/CreatUpdateDirectory/CreatDeletDirectoryForm.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ControllerMainForm.class.getResource("/Sempel/FormDirectory/DirectoryKontragent/CreatUpdateDirectory/CreatDeletDirectoryForm.fxml"));
 
         PersenKontragent PersSRT = Table.getSelectionModel().getSelectedItem();
 
@@ -192,7 +192,7 @@ public class ControllerFormDirectory {
         Connection connection = SetCon.CreatConnect();
 
         SelectPost SelPos = new SelectPost();
-        ResultSet ResulKontr = SelPos.SelectKontragent(connection);
+        ResultSet ResulKontr = SelPos.SelectInfoBase(connection,"SELECT id_kont, name_kont, deleted_kont FROM public.\"Kontragent\";");
         while (ResulKontr.next()){
             Kontragents.add(new PersenKontragent(ResulKontr.getInt(1),ResulKontr.getString(2),ResulKontr.getBoolean(3)));
         }

@@ -1,4 +1,4 @@
-package Sempel.FormDirectory;
+package Sempel.FormDirectory.DirectoryKontragent;
 
 public class PersenKontragent {
 

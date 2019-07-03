@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import Sempel.FormDirectory.ControllerFormDirectory;
+import Sempel.FormDirectory.DirectoruViewComingCosts.ControllerViewComongConsts;
+import Sempel.FormDirectory.DirectoryKontragent.ControllerFormDirectory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -42,6 +43,9 @@ public class ControllerMainForm {
     @FXML
     private Menu MenuDocument;
 
+    @FXML
+    private MenuItem MenuNASIViewComCon;
+
     //Мои переменные
     SettingConnectSQL SettConn;
 
@@ -49,18 +53,31 @@ public class ControllerMainForm {
     void initialize() {
         MenuNASIKontragent.setOnAction(event -> {
             try {
-                CreatFormDirectori();
+                CreatForm("../FormDirectory/DirectoryKontragent/FormDirectory.fxml", "ControllerFormDirectory");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        MenuNASIViewComCon.setOnAction(event -> {
+            try {
+                CreatForm("../FormDirectory/DirectoruViewComingCosts/ViewComingConsts.fxml","ControllerViewComongConsts");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
 
-    void CreatFormDirectori() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ControllerMainForm.class.getResource("../FormDirectory/FormDirectory.fxml"));
+    void CreatForm(String FXMLdir, String contrName) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(ControllerMainForm.class.getResource(FXMLdir));
 
-        ControllerFormDirectory ContrDir = new ControllerFormDirectory(SettConn);
-        fxmlLoader.setController(ContrDir);
+        if (contrName == "ControllerFormDirectory") {
+            ControllerFormDirectory ContrDir = new ControllerFormDirectory(SettConn);
+            fxmlLoader.setController(ContrDir);
+        } else if (contrName == "ControllerViewComongConsts"){
+            ControllerViewComongConsts ContrDir = new ControllerViewComongConsts(SettConn);
+            fxmlLoader.setController(ContrDir);
+        }
 
         Parent root1 = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
