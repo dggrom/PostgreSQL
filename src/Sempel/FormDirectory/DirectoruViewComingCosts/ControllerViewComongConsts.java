@@ -10,7 +10,6 @@ import java.util.ResourceBundle;
 
 import Sempel.FormDirectory.DirectoruViewComingCosts.CreatUpdateViewComingCosts.ContCreatUpdateViewComCon;
 import Sempel.MainForm.ControllerMainForm;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

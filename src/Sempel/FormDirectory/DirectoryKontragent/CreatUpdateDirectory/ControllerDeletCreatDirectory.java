@@ -1,4 +1,4 @@
-package Sempel.FormDirectory.CreatUpdateDirectory;
+package Sempel.FormDirectory.DirectoryKontragent.CreatUpdateDirectory;
 
 import java.net.URL;
 import java.sql.Connection;

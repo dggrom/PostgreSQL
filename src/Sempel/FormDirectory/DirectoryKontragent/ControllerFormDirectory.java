@@ -1,6 +1,6 @@
 package Sempel.FormDirectory.DirectoryKontragent;
 
-import Sempel.FormDirectory.CreatUpdateDirectory.ControllerDeletCreatDirectory;
+import Sempel.FormDirectory.DirectoryKontragent.CreatUpdateDirectory.ControllerDeletCreatDirectory;
 import Sempel.MainForm.ControllerMainForm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
