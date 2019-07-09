@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="1079.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="1079.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Sempel.MainForm.ControllerMainForm">
     <children>
       <AnchorPane cache="true" focusTraversable="true" prefHeight="619.0" prefWidth="1079.0">
          <children>
@@ -24,6 +24,7 @@
                   <items>
                     <MenuItem fx:id="MenuNASIKontragent" mnemonicParsing="false" text="Kontragent" />
                         <MenuItem fx:id="MenuNASIViewComCon" mnemonicParsing="false" text="View Coming/Consts" />
+                        <MenuItem fx:id="MenuNASINomenclature" mnemonicParsing="false" text="Nomenclature" />
                   </items>
                 </Menu>
                 <Menu fx:id="MenuDocument" mnemonicParsing="false" text="Dokument">

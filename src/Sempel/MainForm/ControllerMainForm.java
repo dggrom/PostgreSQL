@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Sempel.FormDirectory.DirectoruNomenclature.ControllerFormNomenclature;
 import Sempel.FormDirectory.DirectoruViewComingCosts.ControllerViewComongConsts;
 import Sempel.FormDirectory.DirectoryKontragent.ControllerFormDirectory;
 import javafx.fxml.FXML;
@@ -42,6 +43,9 @@ public class ControllerMainForm {
 
     @FXML
     private Menu MenuDocument;
+    
+    @FXML
+    private MenuItem MenuNASINomenclature;
 
     @FXML
     private MenuItem MenuNASIViewComCon;
@@ -66,6 +70,14 @@ public class ControllerMainForm {
                 e.printStackTrace();
             }
         });
+        
+        MenuNASINomenclature.setOnAction(eveny -> {
+        	try {
+				CreatForm("../FormDirectory/DirectoruNomenclature/FormNomenclature.fxml", "ControllerFormNomenclature");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        });
     }
 
     void CreatForm(String FXMLdir, String contrName) throws IOException {
@@ -77,6 +89,9 @@ public class ControllerMainForm {
         } else if (contrName == "ControllerViewComongConsts"){
             ControllerViewComongConsts ContrDir = new ControllerViewComongConsts(SettConn);
             fxmlLoader.setController(ContrDir);
+        } else if(contrName == "ControllerFormNomenclature") {
+        	ControllerFormNomenclature ContrDir = new ControllerFormNomenclature(SettConn);
+        	fxmlLoader.setController(ContrDir);
         }
 
         Parent root1 = (Parent) fxmlLoader.load();
