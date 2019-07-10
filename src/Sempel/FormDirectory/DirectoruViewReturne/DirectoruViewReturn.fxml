@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="491.0" prefWidth="708.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutX="555.0" prefHeight="491.0" prefWidth="153.0" AnchorPane.leftAnchor="555.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="ButtonRefresh" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" text="Изменить ">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="25.0" right="5.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="ButtonDeleted" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" text="Удалить">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="25.0" right="5.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="ButtonCreat" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" text="Создать">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="25.0" right="5.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+      <TableView fx:id="TableViewComCon" layoutX="-1.0" prefHeight="491.0" prefWidth="557.0">
+         <columns>
+            <TableColumn fx:id="TableColumnsID" prefWidth="91.0" text="id" />
+            <TableColumn fx:id="TableColumnsView" prefWidth="376.0" text="View" />
+            <TableColumn fx:id="TableColumnsDeleted" minWidth="0.0" prefWidth="89.0" text="Deleted" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>
