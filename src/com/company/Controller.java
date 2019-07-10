@@ -59,7 +59,18 @@ public class Controller {
     private Button ButtonExit;
 
     @FXML
-    void initialize() {
+    void initialize() throws IOException {
+    	
+    	FileConnect baseFile = new FileConnect();
+    	
+    	String[] st = new String[4];    	
+    	st =  baseFile.ReadFileSetting();
+    	
+    	id_EditADresServer.setText(st[0]);
+    	id_EditNameBase.setText(st[1]);
+    	id_EditNameAdmin.setText(st[2]);
+    	id_EditPassAdmin.setText(st[3]);
+    	
     	ButtonConnect.setOnAction(Event -> {
     		ConnectToSQL(id_EditADresServer.getText(), id_EditNameBase.getText(), id_EditNameAdmin.getText(), id_EditPassAdmin.getText());
     	});
