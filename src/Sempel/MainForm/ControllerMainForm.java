@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 
 import Sempel.FormDirectory.DirectoruNomenclature.ControllerFormNomenclature;
 import Sempel.FormDirectory.DirectoruViewComingCosts.ControllerViewComongConsts;
+import Sempel.FormDirectory.DirectoruViewDebt.ControllerViewDebt;
+import Sempel.FormDirectory.DirectoruViewReturne.ControllerViewReturn;
 import Sempel.FormDirectory.DirectoryKontragent.ControllerFormDirectory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,6 +50,12 @@ public class ControllerMainForm {
     private MenuItem MenuNASINomenclature;
 
     @FXML
+    private MenuItem MenuNASIViewDebt;
+
+    @FXML
+    private MenuItem MenuNASIViewReturn;
+
+    @FXML
     private MenuItem MenuNASIViewComCon;
 
     //Мои переменные
@@ -78,6 +86,22 @@ public class ControllerMainForm {
 				e.printStackTrace();
 			}
         });
+
+        MenuNASIViewDebt.setOnAction(event -> {
+            try {
+                CreatForm("../FormDirectory/DirectoruViewDebt/DirectoruViewDebt.fxml","ControllerViewDebt");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        MenuNASIViewReturn.setOnAction(event -> {
+            try {
+                CreatForm("../FormDirectory/DirectoruViewReturne/DirectoruViewReturn.fxml","ControllerViewReturn");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     void CreatForm(String FXMLdir, String contrName) throws IOException {
@@ -92,6 +116,12 @@ public class ControllerMainForm {
         } else if(contrName == "ControllerFormNomenclature") {
         	ControllerFormNomenclature ContrDir = new ControllerFormNomenclature(SettConn);
         	fxmlLoader.setController(ContrDir);
+        } else if (contrName == "ControllerViewDebt"){
+            ControllerViewDebt ContDir = new ControllerViewDebt(SettConn);
+            fxmlLoader.setController(ContDir);
+        } else if (contrName == "ControllerViewReturn"){
+            //ControllerViewReturn ContDir = new ControllerViewReturn(SettConn);
+            //fxmlLoader.setController(ContDir);
         }
 
         Parent root1 = (Parent) fxmlLoader.load();
