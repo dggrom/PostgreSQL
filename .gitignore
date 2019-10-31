@@ -4,4 +4,6 @@ out/
 bin/
 .settings/
 .classpath
-.project
+.project	
+build.fxbuild
+

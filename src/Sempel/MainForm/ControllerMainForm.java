@@ -87,21 +87,21 @@ public class ControllerMainForm {
 			}
         });
 
-        MenuNASIViewDebt.setOnAction(event -> {
+       /* MenuNASIViewDebt.setOnAction(event -> {
             try {
                 CreatForm("../FormDirectory/DirectoruViewDebt/DirectoruViewDebt.fxml","ControllerViewDebt");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        });*/
 
-        MenuNASIViewReturn.setOnAction(event -> {
+        /*MenuNASIViewReturn.setOnAction(event -> {
             try {
                 CreatForm("../FormDirectory/DirectoruViewReturne/DirectoruViewReturn.fxml","ControllerViewReturn");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        });*/
     }
 
     void CreatForm(String FXMLdir, String contrName) throws IOException {
