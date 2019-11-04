@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="ArchPnelForm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="499.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFormDokComingCreatUpdate">
+   <children>
+      <Label fx:id="LabelDokN" layoutX="14.0" layoutY="37.0" prefHeight="23.0" prefWidth="132.0" text="Document number:" />
+      <TextField fx:id="EditComments" layoutX="388.0" layoutY="37.0" prefHeight="68.0" prefWidth="299.0" />
+      <Label fx:id="LabelEditComments" layoutX="388.0" layoutY="14.0" prefHeight="23.0" prefWidth="260.0" text="Comments:" />
+      <Label fx:id="LabelNumberDoc" layoutX="146.0" layoutY="37.0" prefHeight="23.0" prefWidth="141.0" text="(Number dokumetns)" />
+      <TextField fx:id="AmountDoc" layoutX="14.0" layoutY="79.0" prefHeight="26.0" prefWidth="372.0" />
+      <Label fx:id="LabelAmount" layoutX="14.0" layoutY="56.0" prefHeight="23.0" prefWidth="260.0" text="documents amount:" />
+      <TableView fx:id="TableManeyDoc" layoutY="116.0" prefHeight="383.0" prefWidth="775.0">
+         <columns>
+            <TableColumn fx:id="NLTMD" prefWidth="75.0" text="N/L" />
+            <TableColumn fx:id="NomenTMD" prefWidth="500.0" text="Nomenclature" />
+            <TableColumn fx:id="KolTMD" minWidth="0.0" prefWidth="199.0" text="Kol" />
+         </columns>
+      </TableView>
+      <Button fx:id="ButtonSave" layoutX="700.0" layoutY="37.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="62.0" text="Save" />
+      <Label fx:id="LabelDokN1" layoutX="14.0" layoutY="14.0" prefHeight="23.0" prefWidth="132.0" text="Document Coming" />
+   </children>
+</AnchorPane>
