@@ -2,18 +2,18 @@ package Sempel.FormDirectory.DirectoryKontragent;
 
 public class PersenKontragent {
 
-    private int id;
+    private String id;
     private String name;
     private Boolean deleted;
 
-    PersenKontragent(Integer id, String name, Boolean deleted){
+    PersenKontragent(String id, String name, Boolean deleted){
         this.id = id;
         this.name = name;
         this.deleted = deleted;
     }
 
-    public void setId(int value){ id = value;}
-    public int getId(){ return id;}
+    public void setId(String value){ id = value;}
+    public String getId(){ return id;}
 
     public void setName(String value){ name = value;}
     public String getName(){ return name;}

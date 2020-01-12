@@ -39,7 +39,7 @@ public class ControllerFormDirectory {
     private TableView<PersenKontragent> Table;
 
     @FXML
-    private TableColumn<PersenKontragent, Integer> TableColumId;
+    private TableColumn<PersenKontragent, String> TableColumId;
 
     @FXML
     private TableColumn<PersenKontragent, String> TableColumName;
@@ -61,21 +61,11 @@ public class ControllerFormDirectory {
 
         refrashTableKontragent();
 
-        TableColumId.setCellValueFactory(new PropertyValueFactory<PersenKontragent, Integer>("id"));
+        TableColumId.setCellValueFactory(new PropertyValueFactory<PersenKontragent, String>("id"));
         TableColumName.setCellValueFactory(new PropertyValueFactory<PersenKontragent, String>("Name"));
         TableColumnDeleted.setCellValueFactory(new PropertyValueFactory<PersenKontragent, Boolean>("Deleted"));
 
         Table.setItems(Kontragents);
-
-        ButtonCreat.setOnAction(event -> {
-            try {
-                OpenFormRefreshCreat(false);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
 
         ButtonCreat.setOnAction(event -> {
             try {
@@ -158,13 +148,19 @@ public class ControllerFormDirectory {
     }
 
     public void OpenFormRefreshCreat(boolean updateKontr) throws IOException, SQLException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ControllerMainForm.class.getResource("/Sempel/FormDirectory/DirectoryKontragent/CreatUpdateDirectory/CreatDeletDirectoryForm.fxml"));
+       
+    	FXMLLoader fxmlLoader = new FXMLLoader(ControllerMainForm.class.getResource("/Sempel/FormDirectory/DirectoryKontragent/CreatUpdateDirectory/CreatDeletDirectoryForm.fxml"));
 
         PersenKontragent PersSRT = Table.getSelectionModel().getSelectedItem();
 
-        ControllerDeletCreatDirectory ContrCreatRefresh = new ControllerDeletCreatDirectory(PersSRT.getId(),PersSRT.getName(),updateKontr,SetCon.CreatConnect());
-        fxmlLoader.setController(ContrCreatRefresh);
-
+        if (updateKontr) {
+        	ControllerDeletCreatDirectory ContrCreatRefresh = new ControllerDeletCreatDirectory(PersSRT.getId(),PersSRT.getName(),updateKontr,SetCon.CreatConnect());
+ 	        fxmlLoader.setController(ContrCreatRefresh);
+        }else {
+	        ControllerDeletCreatDirectory ContrCreatRefresh = new ControllerDeletCreatDirectory("","",updateKontr,SetCon.CreatConnect());
+	        fxmlLoader.setController(ContrCreatRefresh);
+        }
+        
         Parent root1 = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
         stage.setScene(new Scene(root1));
@@ -194,7 +190,7 @@ public class ControllerFormDirectory {
         SelectPost SelPos = new SelectPost();
         ResultSet ResulKontr = SelPos.SelectInfoBase(connection,"SELECT id_kont, name_kont, deleted_kont FROM public.\"Kontragent\";");
         while (ResulKontr.next()){
-            Kontragents.add(new PersenKontragent(ResulKontr.getInt(1),ResulKontr.getString(2),ResulKontr.getBoolean(3)));
+            Kontragents.add(new PersenKontragent(ResulKontr.getString(1),ResulKontr.getString(2),ResulKontr.getBoolean(3)));
         }
         connection.close();
     }

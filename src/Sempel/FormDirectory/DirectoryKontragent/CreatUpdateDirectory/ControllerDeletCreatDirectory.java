@@ -37,7 +37,7 @@ public class ControllerDeletCreatDirectory {
     @FXML
     private Button ButtonSave;
 
-    private Integer IdNumber;
+    private String IdNumber;
     private String  NameKont;
     private Connection ConSQL;
     private boolean updateKontr;
@@ -45,7 +45,7 @@ public class ControllerDeletCreatDirectory {
     @FXML
     void initialize() {
 
-        if (IdNumber != 0) {
+        if (IdNumber != "0") {
             EditID.setText(this.IdNumber.toString());
         } else {
             EditID.setText("Autoinkrement");
@@ -90,15 +90,15 @@ public class ControllerDeletCreatDirectory {
         }
     }
 
-    public ControllerDeletCreatDirectory(Integer IdNumber, String NameKont, Boolean updateKontr, Connection ConSQL){
+    public ControllerDeletCreatDirectory(String IdNumber, String NameKont, Boolean updateKontr, Connection ConSQL){
             if (updateKontr){
                 this.IdNumber = IdNumber;
                 this.NameKont = NameKont;
                 this.ConSQL = ConSQL;
                 this.updateKontr = updateKontr;
             } else {
-                this.IdNumber = 0;
-                this.NameKont = "";
+                this.IdNumber = "Автоинкримент";
+                this.NameKont = "".toString();
                 this.ConSQL = ConSQL;
                 this.updateKontr = updateKontr;
             }
