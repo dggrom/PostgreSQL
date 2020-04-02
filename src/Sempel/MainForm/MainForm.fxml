@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="1079.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="1079.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
       <AnchorPane cache="true" focusTraversable="true" prefHeight="619.0" prefWidth="1079.0">
          <children>
@@ -31,7 +31,7 @@
                 </Menu>
                 <Menu fx:id="MenuDocument" mnemonicParsing="false" text="Dokument">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
+                    <MenuItem fx:id="MenuDokComing" mnemonicParsing="false" text="Coming" />
                   </items>
                 </Menu>
               </menus>
@@ -39,7 +39,7 @@
                   <Point3D />
                </rotationAxis>
             </MenuBar>
-            <ImageView fitHeight="313.0" fitWidth="281.0" layoutY="310.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="DokComing" fitHeight="313.0" fitWidth="281.0" layoutY="310.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@ImageMain.png" />
                </image>

@@ -1,14 +1,12 @@
 package Sempel.MainForm;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import Sempel.FormDirectory.DirectoruNomenclature.ControllerFormNomenclature;
 import Sempel.FormDirectory.DirectoruViewComingCosts.ControllerViewComongConsts;
 import Sempel.FormDirectory.DirectoruViewDebt.ControllerViewDebt;
-import Sempel.FormDirectory.DirectoruViewReturne.ControllerViewReturn;
 import Sempel.FormDirectory.DirectoryKontragent.ControllerFormDirectory;
+import Sempel.FormDocuments.DokComing.ControllerFormSelectionDokComing;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,19 +14,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import sql.SettingConnectSQL;
 
 
+
 public class ControllerMainForm {
 
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
+	@FXML
     private MenuBar MenyBar;
 
     @FXML
@@ -44,8 +38,8 @@ public class ControllerMainForm {
     private MenuItem MenuNASIKontragent;
 
     @FXML
-    private Menu MenuDocument;
-    
+    private MenuItem MenuNASIViewComCon;
+
     @FXML
     private MenuItem MenuNASINomenclature;
 
@@ -56,7 +50,13 @@ public class ControllerMainForm {
     private MenuItem MenuNASIViewReturn;
 
     @FXML
-    private MenuItem MenuNASIViewComCon;
+    private Menu MenuDocument;
+
+    @FXML
+    private MenuItem MenuDokComing;
+
+    @FXML
+    private ImageView DokComing;
 
     //Мои переменные
     SettingConnectSQL SettConn;
@@ -79,10 +79,18 @@ public class ControllerMainForm {
             }
         });
         
-        MenuNASINomenclature.setOnAction(eveny -> {
+        MenuNASINomenclature.setOnAction(event -> {
         	try {
 				CreatForm("../FormDirectory/DirectoruNomenclature/FormNomenclature.fxml", "ControllerFormNomenclature");
 			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }); 
+        
+       MenuDokComing.setOnAction(event ->{
+        	try {
+        		CreatForm("../FormDocuments/DokComing/FormSelectionDokComing.fxml", "ControllerFormSelectionDokComing");
+        	} catch (IOException e) {
 				e.printStackTrace();
 			}
         });
@@ -122,6 +130,9 @@ public class ControllerMainForm {
         } else if (contrName == "ControllerViewReturn"){
             //ControllerViewReturn ContDir = new ControllerViewReturn(SettConn);
             //fxmlLoader.setController(ContDir);
+        } else if (contrName == "ControllerFormSelectionDokComing") {
+        	ControllerFormSelectionDokComing ContrDir = new ControllerFormSelectionDokComing(SettConn);
+        	fxmlLoader.setController(ContrDir);
         }
 
         Parent root1 = (Parent) fxmlLoader.load();
