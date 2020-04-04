@@ -3,11 +3,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Observable;
 import java.util.ResourceBundle;
 
-import Sempel.FormDirectory.DirectoryKontragent.CreatUpdateDirectory.ControllerDeletCreatDirectory;
-import Sempel.MainForm.ControllerMainForm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -49,6 +46,9 @@ public class ControllerFormSelectionDokComing {
 
     @FXML
     private TableColumn<PersenDokComing, String> TableColumnsKoment;
+    
+    @FXML
+    private TableColumn<PersenDokComing, Boolean> TableColumnsDeleted;
 
     @FXML
     void initialize() throws SQLException {
@@ -58,6 +58,7 @@ public class ControllerFormSelectionDokComing {
     	TableColumnsAmount.setCellValueFactory(new PropertyValueFactory<PersenDokComing, String>("Amount"));
     	TableColumnsKoment.setCellValueFactory(new PropertyValueFactory<PersenDokComing, String>("Koment"));
     	TableColumnsNumber.setCellValueFactory(new PropertyValueFactory<PersenDokComing, String>("Number"));
+    	TableColumnsDeleted.setCellValueFactory(new PropertyValueFactory<PersenDokComing, Boolean>("Deleted"));
     	
     	TableNomenclature.setItems(DokComing);
     }
@@ -73,9 +74,9 @@ public class ControllerFormSelectionDokComing {
     	Connection connection = SetCon.CreatConnect();
     	
     	SelectPost SelPos = new SelectPost();
-    	ResultSet ResulDokCom = SelPos.SelectInfoBase(connection, "SELECT id_dcom, \"SumMoney_dcom\", \"Komment_dcom\" FROM public.\"DokComing\";");
+    	ResultSet ResulDokCom = SelPos.SelectInfoBase(connection, "SELECT id_dcom, \"SumMoney_dcom\", \"Komment_dcom\", deleted_dcom FROM public.\"DokComing\";");
     	while (ResulDokCom.next()) {
-    		DokComing.add(new PersenDokComing(ResulDokCom.getString(1), ResulDokCom.getString(2), ResulDokCom.getString(3)));
+    		DokComing.add(new PersenDokComing(ResulDokCom.getString(1), ResulDokCom.getString(2), ResulDokCom.getString(3), ResulDokCom.getBoolean(4)));
     	}
     	connection.close();
     	
