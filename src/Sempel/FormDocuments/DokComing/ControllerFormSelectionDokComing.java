@@ -1,17 +1,25 @@
 package Sempel.FormDocuments.DokComing;
+import java.awt.Event;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import Sempel.FormDocuments.DokComing.CreatUpdateDokComing.ControllerFormDokComingCreatUpdate;
+import Sempel.MainForm.ControllerMainForm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import sql.SelectPost;
 import sql.SettingConnectSQL;
 
@@ -61,13 +69,23 @@ public class ControllerFormSelectionDokComing {
     	TableColumnsDeleted.setCellValueFactory(new PropertyValueFactory<PersenDokComing, Boolean>("Deleted"));
     	
     	TableNomenclature.setItems(DokComing);
+    	
+    	ButtonCreat.setOnAction(event -> {
+    			try {
+					OpenFormRefreshCreat(false);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    	});
+    	
     }
     
     public ControllerFormSelectionDokComing (SettingConnectSQL SetCon) {
     	this.SetCon = SetCon;
     }   
     
-    public void refreshTableDocComing() throws SQLException {
+    private void refreshTableDocComing() throws SQLException {
     	
     	DokComing.clear();
     	
@@ -82,4 +100,39 @@ public class ControllerFormSelectionDokComing {
     	
     }
     
+    private void OpenFormRefreshCreat(boolean updateDokCom) throws IOException {
+    	
+    	FXMLLoader fxmlLoader = new FXMLLoader(ControllerMainForm.class.getResource("/Sempel/FormDocuments/DokComing/CreatUpdateDokComing/FormDokComingCreatUpdate.fxml"));
+    
+    	//PersenDokComing PersSRT = TableNomenclature.getSelectionModel().getSelectedItem();
+    	
+    	if (updateDokCom) {
+    		//refresh dok
+    		//ControllerFormDokComingCreatUpdate DokComingCreatRefrash = new ControllerFormDokComingCreatUpdate();
+    		//fxmlLoader.setController(DokComingCreatRefrash);
+    	} else {
+    		ControllerFormDokComingCreatUpdate DokComingCreatRefrash = new ControllerFormDokComingCreatUpdate(SetCon,updateDokCom);
+    		fxmlLoader.setController(DokComingCreatRefrash);
+    	}
+    	
+    	Parent root1 = fxmlLoader.load();
+    	Stage stage = new Stage();
+    	stage.setScene(new Scene(root1));
+    	stage.setOnHidden(event -> {
+    		try {
+				refreshTableDocComing();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+    	});
+    	stage.setOnCloseRequest(event -> {
+    		try {
+				refreshTableDocComing();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+    	});
+    	stage.show();
+    	
+    }
 }

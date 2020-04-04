@@ -3,6 +3,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -10,12 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 public class ControllerFormDokComingCreatUpdate {
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
 
     @FXML
     private AnchorPane ArchPnelForm;
@@ -57,7 +52,33 @@ public class ControllerFormDokComingCreatUpdate {
     private Label LabelDokN1;
 
     @FXML
-    void initialize() {
+    private ComboBox<?> ComboBoxKontragent;
 
+    @FXML
+    private Label LabelKontragent;
+
+    @FXML
+    private ComboBox<?> ComboBoxViewComCos;
+
+    @FXML
+    private Label LabelViewComingCos;
+
+    private String NomDokCreat;
+    private boolean updateDok;
+    
+    @FXML
+    void initialize() {
+    	
+    	LabelNumberDoc.setText(NomDokCreat);
+    	
+    }
+    
+    public ControllerFormDokComingCreatUpdate (boolean updateDok) {
+    	if (updateDok) {
+
+    	} else {
+    		this.NomDokCreat = "New dokument";
+    		this.updateDok = updateDok;    		
+    	}
     }
 }
