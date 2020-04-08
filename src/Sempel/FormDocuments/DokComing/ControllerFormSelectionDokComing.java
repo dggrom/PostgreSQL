@@ -111,7 +111,7 @@ public class ControllerFormSelectionDokComing {
     		//ControllerFormDokComingCreatUpdate DokComingCreatRefrash = new ControllerFormDokComingCreatUpdate();
     		//fxmlLoader.setController(DokComingCreatRefrash);
     	} else {
-    		ControllerFormDokComingCreatUpdate DokComingCreatRefrash = new ControllerFormDokComingCreatUpdate(SetCon,updateDokCom);
+    		ControllerFormDokComingCreatUpdate DokComingCreatRefrash = new ControllerFormDokComingCreatUpdate(updateDokCom,SetCon);
     		fxmlLoader.setController(DokComingCreatRefrash);
     	}
     	

@@ -2,13 +2,18 @@ package Sempel.FormDocuments.DokComing.CreatUpdateDokComing;
 
 public class PersenComboKontragent {
 
-	private String idKontr;
-	private String nameKontr;
+	private String code;
+	private String name;
 	
-	public void setidKontr(String value) { this.idKontr = value;}
-	public String getidKontr() {return idKontr;}
+	public void setCode(String value) { this.code = value;}
+	public String getCode() {return code;}
 	
-	public void setnameKontr(String value) {this.nameKontr = value;}
-	public String getnameKontr() {return nameKontr;}
+	public void setName(String value) {this.name = value;}
+	public String getName() {return name;}
+	
+	public PersenComboKontragent(String code, String name) {
+		this.code = code;
+		this.name = name;
+	}
 	
 }
