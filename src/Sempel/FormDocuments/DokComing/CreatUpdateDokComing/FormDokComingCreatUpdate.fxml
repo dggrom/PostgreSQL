@@ -29,5 +29,7 @@
       <Label fx:id="LabelKontragent" layoutX="14.0" layoutY="114.0" text="Контрагент" />
       <ComboBox fx:id="ComboBoxViewComCos" editable="true" layoutX="14.0" layoutY="180.0" prefHeight="26.0" prefWidth="372.0" />
       <Label fx:id="LabelViewComingCos" layoutX="14.0" layoutY="163.0" text="Вид движения" />
+      <Button fx:id="ButtonTableADD" layoutX="402.0" layoutY="180.0" mnemonicParsing="false" text="Добаить" />
+      <Button fx:id="ButtonTableDel" layoutX="495.0" layoutY="180.0" mnemonicParsing="false" text="Удалить" />
    </children>
 </AnchorPane>
