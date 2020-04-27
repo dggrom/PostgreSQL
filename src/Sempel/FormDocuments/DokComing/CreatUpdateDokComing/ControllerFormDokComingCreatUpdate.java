@@ -14,6 +14,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -27,6 +28,7 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.ShortStringConverter;
@@ -132,7 +134,7 @@ public class ControllerFormDokComingCreatUpdate {
 
 			@Override
 			public PersenComboKontragent fromString(String string) {
-				return new PersenComboKontragent("", string);
+				return ComboBoxKontragent.getSelectionModel().getSelectedItem();
 			}
         });
     	
@@ -150,7 +152,7 @@ public class ControllerFormDokComingCreatUpdate {
 
 			@Override
 			public PersenComboView fromString(String string) {
-				return new PersenComboView("", string);
+				return ComboBoxViewComCos.getSelectionModel().getSelectedItem();
 			}
     		
 		});
@@ -188,8 +190,6 @@ public class ControllerFormDokComingCreatUpdate {
 			}
     		
     	},TableMoneyNomen));
-    	
-    	//NomenTMD.setCellFactory(ComboBoxTableCell.forTableColumn(new StringConverter, items));
     	
     	NomenTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, PersenNomenklatureTable> event) -> {
     		TablePosition<PersenTableMoney, PersenNomenklatureTable> pos = event.getTablePosition();
@@ -248,14 +248,25 @@ public class ControllerFormDokComingCreatUpdate {
     	ButtonSave.setOnAction(event ->{
     		
     		try {
-				updateCreatDocComing(false);
-			} catch (SQLException e) {
+    			
+				LabelNumberDoc.setText(NomDokCreat);
+	    		
+				if(updateCreatDocComing(false)) {
+					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();
+					stageForm.close();
+				} else {
+					Alert aletForm = new Alert(Alert.AlertType.ERROR);
+					aletForm.setTitle("Ошибка создания нового документа");
+					aletForm.setHeaderText("Ошибка создания нового документа");
+					aletForm.show();
+				}
+				
+    		} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     		
-    		LabelNumberDoc.setText(NomDokCreat);
-    		
+    		    		
     	});
     }
 
@@ -272,7 +283,9 @@ public class ControllerFormDokComingCreatUpdate {
 	       return null;
 	} 
     
-    public void updateCreatDocComing(boolean creatDok) throws SQLException {
+    public boolean updateCreatDocComing(boolean creatDok) throws SQLException {
+    	
+    	boolean boolUpCre = true;
     	
     	//Создаем сам документ
     	String nomerkont = ComboBoxKontragent.getSelectionModel().getSelectedItem().getCode();
@@ -285,7 +298,7 @@ public class ControllerFormDokComingCreatUpdate {
     																"	VALUES ( '"+AmountDoc.getText()+"', '"+EditComments.getText()+"', "+nomerkont+", "+nomerView+", false);");
     	
     	//Если документ содался, начинаем работать с ТЧ
-    	if(ResultCreatUpdate) {	
+    	if(!ResultCreatUpdate) {	
     		
     		ResultSet newNomSelPost = SelPost.SelectInfoBase(connection, "SELECT id_dcom \n" + 
 														    				"	FROM public.\"DokComing\"\n" + 
@@ -298,17 +311,22 @@ public class ControllerFormDokComingCreatUpdate {
     		
     		//Удаляем все старые строки ТЧ
 	    	Boolean resTableMoney = SelPost.UpdateCreatTable(connection, "DELETE FROM public.\"DokComingTableMoney\"\n" + 
-	    																		"	WHERE id_dcom = "+NomDokCreat.toString()+";");
+	    																		"	WHERE id_dcom = "+NomDokCreat+";");
     		
     		//Заполняем по новой строки ТЧ.
-    		for(int x=0; x <= NumberTableLine; x++) {
+    		for(int x=0; x < NumberTableLine; x++) {
     			PersenTableMoney lineTable = TableManeyDoc.getItems().get(x);
     			boolean resTableCreat = SelPost.UpdateCreatTable(connection, "INSERT INTO public.\"DokComingTableMoney\"(\n" + 
 														    					"	id_dcom, id_nomen, kol_dcomtm)\n" + 
-														    					"	VALUES ("+NomDokCreat.toString()+", 1, "+lineTable.getKoll()+");");
+														    					"	VALUES ("+NomDokCreat+", "+getIdByName(lineTable.getNomen()).getIdNomen()+", "+lineTable.getKoll()+");");
+    		
     		}
     		
+    	} else {
+    		boolUpCre = false;
     	}	
+    	
+    	return boolUpCre;
     	
     }
     
