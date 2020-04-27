@@ -170,7 +170,26 @@ public class ControllerFormDokComingCreatUpdate {
 			
 		});
     	
-    	NomenTMD.setCellFactory(ComboBoxTableCell.forTableColumn(TableMoneyNomen));
+    	NomenTMD.setCellFactory(ComboBoxTableCell.forTableColumn(new StringConverter<PersenNomenklatureTable>() {
+
+			@Override
+			public String toString(PersenNomenklatureTable object) {
+				if (object != null) {	
+					return object.getNameNomen();
+				} else {
+					return "";
+				}
+			}
+
+			@Override
+			public PersenNomenklatureTable fromString(String string) {
+				// TODO Auto-generated method stub
+				return new PersenNomenklatureTable("", "");
+			}
+    		
+    	},TableMoneyNomen));
+    	
+    	//NomenTMD.setCellFactory(ComboBoxTableCell.forTableColumn(new StringConverter, items));
     	
     	NomenTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, PersenNomenklatureTable> event) -> {
     		TablePosition<PersenTableMoney, PersenNomenklatureTable> pos = event.getTablePosition();
