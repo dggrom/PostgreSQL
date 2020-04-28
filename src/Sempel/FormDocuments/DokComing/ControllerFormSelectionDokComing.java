@@ -15,11 +15,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import sql.Connect;
 import sql.SelectPost;
 import sql.SettingConnectSQL;
 
@@ -86,11 +88,44 @@ public class ControllerFormSelectionDokComing {
 				}
     	});
     	
+    	ButtonDeleted.setOnAction(event -> {
+    		try {
+    			Boolean preBool = TableNomenclature.getSelectionModel().getSelectedItem().getDeleted();
+				if(deletedDokuent(preBool)) {
+					Alert AlertForm = new Alert(Alert.AlertType.CONFIRMATION);
+					if(preBool) {
+						AlertForm.setHeaderText("Документ помечен на удаления");
+						AlertForm.setTitle("Документ помечен на удаления");
+					}else {
+						AlertForm.setHeaderText("Пометку удаления убрана");
+						AlertForm.setTitle("Пометку удаления убрана");
+					}
+				};
+				refreshTableDocComing();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+    	});
+    	
     }
     
     public ControllerFormSelectionDokComing (SettingConnectSQL SetCon) {
     	this.SetCon = SetCon;
     }   
+    
+    private Boolean deletedDokuent(Boolean currentDel) throws SQLException {
+    	
+    	String newBoolDel;
+    	if (currentDel) {newBoolDel = "false";} else {newBoolDel = "true";}
+    	
+    	Connection Conn = SetCon.CreatConnect();
+    	
+    	SelectPost SelPos = new SelectPost();
+    	Boolean updateDell = SelPos.UpdateCreatTable(Conn, "UPDATE public.\"DokComing\"\n" + 
+										    			"	SET deleted_dcom = "+newBoolDel+" \n" + 
+										    			"	WHERE id_dcom = "+TableNomenclature.getSelectionModel().getSelectedItem().getNumber()+";");
+    	return updateDell;
+    }
     
     private void refreshTableDocComing() throws SQLException {
     	
@@ -99,14 +134,13 @@ public class ControllerFormSelectionDokComing {
     	Connection connection = SetCon.CreatConnect();
     	
     	SelectPost SelPos = new SelectPost();
-    	ResultSet ResulDokCom = SelPos.SelectInfoBase(connection, "SELECT id_dcom, \"SumMoney_dcom\", \"Komment_dcom\", id_kont, id_viewcc, deleted_dcom FROM public.\"DokComing\";");
+    	ResultSet ResulDokCom = SelPos.SelectInfoBase(connection, "SELECT id_dcom, \"SumMoney_dcom\", \"Komment_dcom\", id_kont, id_viewcc, deleted_dcom FROM public.\"DokComing\" ORDER BY id_dcom;");
     	while (ResulDokCom.next()) {
     		DokComing.add(new PersenDokComing(ResulDokCom.getString(1), ResulDokCom.getString(2), ResulDokCom.getString(3), ResulDokCom.getBoolean(6), ResulDokCom.getString(4),ResulDokCom.getString(5)));
     	}
     	connection.close();
     	
     }
-    
     
 	private void OpenFormRefreshCreat(boolean updateDokCom) throws IOException {
     	
