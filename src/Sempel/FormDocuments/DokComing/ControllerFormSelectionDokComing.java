@@ -74,7 +74,14 @@ public class ControllerFormSelectionDokComing {
     			try {
 					OpenFormRefreshCreat(false);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    	});
+    	
+    	ButtonRefresh.setOnAction(event -> {
+    			try {
+					OpenFormRefreshCreat(true);
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
     	});
@@ -92,24 +99,24 @@ public class ControllerFormSelectionDokComing {
     	Connection connection = SetCon.CreatConnect();
     	
     	SelectPost SelPos = new SelectPost();
-    	ResultSet ResulDokCom = SelPos.SelectInfoBase(connection, "SELECT id_dcom, \"SumMoney_dcom\", \"Komment_dcom\", deleted_dcom FROM public.\"DokComing\";");
+    	ResultSet ResulDokCom = SelPos.SelectInfoBase(connection, "SELECT id_dcom, \"SumMoney_dcom\", \"Komment_dcom\", id_kont, id_viewcc, deleted_dcom FROM public.\"DokComing\";");
     	while (ResulDokCom.next()) {
-    		DokComing.add(new PersenDokComing(ResulDokCom.getString(1), ResulDokCom.getString(2), ResulDokCom.getString(3), ResulDokCom.getBoolean(4)));
+    		DokComing.add(new PersenDokComing(ResulDokCom.getString(1), ResulDokCom.getString(2), ResulDokCom.getString(3), ResulDokCom.getBoolean(6), ResulDokCom.getString(4),ResulDokCom.getString(5)));
     	}
     	connection.close();
     	
     }
     
-    private void OpenFormRefreshCreat(boolean updateDokCom) throws IOException {
+    
+	private void OpenFormRefreshCreat(boolean updateDokCom) throws IOException {
     	
     	FXMLLoader fxmlLoader = new FXMLLoader(ControllerMainForm.class.getResource("/Sempel/FormDocuments/DokComing/CreatUpdateDokComing/FormDokComingCreatUpdate.fxml"));
     
-    	//PersenDokComing PersSRT = TableNomenclature.getSelectionModel().getSelectedItem();
+    	PersenDokComing PersSRT = TableNomenclature.getSelectionModel().getSelectedItem();
     	
     	if (updateDokCom) {
-    		//refresh dok
-    		//ControllerFormDokComingCreatUpdate DokComingCreatRefrash = new ControllerFormDokComingCreatUpdate();
-    		//fxmlLoader.setController(DokComingCreatRefrash);
+    		ControllerFormDokComingCreatUpdate DokComingCreatRefrash = new ControllerFormDokComingCreatUpdate(updateDokCom,SetCon, PersSRT);
+    		fxmlLoader.setController(DokComingCreatRefrash);
     	} else {
     		ControllerFormDokComingCreatUpdate DokComingCreatRefrash = new ControllerFormDokComingCreatUpdate(updateDokCom,SetCon);
     		fxmlLoader.setController(DokComingCreatRefrash);

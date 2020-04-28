@@ -1,14 +1,9 @@
 package Sempel.FormDocuments.DokComing.CreatUpdateDokComing;
-import java.awt.Event;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.text.EditorKit;
-import javax.swing.text.StringContent;
-
-import com.sun.corba.se.spi.monitoring.MonitoringFactories;
-
+import Sempel.FormDocuments.DokComing.PersenDokComing;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -31,10 +26,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-import javafx.util.converter.ShortStringConverter;
 import sql.SelectPost;
 import sql.SettingConnectSQL;
-import sun.nio.ch.sctp.ResultContainer;
 
 public class ControllerFormDokComingCreatUpdate {
 
@@ -99,6 +92,7 @@ public class ControllerFormDokComingCreatUpdate {
     private boolean updateDok;
     private SettingConnectSQL SetCon;
     private Integer NumberTableLine;
+    private PersenDokComing persUpdateDok;
     private ObservableList<PersenComboKontragent> CombKont = FXCollections.observableArrayList();
     private ObservableList<PersenComboView> CombView = FXCollections.observableArrayList();
     private ObservableList<PersenTableMoney> TableMoney = FXCollections.observableArrayList();
@@ -114,6 +108,8 @@ public class ControllerFormDokComingCreatUpdate {
     	refreshNomenPersen();
     	if (NomDokCreat != "New dokument") {
     		refreshTableMoney();
+    		AmountDoc.setText(persUpdateDok.getAmount());
+    		EditComments.setText(persUpdateDok.getKoment());
     		} else {
     			NumberTableLine++;
     			TableMoney.clear();
@@ -157,10 +153,23 @@ public class ControllerFormDokComingCreatUpdate {
     		
 		});
     	
+    	if (NomDokCreat != "New dokument") {
+    		for (PersenComboKontragent x : CombKont) {
+    			if(x.getCode().equals(persUpdateDok.getIdKontragent())) { 
+    				ComboBoxKontragent.setValue(x);
+    				}
+    		}
+    		for (PersenComboView y : CombView) {
+    			if(y.getCode().equals(persUpdateDok.getIdView())) { 
+    				ComboBoxViewComCos.setValue(y);
+    				}
+    		}
+    	}
+    	
     	//Id строки
     	NLTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, Integer>("NL"));
-    	//Столбец с номенклатурой
     	
+    	//Столбец с номенклатурой
     	NomenTMD.setCellValueFactory(new Callback<CellDataFeatures<PersenTableMoney, PersenNomenklatureTable>, ObservableValue<PersenNomenklatureTable>>() {
 	
 			@Override
@@ -185,13 +194,13 @@ public class ControllerFormDokComingCreatUpdate {
 
 			@Override
 			public PersenNomenklatureTable fromString(String string) {
-				// TODO Auto-generated method stub
-				return new PersenNomenklatureTable("", "");
+				return getIdByName(TableManeyDoc.getSelectionModel().getSelectedItem().getNomen());//new PersenNomenklatureTable("", "");
 			}
     		
     	},TableMoneyNomen));
     	
     	NomenTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, PersenNomenklatureTable> event) -> {
+    	
     		TablePosition<PersenTableMoney, PersenNomenklatureTable> pos = event.getTablePosition();
     		
     		PersenNomenklatureTable NewNomen = event.getNewValue();
@@ -203,19 +212,8 @@ public class ControllerFormDokComingCreatUpdate {
     		
     	});
     	
-    	/*NomenTMD.setCellFactory(TextFieldTableCell.<PersenTableMoney>forTableColumn());
-    	NomenTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, String>event) -> {
-    		TablePosition<PersenTableMoney, String> pos = event.getTablePosition();
-    		
-    		String newNomen = event.getNewValue();
-    	
-    		int rowPos = pos.getRow();
-    		PersenTableMoney Currentpersen = event.getTableView().getItems().get(rowPos);
-    		
-    		Currentpersen.setNomen(newNomen);
-    	});*/
     	//Столбец с Количеством
-    	KolTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, String>("Kol"));
+    	KolTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, String>("Koll"));
     	KolTMD.setCellFactory(TextFieldTableCell.<PersenTableMoney>forTableColumn());
     	KolTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, String>event) -> {
     		TablePosition<PersenTableMoney, String> pos = event.getTablePosition();
@@ -251,13 +249,18 @@ public class ControllerFormDokComingCreatUpdate {
     			
 				LabelNumberDoc.setText(NomDokCreat);
 	    		
-				if(updateCreatDocComing(false)) {
+				if(updateCreatDocComing()) {
 					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();
 					stageForm.close();
 				} else {
 					Alert aletForm = new Alert(Alert.AlertType.ERROR);
-					aletForm.setTitle("Ошибка создания нового документа");
-					aletForm.setHeaderText("Ошибка создания нового документа");
+					if(updateDok) {
+						aletForm.setTitle("Ошибка перезаписи документа");
+						aletForm.setHeaderText("Ошибка перезаписи документа");	
+					}else {
+						aletForm.setTitle("Ошибка создания нового документа");
+						aletForm.setHeaderText("Ошибка создания нового документа");
+					}
 					aletForm.show();
 				}
 				
@@ -283,8 +286,9 @@ public class ControllerFormDokComingCreatUpdate {
 	       return null;
 	} 
     
-    public boolean updateCreatDocComing(boolean creatDok) throws SQLException {
+    public boolean updateCreatDocComing() throws SQLException {
     	
+    	boolean ResultCreatUpdate;
     	boolean boolUpCre = true;
     	
     	//Создаем сам документ
@@ -293,10 +297,18 @@ public class ControllerFormDokComingCreatUpdate {
     	
     	Connection connection = SetCon.CreatConnect();
     	SelectPost SelPost = new SelectPost();
-    	boolean ResultCreatUpdate = SelPost.UpdateCreatTable(connection, "INSERT INTO public.\"DokComing\"(\n" + 
-    																"	\"SumMoney_dcom\", \"Komment_dcom\", id_kont, id_viewcc, deleted_dcom)\n" + 
-    																"	VALUES ( '"+AmountDoc.getText()+"', '"+EditComments.getText()+"', "+nomerkont+", "+nomerView+", false);");
-    	
+    	if(updateDok) {
+    		ResultCreatUpdate = SelPost.UpdateCreatTable(connection, "UPDATE public.\"DokComing\"\n" + 
+    				"	SET id_dcom = "+persUpdateDok.getNumber()+", \"SumMoney_dcom\" = '"+AmountDoc.getText()+"',"+
+    				"   \"Komment_dcom\" = '"+EditComments.getText()+"', id_kont = "+nomerkont+", id_viewcc = "+nomerView+
+    				", deleted_dcom = "+persUpdateDok.getDeleted().toString()+"" + 
+    				"	WHERE id_dcom = "+persUpdateDok.getNumber()+";");
+    	} else {
+    		ResultCreatUpdate = SelPost.UpdateCreatTable(connection, "INSERT INTO public.\"DokComing\"(\n" + 
+    				"	\"SumMoney_dcom\", \"Komment_dcom\", id_kont, id_viewcc, deleted_dcom)\n" + 
+    				"	VALUES ( '"+AmountDoc.getText()+"', '"+EditComments.getText()+"', "+nomerkont+", "+nomerView+", false);");
+    	}
+    		
     	//Если документ содался, начинаем работать с ТЧ
     	if(!ResultCreatUpdate) {	
     		
@@ -305,8 +317,10 @@ public class ControllerFormDokComingCreatUpdate {
 														    				"	ORDER BY id_dcom DESC\n" + 
 														    				"	limit 1;");
     		
-    		if (newNomSelPost.next()) {
+    		if (newNomSelPost.next() && !updateDok) {
     			NomDokCreat = newNomSelPost.getString(1);
+    		} else {
+    			NomDokCreat = persUpdateDok.getNumber();
     		}
     		
     		//Удаляем все старые строки ТЧ
@@ -339,16 +353,6 @@ public class ControllerFormDokComingCreatUpdate {
     	
     }
     
-	public ControllerFormDokComingCreatUpdate (boolean updateDok, SettingConnectSQL SetCon) {
-    	if (updateDok) {
-
-    	} else {
-    		this.NomDokCreat = "New dokument";
-    		this.updateDok = updateDok;    		
-    		this.SetCon = SetCon;
-    	}
-    }
-
 	public void refreshNomenPersen() throws SQLException {
 		
 		TableMoneyNomen.clear();
@@ -373,10 +377,10 @@ public class ControllerFormDokComingCreatUpdate {
     	Connection connection = SetCon.CreatConnect();
     	
     	SelectPost SelPos = new SelectPost();
-    	ResultSet ResultSetTableMoney = SelPos.SelectInfoBase(connection, "SELECT id_dcom, id_nomen, kol_dcomtm FROM public.\"DokComingTableMoney\" WHERE id_dcom = " + NomDokCreat.toString() + ";");
+    	ResultSet ResultSetTableMoney = SelPos.SelectInfoBase(connection, "SELECT DC.id_dcomtm, DC.id_dcom, Nom.name_nomen, DC.kol_dcomtm FROM public.\"DokComingTableMoney\" DC, public.\"Nomenclature\" Nom WHERE DC.id_nomen = Nom.id_nomen and DC.id_dcom = " + NomDokCreat.toString() + ";");
     	while (ResultSetTableMoney.next()) {
     		NumberTableLine++;
-    		TableMoney.add(new PersenTableMoney(NumberTableLine, ResultSetTableMoney.getString(1), ResultSetTableMoney.getString(2)));
+    		TableMoney.add(new PersenTableMoney(NumberTableLine, ResultSetTableMoney.getString(4), ResultSetTableMoney.getString(3)));
     	}
     	
     	connection.close();
@@ -415,4 +419,18 @@ public class ControllerFormDokComingCreatUpdate {
     
     }
     
+	public ControllerFormDokComingCreatUpdate (boolean updateDok, SettingConnectSQL SetCon, PersenDokComing PersDok) {
+		this.NomDokCreat = PersDok.getNumber();
+		this.updateDok = updateDok;
+		this.SetCon = SetCon;
+		this.persUpdateDok = PersDok;
+	}
+
+	public ControllerFormDokComingCreatUpdate (boolean updateDok, SettingConnectSQL SetCon) {
+		this.NomDokCreat = "New dokument";
+		this.updateDok = updateDok;    		
+		this.SetCon = SetCon;
+		this.persUpdateDok = new PersenDokComing("", "", "", false,"","");
+	}
+	
 }
