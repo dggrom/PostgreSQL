@@ -3,6 +3,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import Sempel.FormDocuments.DokComing.PersenDokComing;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -239,7 +241,7 @@ public class ControllerFormDokComingCreatUpdate {
     		int tablePositionNow = TableManeyDoc.getSelectionModel().getSelectedItem().getNL() - 1;
     		TableMoney.remove(tablePositionNow);
     		NumberTableLine--;
-    		recountTableMoney();
+    		recountTableMoneyNumbe();
     	});
     	
     	//Создания дркумента
@@ -273,7 +275,23 @@ public class ControllerFormDokComingCreatUpdate {
     	});
     }
 
-	public PersenNomenklatureTable getIdByName(String IdNomen) {
+    public Boolean recountTableManeySum() {
+
+    	int zeroTableManey = 0;
+    	
+    	for (PersenTableMoney x : TableMoney) {
+    		zeroTableManey = zeroTableManey + Integer.valueOf(x.getKoll()); 
+    	}
+    	
+    	if(zeroTableManey == Integer.valueOf(AmountDoc.getText())) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    	
+    }
+    
+    public PersenNomenklatureTable getIdByName(String IdNomen) {
 		
 		int lineST = TableMoneyNomen.size() - 1;
 		
@@ -344,7 +362,7 @@ public class ControllerFormDokComingCreatUpdate {
     	
     }
     
-    public void recountTableMoney() {
+    public void recountTableMoneyNumbe() {
     	
     	for (int x = 0; x <= NumberTableLine; x++) {
     		PersenTableMoney recountLine = TableManeyDoc.getItems().get(x);
