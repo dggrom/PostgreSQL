@@ -33,7 +33,7 @@ import sql.SettingConnectSQL;
 
 	    @FXML
 	    private Button ButtonCreat;
-
+//
 	    @FXML
 	    private TableView<PersenNomenclatura> TableNomenclature;
 
