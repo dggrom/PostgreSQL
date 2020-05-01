@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -30,6 +31,8 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import sql.SelectPost;
 import sql.SettingConnectSQL;
+import sun.reflect.generics.tree.FormalTypeParameter;
+import sun.security.krb5.Realm;
 
 public class ControllerFormDokComingCreatUpdate {
 
@@ -263,6 +266,13 @@ public class ControllerFormDokComingCreatUpdate {
     	//Создания дркумента
     	ButtonSave.setOnAction(event ->{
     		
+    		if(!recountTableManeySum()) {
+    			Alert FormAlert = new Alert(AlertType.ERROR);
+    			FormAlert.setTitle("Необходимо пересчитать итоговую сумму");
+    			FormAlert.setHeaderText("Итоговая сумма не сходится, пересчитать ?");
+    			FormAlert.show();
+    		}
+    		
     		try {
     			
 				LabelNumberDoc.setText(NomDokCreat);
@@ -293,13 +303,13 @@ public class ControllerFormDokComingCreatUpdate {
 
     public Boolean recountTableManeySum() {
 
-    	int zeroTableManey = 0;
+    	Double zeroTableManey = 0.0;
     	
     	for (PersenTableMoney x : TableMoney) {
-    		zeroTableManey = zeroTableManey + Integer.valueOf(x.getKoll()); 
+    		zeroTableManey += (Double.valueOf(x.getKoll()) * Double.valueOf(x.getKoll())); 
     	}
     	
-    	if(zeroTableManey == Integer.valueOf(AmountDoc.getText())) {
+    	if(zeroTableManey == Double.valueOf(AmountDoc.getText())) {
     		return true;
     	} else {
     		return false;
