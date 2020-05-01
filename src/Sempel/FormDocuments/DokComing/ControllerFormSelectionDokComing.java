@@ -46,7 +46,7 @@ public class ControllerFormSelectionDokComing {
     private Button ButtonCreat;
 
     @FXML
-    private TableView<PersenDokComing> TableNomenclature;
+    private TableView<PersenDokComing> TableDocKoming; //TableNomenclature;
 
     @FXML
     private TableColumn<PersenDokComing, String> TableColumnsNumber;
@@ -64,13 +64,13 @@ public class ControllerFormSelectionDokComing {
     void initialize() throws SQLException {
 
     	refreshTableDocComing();
-    	
+    	//
     	TableColumnsAmount.setCellValueFactory(new PropertyValueFactory<PersenDokComing, String>("Amount"));
     	TableColumnsKoment.setCellValueFactory(new PropertyValueFactory<PersenDokComing, String>("Koment"));
     	TableColumnsNumber.setCellValueFactory(new PropertyValueFactory<PersenDokComing, String>("Number"));
     	TableColumnsDeleted.setCellValueFactory(new PropertyValueFactory<PersenDokComing, Boolean>("Deleted"));
     	
-    	TableNomenclature.setItems(DokComing);
+    	TableDocKoming.setItems(DokComing);
     	
     	ButtonCreat.setOnAction(event -> {
     			try {
@@ -90,7 +90,7 @@ public class ControllerFormSelectionDokComing {
     	
     	ButtonDeleted.setOnAction(event -> {
     		try {
-    			Boolean preBool = TableNomenclature.getSelectionModel().getSelectedItem().getDeleted();
+    			Boolean preBool = TableDocKoming.getSelectionModel().getSelectedItem().getDeleted();
 				if(deletedDokuent(preBool)) {
 					Alert AlertForm = new Alert(Alert.AlertType.CONFIRMATION);
 					if(preBool) {
@@ -123,7 +123,7 @@ public class ControllerFormSelectionDokComing {
     	SelectPost SelPos = new SelectPost();
     	Boolean updateDell = SelPos.UpdateCreatTable(Conn, "UPDATE public.\"DokComing\"\n" + 
 										    			"	SET deleted_dcom = "+newBoolDel+" \n" + 
-										    			"	WHERE id_dcom = "+TableNomenclature.getSelectionModel().getSelectedItem().getNumber()+";");
+										    			"	WHERE id_dcom = "+TableDocKoming.getSelectionModel().getSelectedItem().getNumber()+";");
     	return updateDell;
     }
     
@@ -146,7 +146,7 @@ public class ControllerFormSelectionDokComing {
     	
     	FXMLLoader fxmlLoader = new FXMLLoader(ControllerMainForm.class.getResource("/Sempel/FormDocuments/DokComing/CreatUpdateDokComing/FormDokComingCreatUpdate.fxml"));
     
-    	PersenDokComing PersSRT = TableNomenclature.getSelectionModel().getSelectedItem();
+    	PersenDokComing PersSRT = TableDocKoming.getSelectionModel().getSelectedItem();
     	
     	if (updateDokCom) {
     		ControllerFormDokComingCreatUpdate DokComingCreatRefrash = new ControllerFormDokComingCreatUpdate(updateDokCom,SetCon, PersSRT);
