@@ -67,6 +67,9 @@ public class ControllerFormDokComingCreatUpdate {
     private TableColumn<PersenTableMoney, String> KolTMD;
 
     @FXML
+    private TableColumn<PersenTableMoney, String> SumTMD;
+
+    @FXML
     private Button ButtonSave;
 
     @FXML
@@ -115,7 +118,7 @@ public class ControllerFormDokComingCreatUpdate {
     		} else {
     			NumberTableLine++;
     			TableMoney.clear();
-    			TableMoney.add(new PersenTableMoney(NumberTableLine, "0", ""));
+    			TableMoney.add(new PersenTableMoney(NumberTableLine, "0", "",""));
     		}
     	
     	ComboBoxKontragent.getItems().setAll(CombKont);
@@ -227,6 +230,19 @@ public class ControllerFormDokComingCreatUpdate {
     		CurrentPersen.setKoll(newKoll);
     	});
     	
+    	//Столбец с Суммами
+    	SumTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, String>("Sum"));
+    	SumTMD.setCellFactory(TextFieldTableCell.<PersenTableMoney>forTableColumn());
+    	SumTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, String>event) -> {
+    		TablePosition<PersenTableMoney, String> pos = event.getTablePosition();
+    		
+    		String newSum = event.getNewValue();
+    		
+    		int rowPos = pos.getRow();
+    		PersenTableMoney CurrentPersen = event.getTableView().getItems().get(rowPos);
+    		CurrentPersen.setSum(newSum);
+    	});
+    	
     	TableManeyDoc.setItems(TableMoney);
     	TableManeyDoc.setEditable(true);
     	
@@ -235,7 +251,7 @@ public class ControllerFormDokComingCreatUpdate {
     	//Кнопки для таблиц 
     	ButtonTableADD.setOnAction(event -> {
     		NumberTableLine++;
-    		TableMoney.add(new PersenTableMoney(NumberTableLine, "0", ""));
+    		TableMoney.add(new PersenTableMoney(NumberTableLine, "0", "", "0"));
     	});
     	ButtonTableDel.setOnAction(event -> {
     		int tablePositionNow = TableManeyDoc.getSelectionModel().getSelectedItem().getNL() - 1;
@@ -349,8 +365,8 @@ public class ControllerFormDokComingCreatUpdate {
     		for(int x=0; x < NumberTableLine; x++) {
     			PersenTableMoney lineTable = TableManeyDoc.getItems().get(x);
     			boolean resTableCreat = SelPost.UpdateCreatTable(connection, "INSERT INTO public.\"DokComingTableMoney\"(\n" + 
-														    					"	id_dcom, id_nomen, kol_dcomtm)\n" + 
-														    					"	VALUES ("+NomDokCreat+", "+getIdByName(lineTable.getNomen()).getIdNomen()+", "+lineTable.getKoll()+");");
+														    					"	id_dcom, id_nomen, kol_dcomtm, sum_docmtm)\n" + 
+														    					"	VALUES ("+NomDokCreat+", "+getIdByName(lineTable.getNomen()).getIdNomen()+", "+lineTable.getKoll()+","+lineTable.getSum()+");");
     		
     		}
     		
@@ -395,10 +411,10 @@ public class ControllerFormDokComingCreatUpdate {
     	Connection connection = SetCon.CreatConnect();
     	
     	SelectPost SelPos = new SelectPost();
-    	ResultSet ResultSetTableMoney = SelPos.SelectInfoBase(connection, "SELECT DC.id_dcomtm, DC.id_dcom, Nom.name_nomen, DC.kol_dcomtm FROM public.\"DokComingTableMoney\" DC, public.\"Nomenclature\" Nom WHERE DC.id_nomen = Nom.id_nomen and DC.id_dcom = " + NomDokCreat.toString() + ";");
+    	ResultSet ResultSetTableMoney = SelPos.SelectInfoBase(connection, "SELECT DC.id_dcomtm, DC.id_dcom, Nom.name_nomen, DC.kol_dcomtm, DC.Sum_docmtm FROM public.\"DokComingTableMoney\" DC, public.\"Nomenclature\" Nom WHERE DC.id_nomen = Nom.id_nomen and DC.id_dcom = " + NomDokCreat.toString() + ";");
     	while (ResultSetTableMoney.next()) {
     		NumberTableLine++;
-    		TableMoney.add(new PersenTableMoney(NumberTableLine, ResultSetTableMoney.getString(4), ResultSetTableMoney.getString(3)));
+    		TableMoney.add(new PersenTableMoney(NumberTableLine, ResultSetTableMoney.getString(4), ResultSetTableMoney.getString(3),ResultSetTableMoney.getString(5)));
     	}
     	
     	connection.close();
