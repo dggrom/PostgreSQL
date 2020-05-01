@@ -62,7 +62,7 @@ public class ControllerFormNomenclature {
 	    void initialize() throws SQLException {
 	    	
 	    	refrashTableNomenclature();
-	    	
+	    	//
 	    	TableColumnsID.setCellValueFactory(new PropertyValueFactory<PersenNomenclatura, Integer>("id"));
 	    	TableColumnsView.setCellValueFactory(new PropertyValueFactory<PersenNomenclatura, String>("name"));
 	    	TableColumnsDeleted.setCellValueFactory(new PropertyValueFactory<PersenNomenclatura, Boolean>("deleted"));
