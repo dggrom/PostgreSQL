@@ -3,11 +3,11 @@ package Sempel.FormDocuments.DokComing.CreatUpdateDokComing;
 public class PersenTableMoney {
 
 	private Integer NL;
-	private String Koll;
+	private Integer Koll;
 	private String Nomen;
-	private String Sum;
+	private Integer Sum;
 	
-	public PersenTableMoney(Integer NL, String Koll, String Nomen, String Sum) {
+	public PersenTableMoney(Integer NL, Integer Koll, String Nomen, Integer Sum) {
 		this.Koll = Koll;
 		this.NL = NL;
 		this.Nomen = Nomen;
@@ -17,12 +17,12 @@ public class PersenTableMoney {
 	public void setNL(Integer value) {this.NL = value;}
 	public Integer getNL() {return NL;}
 	
-	public void setKoll(String value) {this.Koll = value;}
-	public String getKoll() {return Koll;}
+	public void setKoll(Integer value) {this.Koll = value;}
+	public Integer getKoll() {return Koll;}
 	
 	public void setNomen(String value) {this.Nomen = value;}
 	public String getNomen() {return Nomen;}
 	
-	public void setSum(String value) {this.Sum = value;}
-	public String getSum() {return Sum;}
+	public void setSum(Integer value) {this.Sum = value;}
+	public Integer getSum() {return Sum;}
 }

@@ -33,6 +33,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import javafx.util.converter.IntegerStringConverter;
 import sql.SelectPost;
 import sql.SettingConnectSQL;
 
@@ -69,10 +70,10 @@ public class ControllerFormDokComingCreatUpdate {
     private TableColumn<PersenTableMoney, PersenNomenclatura> NomenTMD;
 
     @FXML
-    private TableColumn<PersenTableMoney, String> KolTMD;
+    private TableColumn<PersenTableMoney, Integer> KolTMD;
 
     @FXML
-    private TableColumn<PersenTableMoney, String> SumTMD;
+    private TableColumn<PersenTableMoney, Integer> SumTMD;
 
     @FXML
     private Button ButtonSave;
@@ -123,7 +124,7 @@ public class ControllerFormDokComingCreatUpdate {
     		} else {
     			NumberTableLine++;
     			TableMoney.clear();
-    			TableMoney.add(new PersenTableMoney(NumberTableLine, "0", "",""));
+    			TableMoney.add(new PersenTableMoney(NumberTableLine, Integer.valueOf(0), "",Integer.valueOf(0)));
     		}
     	
     	ComboBoxKontragent.getItems().setAll(CombKont);
@@ -223,12 +224,12 @@ public class ControllerFormDokComingCreatUpdate {
     	});
     	
     	//Столбец с Количеством
-    	KolTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, String>("Koll"));
-    	KolTMD.setCellFactory(TextFieldTableCell.<PersenTableMoney>forTableColumn());
-    	KolTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, String>event) -> {
-    		TablePosition<PersenTableMoney, String> pos = event.getTablePosition();
+    	KolTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, Integer>("Koll"));
+    	KolTMD.setCellFactory(TextFieldTableCell.<PersenTableMoney, Integer>forTableColumn(new IntegerStringConverter()));
+    	KolTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, Integer>event) -> {
+    		TablePosition<PersenTableMoney, Integer> pos = event.getTablePosition();
     		
-    		String newKoll = event.getNewValue();
+    		Integer newKoll = event.getNewValue();
     		
     		int rowPos = pos.getRow();
     		PersenTableMoney CurrentPersen = event.getTableView().getItems().get(rowPos);
@@ -236,12 +237,12 @@ public class ControllerFormDokComingCreatUpdate {
     	});
     	
     	//Столбец с Суммами
-    	SumTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, String>("Sum"));
-    	SumTMD.setCellFactory(TextFieldTableCell.<PersenTableMoney>forTableColumn());
-    	SumTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, String>event) -> {
-    		TablePosition<PersenTableMoney, String> pos = event.getTablePosition();
+    	SumTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, Integer>("Sum"));
+    	SumTMD.setCellFactory(TextFieldTableCell.<PersenTableMoney, Integer>forTableColumn(new IntegerStringConverter()));
+    	SumTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, Integer>event) -> {
+    		TablePosition<PersenTableMoney, Integer> pos = event.getTablePosition();
     		
-    		String newSum = event.getNewValue();
+    		Integer newSum = event.getNewValue();
     		
     		int rowPos = pos.getRow();
     		PersenTableMoney CurrentPersen = event.getTableView().getItems().get(rowPos);
@@ -256,7 +257,7 @@ public class ControllerFormDokComingCreatUpdate {
     	//Кнопки для таблиц 
     	ButtonTableADD.setOnAction(event -> {
     		NumberTableLine++;
-    		TableMoney.add(new PersenTableMoney(NumberTableLine, "0", "", "0"));
+    		TableMoney.add(new PersenTableMoney(NumberTableLine, Integer.valueOf(0), "", Integer.valueOf(0)));
     	});
     	ButtonTableDel.setOnAction(event -> {
     		int tablePositionNow = TableManeyDoc.getSelectionModel().getSelectedItem().getNL() - 1;
@@ -444,7 +445,7 @@ public class ControllerFormDokComingCreatUpdate {
     	ResultSet ResultSetTableMoney = SelPos.SelectInfoBase(connection, "SELECT DC.id_dcomtm, DC.id_dcom, Nom.name_nomen, DC.kol_dcomtm, DC.Sum_docmtm FROM public.\"DokComingTableMoney\" DC, public.\"Nomenclature\" Nom WHERE DC.id_nomen = Nom.id_nomen and DC.id_dcom = " + NomDokCreat.toString() + ";");
     	while (ResultSetTableMoney.next()) {
     		NumberTableLine++;
-    		TableMoney.add(new PersenTableMoney(NumberTableLine, ResultSetTableMoney.getString(4), ResultSetTableMoney.getString(3),ResultSetTableMoney.getString(5)));
+    		TableMoney.add(new PersenTableMoney(NumberTableLine, ResultSetTableMoney.getInt(4), ResultSetTableMoney.getString(3),ResultSetTableMoney.getInt(5)));
     	}
     	
     	connection.close();
