@@ -2,6 +2,7 @@ package Sempel.FormDocuments.DokComing.CreatUpdateDokComing;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 import javax.swing.text.StyledEditorKit.BoldAction;
 
@@ -14,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -267,10 +269,17 @@ public class ControllerFormDokComingCreatUpdate {
     	ButtonSave.setOnAction(event ->{
     		
     		if(!recountTableManeySum()) {
-    			Alert FormAlert = new Alert(AlertType.ERROR);
+    			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
+    			
     			FormAlert.setTitle("Необходимо пересчитать итоговую сумму");
     			FormAlert.setHeaderText("Итоговая сумма не сходится, пересчитать ?");
-    			FormAlert.show();
+    			
+    			Optional<ButtonType> optionAlert = FormAlert.showAndWait();
+    			
+    			if(optionAlert.get() == ButtonType.OK){
+    				AmountDoc.setText(recountStrTableManeySum());
+    			}
+    			
     		}
     		
     		try {
@@ -314,6 +323,18 @@ public class ControllerFormDokComingCreatUpdate {
     	} else {
     		return false;
     	}
+    	
+    }
+    
+    public String recountStrTableManeySum() {
+
+    	Double zeroTableManey = 0.0;
+    	
+    	for (PersenTableMoney x : TableMoney) {
+    		zeroTableManey += (Double.valueOf(x.getSum()) * Double.valueOf(x.getKoll())); 
+    	}
+    	
+    	return String.valueOf(zeroTableManey);
     	
     }
     
