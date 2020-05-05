@@ -311,13 +311,13 @@ public class ControllerFormDokComingCreatUpdate {
 
     public Boolean recountTableManeySum() {
 
-    	Double zeroTableManey = 0.0;
+    	Integer zeroTableManey = 0;
     	
     	for (PersenTableMoney x : TableMoney) {
-    		zeroTableManey += (Double.valueOf(x.getKoll()) * Double.valueOf(x.getKoll())); 
+    		zeroTableManey += (Integer.valueOf(x.getSum()) * Integer.valueOf(x.getKoll())); 
     	}
     	
-    	if(zeroTableManey == Double.valueOf(AmountDoc.getText())) {
+    	if(String.valueOf(zeroTableManey).equals(AmountDoc.getText())) {
     		return true;
     	} else {
     		return false;
@@ -327,10 +327,10 @@ public class ControllerFormDokComingCreatUpdate {
     
     public String recountStrTableManeySum() {
 
-    	Double zeroTableManey = 0.0;
+    	Integer zeroTableManey = 0;
     	
     	for (PersenTableMoney x : TableMoney) {
-    		zeroTableManey += (Double.valueOf(x.getSum()) * Double.valueOf(x.getKoll())); 
+    		zeroTableManey += (Integer.valueOf(x.getSum()) * Integer.valueOf(x.getKoll())); 
     	}
     	
     	return String.valueOf(zeroTableManey);
