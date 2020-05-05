@@ -235,7 +235,7 @@ public class ControllerFormDokComingCreatUpdate {
     		PersenTableMoney CurrentPersen = event.getTableView().getItems().get(rowPos);
     		CurrentPersen.setKoll(newKoll);
     	});
-    	
+
     	//Столбец с Суммами
     	SumTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, Integer>("Sum"));
     	SumTMD.setCellFactory(TextFieldTableCell.<PersenTableMoney, Integer>forTableColumn(new IntegerStringConverter()));
