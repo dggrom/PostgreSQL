@@ -6,7 +6,7 @@ public class PersenViewComCons {
     private String View;
     private Boolean Deleted;
 
-    PersenViewComCons(Integer id, String View, Boolean Deleted){
+    public PersenViewComCons(Integer id, String View, Boolean Deleted){
         this.id = id;
         this.View = View;
         this.Deleted = Deleted;
