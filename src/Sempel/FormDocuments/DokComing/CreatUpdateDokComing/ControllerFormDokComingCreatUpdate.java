@@ -418,24 +418,6 @@ public class ControllerFormDokComingCreatUpdate {
     	
     }
     
-	public void refreshNomenPersen() throws SQLException {
-		
-		TableMoneyNomen.clear();
-		
-		Connection connection = SetCon.CreatConnect();
-		
-		SelectPost SelPos = new SelectPost();
-		ResultSet ResulSetTable = SelPos.SelectInfoBase(connection, "SELECT id_nomen, name_nomen \n" + 
-																		"	FROM public.\"Nomenclature\" Nom \n" +
-																		" 	WHERE Nom.deleted_nomen = false;");
-		while (ResulSetTable.next()) {
-			TableMoneyNomen.add(new PersenNomenclatura(ResulSetTable.getInt(1), ResulSetTable.getString(2),false));
-		}
-		
-		connection.close();
-		
-	}
-	
  	public void refreshTableMoney() throws SQLException {
     	
     	TableMoney.clear();
@@ -456,34 +438,23 @@ public class ControllerFormDokComingCreatUpdate {
 	public void refreshComboView() throws SQLException {
     	
     	CombView.clear();
-    	
-    	Connection connection = SetCon.CreatConnect();
-    	
-    	SelectPost SelPos = new SelectPost();
-    	ResultSet ResulComboView = SelPos.SelectInfoBase(connection, "SELECT id_viewcc, name_viewcc FROM public.\"ViewComingConsumption\" ViCom WHERE ViCom.deleted_viewcc = false;");
-    	NumberTableLine = 0;
-    	while (ResulComboView.next()) {
-    		CombView.add(new PersenViewComCons(ResulComboView.getInt(1), ResulComboView.getString(2),false));
-    	}
-    	
-    	connection.close();
+    	CombView = PersenViewComCons.getMassivViewComCons(SetCon, CombView);
+
     }
     
 	public void refreshComboKontragent() throws SQLException {
     	
     	CombKont.clear();
-    
-    	Connection connection = SetCon.CreatConnect();
-    	
-    	SelectPost SelPos = new SelectPost();
-    	ResultSet ResulComboKon = SelPos.SelectInfoBase(connection, "SELECT id_kont, name_kont FROM public.\"Kontragent\" Kontr WHERE Kontr.deleted_kont = false;");
-    	while (ResulComboKon.next()) {
-    		CombKont.add(new PersenKontragent(ResulComboKon.getInt(1),ResulComboKon.getString(2),false));
-		}
-    	
-    	connection.close();
+    	CombKont = PersenKontragent.getMassivKontragent(SetCon, CombKont); 
     
     }
+	
+	public void refreshNomenPersen() throws SQLException {
+		
+		TableMoneyNomen.clear();
+		TableMoneyNomen = PersenNomenclatura.getMassivNomen(SetCon, TableMoneyNomen);
+		
+	}
     
 	public ControllerFormDokComingCreatUpdate (boolean updateDok, SettingConnectSQL SetCon, PersenDokComing PersDok) {
 		this.NomDokCreat = PersDok.getNumber();
