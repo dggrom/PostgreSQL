@@ -1,4 +1,3 @@
-package Sempel.FormDocuments.DokConsumption;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -15,7 +14,7 @@ public class ControllerFormSelectDokConsumption {
     private URL location;
 
     @FXML
-    private Button ButtonRefresh;
+    private Button ButtonUpdate;
 
     @FXML
     private Button ButtonDeleted;
@@ -24,7 +23,7 @@ public class ControllerFormSelectDokConsumption {
     private Button ButtonCreat;
 
     @FXML
-    private TableView<?> TableNomenclature;
+    private TableView<?> TableCunsu;
 
     @FXML
     private TableColumn<?, ?> TableColumnsNumber;
