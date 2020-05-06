@@ -168,6 +168,7 @@ public class ControllerViewComongConsts {
             }
         });
         stage.show();
+        stage.toFront();
     }
 
     public ControllerViewComongConsts(SettingConnectSQL SetCon){

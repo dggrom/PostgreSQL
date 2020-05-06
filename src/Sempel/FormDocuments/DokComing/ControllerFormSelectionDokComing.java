@@ -174,6 +174,7 @@ public class ControllerFormSelectionDokComing {
 			}
     	});
     	stage.show();
+    	stage.toFront();
     	
     }
 }

@@ -139,6 +139,7 @@ public class ControllerMainForm {
         Stage stage = new Stage();
         stage.setScene(new Scene(root1));
         stage.show();
+        stage.toFront();
     }
 
     public ControllerMainForm(SettingConnectSQL Loog){

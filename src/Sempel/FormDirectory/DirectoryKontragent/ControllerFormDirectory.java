@@ -179,6 +179,7 @@ public class ControllerFormDirectory {
                 }
         });
         stage.show();
+        stage.toFront();
     }
 
     public void refrashTableKontragent() throws SQLException {
