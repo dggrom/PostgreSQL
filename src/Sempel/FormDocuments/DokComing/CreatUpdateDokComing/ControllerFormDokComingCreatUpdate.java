@@ -426,7 +426,8 @@ public class ControllerFormDokComingCreatUpdate {
 		
 		SelectPost SelPos = new SelectPost();
 		ResultSet ResulSetTable = SelPos.SelectInfoBase(connection, "SELECT id_nomen, name_nomen \n" + 
-																		"	FROM public.\"Nomenclature\";");
+																		"	FROM public.\"Nomenclature\" Nom \n" +
+																		" 	WHERE Nom.deleted_nomen = false;");
 		while (ResulSetTable.next()) {
 			TableMoneyNomen.add(new PersenNomenclatura(ResulSetTable.getInt(1), ResulSetTable.getString(2),false));
 		}
@@ -459,7 +460,7 @@ public class ControllerFormDokComingCreatUpdate {
     	Connection connection = SetCon.CreatConnect();
     	
     	SelectPost SelPos = new SelectPost();
-    	ResultSet ResulComboView = SelPos.SelectInfoBase(connection, "SELECT id_viewcc, name_viewcc FROM public.\"ViewComingConsumption\";");
+    	ResultSet ResulComboView = SelPos.SelectInfoBase(connection, "SELECT id_viewcc, name_viewcc FROM public.\"ViewComingConsumption\" ViCom WHERE ViCom.deleted_viewcc = false;");
     	NumberTableLine = 0;
     	while (ResulComboView.next()) {
     		CombView.add(new PersenViewComCons(ResulComboView.getInt(1), ResulComboView.getString(2),false));
@@ -475,7 +476,7 @@ public class ControllerFormDokComingCreatUpdate {
     	Connection connection = SetCon.CreatConnect();
     	
     	SelectPost SelPos = new SelectPost();
-    	ResultSet ResulComboKon = SelPos.SelectInfoBase(connection, "SELECT id_kont, name_kont FROM public.\"Kontragent\";");
+    	ResultSet ResulComboKon = SelPos.SelectInfoBase(connection, "SELECT id_kont, name_kont FROM public.\"Kontragent\" Kontr WHERE Kontr.deleted_kont = false;");
     	while (ResulComboKon.next()) {
     		CombKont.add(new PersenKontragent(ResulComboKon.getInt(1),ResulComboKon.getString(2),false));
 		}
