@@ -31,8 +31,9 @@
       <TableView fx:id="TableCunsu" layoutX="-1.0" prefHeight="491.0" prefWidth="557.0">
          <columns>
             <TableColumn fx:id="TableColumnsNumber" prefWidth="91.0" text="Number" />
-            <TableColumn fx:id="TableColumnsAmount" prefWidth="267.0" text="Amount" />
-            <TableColumn fx:id="TableColumnsKoment" minWidth="0.0" prefWidth="198.0" text="Koment" />
+            <TableColumn fx:id="TableColumnsAmount" prefWidth="168.0" text="Amount" />
+            <TableColumn fx:id="TableColumnsKoment" minWidth="0.0" prefWidth="153.0" text="Koment" />
+            <TableColumn fx:id="TableColumnsDeleted" minWidth="0.0" prefWidth="144.0" text="Deleted" />
          </columns>
       </TableView>
    </children>
