@@ -9,8 +9,11 @@ import com.sun.xml.internal.bind.v2.runtime.output.ForkXmlOutput;
 import Sempel.FormDirectory.DirectoruNomenclature.PersenNomenclatura;
 import Sempel.FormDirectory.DirectoruViewComingCosts.PersenViewComCons;
 import Sempel.FormDirectory.DirectoryKontragent.PersenKontragent;
+import Sempel.FormDocuments.DokComing.CreatUpdateDokComing.PersenTableMoney;
 import Sempel.FormDocuments.DokConsumption.PersenDokConsuption;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableListValue;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -21,7 +24,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 import sql.SettingConnectSQL;
 
 public class ControllerFormDokConsumption {
@@ -106,20 +113,89 @@ public class ControllerFormDokConsumption {
     @FXML
     void initialize() throws SQLException {
     
-    	refrashTableMoney();
+    	numberLinaTable = 0;
+    	
     	refrashComboComCons();
     	refrashComboKontr();
     	refrashComboName();
     
-    	if(!updateDok) {
-    		
+    	if(updateDok) {
+    		refrashTableMoney();
+    		AmountDoc.setText(persUpdateDok.getAmount().toString());
+    		EditComments.setText(persUpdateDok.getKoment());
+    	} else {
+    		numberLinaTable++;
+    		TableMoney.clear();
+    		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0)));
     	}
     	
+    	ComboBoxKontragent.getItems().setAll(ComboKontr);
+    	ComboBoxKontragent.setConverter(new StringConverter<PersenKontragent>() {
+			
+			@Override
+			public String toString(PersenKontragent object) {
+				if(object != null) {
+					return object.getName();
+				} else {
+					return "";
+				}
+			}
+			
+			@Override
+			public PersenKontragent fromString(String string) {
+				return ComboBoxKontragent.getSelectionModel().getSelectedItem();
+			}
+		});
+    	
+    	ComboBoxViewComCos.getItems().setAll(ComboComCons);
+    	ComboBoxViewComCos.setConverter(new StringConverter<PersenViewComCons>() {
+
+			@Override
+			public String toString(PersenViewComCons object) {
+				if (object != null) {
+					return object.getView();
+				} else {
+					return "";
+				}
+			}
+
+			@Override
+			public PersenViewComCons fromString(String string) {
+				return ComboBoxViewComCos.getSelectionModel().getSelectedItem(); 
+			}
+		});
+    	
+    	if (updateDok) {
+    		for (PersenKontragent x : ComboKontr) {
+    			if(x.getId() == persUpdateDok.getIdKontragent()) {
+    				ComboBoxKontragent.setValue(x);
+    			}
+    		}	
+    		for (PersenViewComCons y : ComboComCons) {
+    			if (y.getId() == persUpdateDok.getIdView()) {
+    				ComboBoxViewComCos.setValue(y);
+    			}
+    		}
+    	}
+    	
+    	//Уникальный строки
+    	NLTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoneyConsu, Integer>("NL"));
+    	
+    	//Номенклатура
+    	NomenTMD.setCellValueFactory(new Callback<CellDataFeatures<PersenTableMoneyConsu,PersenNomenclatura>, ObservableValue<PersenNomenclatura>>() {
+			
+			@Override
+			public ObservableValue<PersenNomenclatura> call(CellDataFeatures<PersenTableMoneyConsu, PersenNomenclatura> param) {
+				PersenTableMoneyConsu PersNomTab = param.getValue();
+				PersenNomenclatura NewNomen = getIdByName(PersNomTab.getNomen());
+				return new SimpleObjectProperty<PersenNomenclatura>(NewNomen);
+			}
+		});
     }
     
     private void refrashTableMoney() throws SQLException {
     	TableMoney.clear();
-    	TableMoney = PersenTableMoneyConsu.getMassivTableMoneyCouns(SetCon, TableMoney);
+    	TableMoney = PersenTableMoneyConsu.getMassivTableMoneyCouns(SetCon, TableMoney, nomerDok);
     }
     
     private void refrashComboComCons() throws SQLException {
@@ -140,7 +216,7 @@ public class ControllerFormDokConsumption {
     public ControllerFormDokConsumption(Boolean updateDok, SettingConnectSQL SetCon, PersenDokConsuption persUpdateDok){
     	
 		if(!updateDok) {
-    		this.nomerDok = "Номер не задан";
+    		this.nomerDok = "0";
     		this.updateDok = updateDok;
     		this.SetCon = SetCon;
     		this.numberLinaTable = 0;
@@ -155,5 +231,17 @@ public class ControllerFormDokConsumption {
     	
     }
     
+    public PersenNomenclatura getIdByName(String IdNomen) {
+		
+		int lineST = ComboNomen.size() - 1;
+		
+		 for (int x = 0; x <= lineST; x++) {
+	         PersenNomenclatura checkLine = ComboNomen.get(x);  
+			 if (checkLine.getName().equals(IdNomen)) {
+	               return checkLine;
+	           }
+	       }
+	       return null;
+	} 
 }
 

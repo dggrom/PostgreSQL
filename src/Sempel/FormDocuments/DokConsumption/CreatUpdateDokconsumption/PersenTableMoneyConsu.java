@@ -34,12 +34,14 @@ public class PersenTableMoneyConsu {
 	public void setSum(Integer value) {this.Sum = value;}
 	public Integer getSum() {return this.Sum;}
 
-	public static ObservableList<PersenTableMoneyConsu> getMassivTableMoneyCouns(SettingConnectSQL SetCon, ObservableList<PersenTableMoneyConsu> Mass) throws SQLException{
+	public static ObservableList<PersenTableMoneyConsu> getMassivTableMoneyCouns(SettingConnectSQL SetCon, ObservableList<PersenTableMoneyConsu> Mass, String NomerDok) throws SQLException{
 		
 		Connection Con = SetCon.CreatConnect();
 		
 		SelectPost SelPos = new SelectPost();
-		ResultSet resSet = SelPos.SelectInfoBase(Con, "");
+		ResultSet resSet = SelPos.SelectInfoBase(Con, "SELECT DC.id_dcontm, DC.id_dcon, Nom.name_nomen, DC.kol_dcontm, DC.sum_dcontm\n" + 
+				"	FROM public.\"DokConsumptionTableMoney\" DC, public.\"Nomenclature\" Nom\n" + 
+				"	WHERE DC.id_nomen = Nom.id_nomen AND DC.id_dcon = "+NomerDok+";");
 		
 		while (resSet.next()) {
 			Mass.add(new PersenTableMoneyConsu(resSet.getInt(1), resSet.getInt(2), resSet.getString(3), resSet.getInt(4)));
