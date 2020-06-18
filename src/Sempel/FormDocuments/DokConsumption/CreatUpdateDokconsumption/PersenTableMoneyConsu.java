@@ -42,9 +42,10 @@ public class PersenTableMoneyConsu {
 		ResultSet resSet = SelPos.SelectInfoBase(Con, "SELECT DC.id_dcontm, DC.id_dcon, Nom.name_nomen, DC.kol_dcontm, DC.sum_dcontm\n" + 
 				"	FROM public.\"DokConsumptionTableMoney\" DC, public.\"Nomenclature\" Nom\n" + 
 				"	WHERE DC.id_nomen = Nom.id_nomen AND DC.id_dcon = "+NomerDok+";");
-		
+		int lineCount = 0;
 		while (resSet.next()) {
-			Mass.add(new PersenTableMoneyConsu(resSet.getInt(1), resSet.getInt(2), resSet.getString(3), resSet.getInt(4)));
+			lineCount++;
+			Mass.add(new PersenTableMoneyConsu(lineCount, resSet.getInt(2), resSet.getString(3), resSet.getInt(4)));
 		}
 		
 		return Mass;

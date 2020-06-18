@@ -76,6 +76,14 @@ public class ControllerFormSelectDokConsumption {
     		
     	});
     	
+    	ButtonUpdate.setOnAction(event -> {
+    		try {
+    			openFormUpdateCreat(true);
+    		} catch (Exception e) {
+				// TODO: handle exception
+			}
+    	});
+    	
     }
     
     private void openFormUpdateCreat(Boolean updateCreat) throws IOException {

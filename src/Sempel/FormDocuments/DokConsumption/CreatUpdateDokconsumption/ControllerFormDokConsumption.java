@@ -1,34 +1,43 @@
 package Sempel.FormDocuments.DokConsumption.CreatUpdateDokconsumption;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-import com.sun.xml.internal.bind.v2.runtime.output.ForkXmlOutput;
 
 import Sempel.FormDirectory.DirectoruNomenclature.PersenNomenclatura;
 import Sempel.FormDirectory.DirectoruViewComingCosts.PersenViewComCons;
 import Sempel.FormDirectory.DirectoryKontragent.PersenKontragent;
-import Sempel.FormDocuments.DokComing.CreatUpdateDokComing.PersenTableMoney;
 import Sempel.FormDocuments.DokConsumption.PersenDokConsuption;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableListValue;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TablePosition;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import javafx.util.converter.IntegerStringConverter;
+import sql.SelectPost;
 import sql.SettingConnectSQL;
 
 public class ControllerFormDokConsumption {
@@ -189,13 +198,226 @@ public class ControllerFormDokConsumption {
 				PersenTableMoneyConsu PersNomTab = param.getValue();
 				PersenNomenclatura NewNomen = getIdByName(PersNomTab.getNomen());
 				return new SimpleObjectProperty<PersenNomenclatura>(NewNomen);
-			}
+			};
 		});
+    	
+    	NomenTMD.setCellFactory(ComboBoxTableCell.forTableColumn(new StringConverter<PersenNomenclatura>() {
+
+
+			@Override
+			public String toString(PersenNomenclatura object) {
+				if (object != null) {
+					return object.getName();
+				} else {
+					return "";
+				}
+			}
+
+			@Override
+			public PersenNomenclatura fromString(String string) {
+				return getIdByName(TableManeyDoc.getSelectionModel().getSelectedItem().getNomen());
+			}
+    		
+    	},ComboNomen));
+    	
+    	NomenTMD.setOnEditCommit((CellEditEvent<PersenTableMoneyConsu,PersenNomenclatura> event) -> {
+    		
+    		TablePosition<PersenTableMoneyConsu,PersenNomenclatura> pos = event.getTablePosition();
+  
+    		PersenNomenclatura NewNomen = event.getNewValue();
+    		
+    		int rowPos = pos.getRow();
+    		PersenTableMoneyConsu CurrentPer = event.getTableView().getItems().get(rowPos);
+    		
+    		CurrentPer.setNomen(NewNomen.getName());
+    		
+    	});
+    	
+    	//Столбец колличество
+    	KolTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoneyConsu, Integer>("Koll"));
+    	KolTMD.setCellFactory(TextFieldTableCell.<PersenTableMoneyConsu, Integer>forTableColumn(new IntegerStringConverter()));
+    	KolTMD.setOnEditCommit((CellEditEvent<PersenTableMoneyConsu,Integer>event)->{
+    		TablePosition<PersenTableMoneyConsu, Integer> pos = event.getTablePosition();
+    		
+    		Integer newKoll = event.getNewValue();
+    		
+    		int rowPos = pos.getRow();
+    		PersenTableMoneyConsu CurrentPersen = event.getTableView().getItems().get(rowPos);
+    		CurrentPersen.setKoll(newKoll);
+    	});
+    	
+    	//Столбец с Суммами
+    	SumTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoneyConsu, Integer>("Sum"));
+    	SumTMD.setCellFactory(TextFieldTableCell.<PersenTableMoneyConsu, Integer>forTableColumn(new IntegerStringConverter()));
+    	SumTMD.setOnEditCommit((CellEditEvent<PersenTableMoneyConsu, Integer>event) -> {
+    		TablePosition<PersenTableMoneyConsu,Integer> pos = event.getTablePosition();
+    	
+    		Integer newSum = event.getNewValue();
+    		
+    		int rowPos = pos.getRow();
+    		PersenTableMoneyConsu CurrentPersen = event.getTableView().getItems().get(rowPos);
+    		CurrentPersen.setSum(newSum);
+    	} );
+    	
+    	TableManeyDoc.setItems(TableMoney);
+    	TableManeyDoc.setEditable(true);
+    	
+    	LabelNumberDoc.setText(nomerDok);
+    	
+    	ButtonTableADD.setOnAction(event -> {
+    		numberLinaTable++;
+    		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0)));
+    	});
+    	ButtonTableDel.setOnAction(event ->{
+    		int tablePositionNow = TableManeyDoc.getSelectionModel().getSelectedItem().getNL() - 1;
+    		TableMoney.remove(tablePositionNow);
+    		numberLinaTable--;
+    		recountTableMoneyNumbe();
+    	});
+    	
+    	ButtonSave.setOnAction(event -> {
+    		
+    		if(!recountTableManeySum()) {
+    			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
+    			
+    			FormAlert.setTitle("Необходимо еперсчитать итоговую сумму");
+    			FormAlert.setHeaderText("Итоговая сумма не соходится, пересчитать ?");
+    			
+    			Optional<ButtonType> optionalAlert = FormAlert.showAndWait();
+    		
+    			if(optionalAlert.get() == ButtonType.OK) {
+    					AmountDoc.setText(recountStrTableManeySum());
+    			}
+    		}
+    		
+    		LabelNumberDoc.setText(nomerDok);
+    		
+
+			try {
+				if(!updateCreatDocComing()) {
+					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();
+					stageForm.close();
+				} else {
+					Alert alertForm = new Alert(Alert.AlertType.ERROR);
+					if(updateDok) {
+						alertForm.setTitle("Ошибка перезаписи документа");
+						alertForm.setHeaderText("Ошибка перезаписи документа");	
+					} else {
+						alertForm.setTitle("Ошибка создания нового документа");
+						alertForm.setHeaderText("Ошибка создания нового документа");
+					}
+					alertForm.show();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+    	});
+    }
+    
+    public boolean updateCreatDocComing() throws SQLException {
+		
+    	boolean ResultCreatUpdate;
+    	boolean boolUpCre = true;
+
+    	String nomerKont = ComboBoxKontragent.getSelectionModel().getSelectedItem().getId().toString();
+    	String nomerView = ComboBoxViewComCos.getSelectionModel().getSelectedItem().getId().toString();
+    	
+    	Connection connection = SetCon.CreatConnect();
+    	SelectPost SelPos = new SelectPost();
+    	if (updateDok) {
+    		ResultCreatUpdate = SelPos.UpdateCreatTable(connection, "UPDATE public.\"DokConsumption\"\n" + 
+    				"	SET id_dcon = "+persUpdateDok.getNumber()+", \"SumMoney_dcon\" = '"+AmountDoc.getText()+"',"+
+    				"   \"Komment_dcon\" = '"+EditComments.getText()+"', id_kont = "+nomerKont+", id_viewcc = "+nomerView+
+    				", deleted_dcon = "+persUpdateDok.getDeleted().toString()+"" + 
+    				"	WHERE id_dcon = "+persUpdateDok.getNumber()+";");
+    	} else {
+    		ResultCreatUpdate = SelPos.UpdateCreatTable(connection, "INSERT INTO public.\"DokConsumption\"(\n" + 
+    				"	\"SumMoney_dcon\", \"Komment_dcon\", id_kont, id_viewcc, deleted_dcon)\n" + 
+    				"	VALUES ( '"+AmountDoc.getText()+"', '"+EditComments.getText()+"', "+nomerKont+", "+nomerView+", false);");
+    	}
+    	
+    	//Если создали или обновили доку, работаем с ТЧ
+    	if(!ResultCreatUpdate) {
+    		
+    		ResultSet newNomSelPos = SelPos.SelectInfoBase(connection, "SELECT id_dcon \n" + 
+													    				"	FROM public.\"DokConsumption\"\n" + 
+													    				"	ORDER BY id_dcon DESC\n" + 
+													    				"	limit 1;");
+    		
+    		if (newNomSelPos.next() && !updateDok) {
+    			nomerDok = newNomSelPos.getString(1);
+    		} else {
+    			nomerDok = persUpdateDok.getNumber().toString();
+    		}
+    		
+    		//Удалить все старые строки
+    		Boolean resTableMoney = SelPos.UpdateCreatTable(connection, "DELETE FROM public.\"DokConsumptionTableMoney\"\n" + 
+																		"	WHERE id_dcon = "+nomerDok+";");
+    		
+    		//Заполнить по новым данным ТЧ.
+    		for(int x=0; x<numberLinaTable; x++) {
+    			PersenTableMoneyConsu lineTableMoneyConsu = TableManeyDoc.getItems().get(x);
+    			boolean resTableCreat = SelPos.UpdateCreatTable(connection, "INSERT INTO public.\"DokConsumptionTableMoney\"(\n" + 
+    					"	id_dcon, id_nomen, kol_dcontm, sum_dcontm)\n" + 
+    					"	VALUES ("+nomerDok+", "+getIdByName(lineTableMoneyConsu.getNomen()).getId()+", "+lineTableMoneyConsu.getKoll()+","+lineTableMoneyConsu.getSum()+");");
+
+    		}
+    	} else {
+    		boolUpCre = false;
+    	}
+    	
+    	
+    	return boolUpCre;
+    	
+    }
+    
+    public String recountStrTableManeySum() {
+
+    	Integer zeroTableManey = 0;
+    	
+    	for (PersenTableMoneyConsu x : TableMoney) {
+    		zeroTableManey += (Integer.valueOf(x.getSum()) * Integer.valueOf(x.getKoll())); 
+    	}
+    	
+    	return String.valueOf(zeroTableManey);
+    	
+    }
+    
+    public Boolean recountTableManeySum() {
+
+    	Integer zeroTableManey = 0;
+    	
+    	for (PersenTableMoneyConsu x : TableMoney) {
+    		zeroTableManey += (Integer.valueOf(x.getSum()) * Integer.valueOf(x.getKoll())); 
+    	}
+    	
+    	if(String.valueOf(zeroTableManey).equals(AmountDoc.getText())) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    	
+    }
+    
+    public void recountTableMoneyNumbe() {
+    	
+    	for (int x = 0; x <= numberLinaTable; x++) {
+    		PersenTableMoneyConsu recountLine = TableManeyDoc.getItems().get(x);
+    		recountLine.setNL(x + 1);
+    	}
+    	
     }
     
     private void refrashTableMoney() throws SQLException {
     	TableMoney.clear();
     	TableMoney = PersenTableMoneyConsu.getMassivTableMoneyCouns(SetCon, TableMoney, nomerDok);
+    	if (TableMoney.size() == 0) {
+    		numberLinaTable++;
+    		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0)));
+    	} else {
+    		numberLinaTable = TableMoney.size() - 1;
+    	}
     }
     
     private void refrashComboComCons() throws SQLException {
