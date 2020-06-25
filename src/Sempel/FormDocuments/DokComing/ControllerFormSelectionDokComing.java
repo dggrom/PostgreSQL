@@ -129,13 +129,10 @@ public class ControllerFormSelectionDokComing {
     	
     	DokComing.clear();
     	
-    	Connection connection = SetCon.CreatConnect();
-    	
-    	SelectPost SelPos = new SelectPost();
-    	ResultSet ResulDokCom = SelPos.SelectInfoBase(connection, "SELECT id_dcom, \"SumMoney_dcom\", \"Komment_dcom\", id_kont, id_viewcc, deleted_dcom FROM public.\"DokComing\" ORDER BY id_dcom;");
-    	while (ResulDokCom.next()) {
-    		DokComing.add(new PersenDokComing(ResulDokCom.getInt(1), ResulDokCom.getInt(2), ResulDokCom.getString(3), ResulDokCom.getBoolean(6), ResulDokCom.getInt(4),ResulDokCom.getInt(5)));
-    	}
+		Connection connection = SetCon.CreatConnect();
+		
+		DokComing = PersenDokComing.getMassivPersenDokComing(DokComing, connection);
+		
     	connection.close();
     	
     }

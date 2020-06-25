@@ -1,5 +1,11 @@
 package Sempel.FormDocuments.DokComing;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javafx.collections.ObservableList;
+import sql.SelectPost;
 
 public class PersenDokComing {
 	
@@ -37,5 +43,21 @@ public class PersenDokComing {
 	
 	public void setDeleted(Boolean Value) {Deleted = Value;}
 	public Boolean getDeleted() {return Deleted;}
+	
+	static ObservableList<PersenDokComing> getMassivPersenDokComing(ObservableList<PersenDokComing> mas, Connection connection) throws SQLException {
+		
+
+    	SelectPost SelPos = new SelectPost();
+    	ResultSet ResulDokCom;
+
+		ResulDokCom = SelPos.SelectInfoBase(connection, "SELECT id_dcom, \"SumMoney_dcom\", \"Komment_dcom\", id_kont, id_viewcc, deleted_dcom FROM public.\"DokComing\" ORDER BY id_dcom;");
+
+    	while (ResulDokCom.next()) {
+    		mas.add(new PersenDokComing(ResulDokCom.getInt(1), ResulDokCom.getInt(2), ResulDokCom.getString(3), ResulDokCom.getBoolean(6), ResulDokCom.getInt(4),ResulDokCom.getInt(5)));
+    	}
+		
+		return mas;
+		
+	}
 	
 }

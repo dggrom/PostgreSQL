@@ -444,12 +444,7 @@ public class ControllerFormDokComingCreatUpdate {
     	
     	Connection connection = SetCon.CreatConnect();
     	
-    	SelectPost SelPos = new SelectPost();
-    	ResultSet ResultSetTableMoney = SelPos.SelectInfoBase(connection, "SELECT DC.id_dcomtm, DC.id_dcom, Nom.name_nomen, DC.kol_dcomtm, DC.Sum_docmtm, DC.Price_docmtm FROM public.\"DokComingTableMoney\" DC, public.\"Nomenclature\" Nom WHERE DC.id_nomen = Nom.id_nomen and DC.id_dcom = " + NomDokCreat.toString() + ";");
-    	while (ResultSetTableMoney.next()) {
-    		NumberTableLine++;
-    		TableMoney.add(new PersenTableMoney(NumberTableLine, ResultSetTableMoney.getInt(4), ResultSetTableMoney.getString(3),ResultSetTableMoney.getInt(5),ResultSetTableMoney.getInt(6)));
-    	}
+    	TableMoney = PersenTableMoney.getMassivPersenTableMoney(TableMoney, connection, NumberTableLine, NomDokCreat.toString());
     	
     	connection.close();
     	
