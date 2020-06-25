@@ -82,6 +82,9 @@ public class ControllerFormDokConsumption {
     private TableColumn<PersenTableMoneyConsu, Integer> KolTMD;
 
     @FXML
+    private TableColumn<PersenTableMoneyConsu, Integer> PriceTMD;
+    
+    @FXML
     private TableColumn<PersenTableMoneyConsu, Integer> SumTMD;
 
     @FXML
@@ -135,7 +138,7 @@ public class ControllerFormDokConsumption {
     	} else {
     		numberLinaTable++;
     		TableMoney.clear();
-    		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0)));
+    		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0), Integer.valueOf(0)));
     	}
     	
     	ComboBoxKontragent.getItems().setAll(ComboKontr);
@@ -244,6 +247,23 @@ public class ControllerFormDokConsumption {
     		int rowPos = pos.getRow();
     		PersenTableMoneyConsu CurrentPersen = event.getTableView().getItems().get(rowPos);
     		CurrentPersen.setKoll(newKoll);
+    		CurrentPersen.setSum(newKoll * CurrentPersen.getPrice());
+    		TableManeyDoc.refresh();
+    	});
+    	
+    	//Столбец с ценой;
+    	PriceTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoneyConsu, Integer>("price"));
+    	PriceTMD.setCellFactory(TextFieldTableCell.<PersenTableMoneyConsu,Integer>forTableColumn(new IntegerStringConverter()));
+    	PriceTMD.setOnEditCommit((CellEditEvent<PersenTableMoneyConsu,Integer>event)->{
+    		TablePosition<PersenTableMoneyConsu, Integer> pos = event.getTablePosition();
+    		
+    		Integer newValue = event.getNewValue();
+    		
+    		int rowPos = pos.getRow();
+    		PersenTableMoneyConsu CurrentRow = event.getTableView().getItems().get(rowPos);
+    		CurrentRow.setPice(newValue);
+    		CurrentRow.setSum(newValue * CurrentRow.getKoll());
+    		TableManeyDoc.refresh();
     	});
     	
     	//Столбец с Суммами
@@ -266,7 +286,7 @@ public class ControllerFormDokConsumption {
     	
     	ButtonTableADD.setOnAction(event -> {
     		numberLinaTable++;
-    		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0)));
+    		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0), Integer.valueOf(0)));
     	});
     	ButtonTableDel.setOnAction(event ->{
     		int tablePositionNow = TableManeyDoc.getSelectionModel().getSelectedItem().getNL() - 1;
@@ -359,8 +379,8 @@ public class ControllerFormDokConsumption {
     		for(int x=0; x<numberLinaTable; x++) {
     			PersenTableMoneyConsu lineTableMoneyConsu = TableManeyDoc.getItems().get(x);
     			boolean resTableCreat = SelPos.UpdateCreatTable(connection, "INSERT INTO public.\"DokConsumptionTableMoney\"(\n" + 
-    					"	id_dcon, id_nomen, kol_dcontm, sum_dcontm)\n" + 
-    					"	VALUES ("+nomerDok+", "+getIdByName(lineTableMoneyConsu.getNomen()).getId().toString()+", "+lineTableMoneyConsu.getKoll().toString()+","+lineTableMoneyConsu.getSum().toString()+");");
+    					"	id_dcon, id_nomen, kol_dcontm, sum_dcontm, price_dcontm)\n" + 
+    					"	VALUES ("+nomerDok+", "+getIdByName(lineTableMoneyConsu.getNomen()).getId().toString()+", "+lineTableMoneyConsu.getKoll().toString()+","+lineTableMoneyConsu.getSum().toString()+","+lineTableMoneyConsu.getPrice().toString()+");");
 
     		}
     	} else {
@@ -377,7 +397,7 @@ public class ControllerFormDokConsumption {
     	Integer zeroTableManey = 0;
     	
     	for (PersenTableMoneyConsu x : TableMoney) {
-    		zeroTableManey += (Integer.valueOf(x.getSum()) * Integer.valueOf(x.getKoll())); 
+    		zeroTableManey += (Integer.valueOf(x.getSum())); 
     	}
     	
     	return String.valueOf(zeroTableManey);
@@ -389,7 +409,7 @@ public class ControllerFormDokConsumption {
     	Integer zeroTableManey = 0;
     	
     	for (PersenTableMoneyConsu x : TableMoney) {
-    		zeroTableManey += (Integer.valueOf(x.getSum()) * Integer.valueOf(x.getKoll())); 
+    		zeroTableManey += (Integer.valueOf(x.getSum())); 
     	}
     	
     	if(String.valueOf(zeroTableManey).equals(AmountDoc.getText())) {
@@ -414,7 +434,7 @@ public class ControllerFormDokConsumption {
     	TableMoney = PersenTableMoneyConsu.getMassivTableMoneyCouns(SetCon, TableMoney, nomerDok);
     	if (TableMoney.size() == 0) {
     		numberLinaTable++;
-    		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0)));
+    		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0),Integer.valueOf(0)));
     	} else {
     		numberLinaTable = TableMoney.size();
     	}
