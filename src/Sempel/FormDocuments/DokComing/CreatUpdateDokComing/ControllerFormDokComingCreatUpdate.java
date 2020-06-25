@@ -122,7 +122,7 @@ public class ControllerFormDokComingCreatUpdate {
     	refreshNomenPersen();
     	if (NomDokCreat != "New dokument") {
     		refreshTableMoney();
-    		AmountDoc.setText(persUpdateDok.getAmount());
+    		AmountDoc.setText(persUpdateDok.getAmount().toString());
     		EditComments.setText(persUpdateDok.getKoment());
     		} else {
     			NumberTableLine++;
@@ -405,7 +405,7 @@ public class ControllerFormDokComingCreatUpdate {
     		if (newNomSelPost.next() && !updateDok) {
     			NomDokCreat = newNomSelPost.getString(1);
     		} else {
-    			NomDokCreat = persUpdateDok.getNumber();
+    			NomDokCreat = persUpdateDok.getNumber().toString();
     		}
     		
     		//Удаляем все старые строки ТЧ
@@ -444,12 +444,7 @@ public class ControllerFormDokComingCreatUpdate {
     	
     	Connection connection = SetCon.CreatConnect();
     	
-    	SelectPost SelPos = new SelectPost();
-    	ResultSet ResultSetTableMoney = SelPos.SelectInfoBase(connection, "SELECT DC.id_dcomtm, DC.id_dcom, Nom.name_nomen, DC.kol_dcomtm, DC.Sum_docmtm, DC.Price_docmtm FROM public.\"DokComingTableMoney\" DC, public.\"Nomenclature\" Nom WHERE DC.id_nomen = Nom.id_nomen and DC.id_dcom = " + NomDokCreat.toString() + ";");
-    	while (ResultSetTableMoney.next()) {
-    		NumberTableLine++;
-    		TableMoney.add(new PersenTableMoney(NumberTableLine, ResultSetTableMoney.getInt(4), ResultSetTableMoney.getString(3),ResultSetTableMoney.getInt(5),ResultSetTableMoney.getInt(6)));
-    	}
+    	TableMoney = PersenTableMoney.getMassivPersenTableMoney(TableMoney, connection, NumberTableLine, NomDokCreat.toString());
     	
     	connection.close();
     	
@@ -477,7 +472,7 @@ public class ControllerFormDokComingCreatUpdate {
 	}
     
 	public ControllerFormDokComingCreatUpdate (boolean updateDok, SettingConnectSQL SetCon, PersenDokComing PersDok) {
-		this.NomDokCreat = PersDok.getNumber();
+		this.NomDokCreat = PersDok.getNumber().toString();
 		this.updateDok = updateDok;
 		this.SetCon = SetCon;
 		this.persUpdateDok = PersDok;
@@ -488,7 +483,7 @@ public class ControllerFormDokComingCreatUpdate {
 		this.NomDokCreat = "New dokument";
 		this.updateDok = updateDok;    		
 		this.SetCon = SetCon;
-		this.persUpdateDok = new PersenDokComing("", "", "", false,emptyParam,emptyParam);
+		this.persUpdateDok = new PersenDokComing(Integer.valueOf(0), Integer.valueOf(0), "", false,emptyParam,emptyParam);
 	}
 	
 }
