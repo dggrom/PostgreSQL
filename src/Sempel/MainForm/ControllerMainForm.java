@@ -7,6 +7,7 @@ import Sempel.FormDirectory.DirectoruViewComingCosts.ControllerViewComongConsts;
 import Sempel.FormDirectory.DirectoruViewDebt.ControllerViewDebt;
 import Sempel.FormDirectory.DirectoryKontragent.ControllerFormDirectory;
 import Sempel.FormDocuments.DokComing.ControllerFormSelectionDokComing;
+import Sempel.FormDocuments.DokConsumption.ControllerFormSelectDokConsumption;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -56,8 +57,11 @@ public class ControllerMainForm {
     private MenuItem MenuDokComing;
 
     @FXML
-    private ImageView DokComing;
+    private MenuItem MenuDokConsu;
 
+    @FXML
+    private ImageView DokComing;
+    
     //Мои переменные
     SettingConnectSQL SettConn;
 
@@ -94,6 +98,14 @@ public class ControllerMainForm {
 				e.printStackTrace();
 			}
         });
+        
+       MenuDokConsu.setOnAction(event ->{
+    	   try {
+			CreatForm("../FormDocuments/DokConsumption/FormSelectDokConsumption.fxml", "ControllerFormSelectDokConsumption");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+       });
 
        /* MenuNASIViewDebt.setOnAction(event -> {
             try {
@@ -132,6 +144,9 @@ public class ControllerMainForm {
             //fxmlLoader.setController(ContDir);
         } else if (contrName == "ControllerFormSelectionDokComing") {
         	ControllerFormSelectionDokComing ContrDir = new ControllerFormSelectionDokComing(SettConn);
+        	fxmlLoader.setController(ContrDir);
+        } else if (contrName == "ControllerFormSelectDokConsumption") {
+        	ControllerFormSelectDokConsumption ContrDir = new ControllerFormSelectDokConsumption(SettConn);
         	fxmlLoader.setController(ContrDir);
         }
 

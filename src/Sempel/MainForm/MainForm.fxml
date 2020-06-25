@@ -31,7 +31,8 @@
                 </Menu>
                 <Menu fx:id="MenuDocument" mnemonicParsing="false" text="Dokument">
                   <items>
-                    <MenuItem fx:id="MenuDokComing" mnemonicParsing="false" text="Coming" />
+                    <MenuItem fx:id="MenuDokComing" mnemonicParsing="false" text="Приход" />
+                        <MenuItem fx:id="MenuDokConsu" mnemonicParsing="false" text="Расход" />
                   </items>
                 </Menu>
               </menus>
