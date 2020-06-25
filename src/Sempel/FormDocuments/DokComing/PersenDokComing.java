@@ -3,14 +3,14 @@ package Sempel.FormDocuments.DokComing;
 
 public class PersenDokComing {
 	
-	private String Number;
-	private String Amount;
+	private Integer Number;
+	private Integer Amount;
 	private String Koment;
 	private Integer idKontragent;
 	private Integer idView;
 	private Boolean Deleted;
 	
-	public PersenDokComing(String Number, String Amount, String Koment, Boolean Deleted, Integer idKontragent, Integer idView){
+	public PersenDokComing(Integer Number, Integer Amount, String Koment, Boolean Deleted, Integer idKontragent, Integer idView){
 		this.idKontragent = idKontragent;
 		this.idView = idView;
 		this.Number = Number;
@@ -26,11 +26,11 @@ public class PersenDokComing {
 	public void setIdView(Integer Value) {idView = Value;}
 	public Integer getIdView() {return idView;}
 
-	public void setNumber(String Value) {Number = Value;}
-	public String getNumber() {return Number;}
+	public void setNumber(Integer Value) {Number = Value;}
+	public Integer getNumber() {return Number;}
 	
-	public void setAmount(String Value) {Amount = Value;}
-	public String getAmount() {return Amount;}
+	public void setAmount(Integer Value) {Amount = Value;}
+	public Integer getAmount() {return Amount;}
 	
 	public void setKoment(String Value) {Koment = Value;}
 	public String getKoment() {return Koment;}

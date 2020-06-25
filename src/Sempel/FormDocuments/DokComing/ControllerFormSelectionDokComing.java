@@ -1,5 +1,4 @@
 package Sempel.FormDocuments.DokComing;
-import java.awt.Event;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -21,7 +20,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import sql.Connect;
 import sql.SelectPost;
 import sql.SettingConnectSQL;
 
@@ -136,7 +134,7 @@ public class ControllerFormSelectionDokComing {
     	SelectPost SelPos = new SelectPost();
     	ResultSet ResulDokCom = SelPos.SelectInfoBase(connection, "SELECT id_dcom, \"SumMoney_dcom\", \"Komment_dcom\", id_kont, id_viewcc, deleted_dcom FROM public.\"DokComing\" ORDER BY id_dcom;");
     	while (ResulDokCom.next()) {
-    		DokComing.add(new PersenDokComing(ResulDokCom.getString(1), ResulDokCom.getString(2), ResulDokCom.getString(3), ResulDokCom.getBoolean(6), ResulDokCom.getInt(4),ResulDokCom.getInt(5)));
+    		DokComing.add(new PersenDokComing(ResulDokCom.getInt(1), ResulDokCom.getInt(2), ResulDokCom.getString(3), ResulDokCom.getBoolean(6), ResulDokCom.getInt(4),ResulDokCom.getInt(5)));
     	}
     	connection.close();
     	

@@ -1,19 +1,18 @@
 package Sempel.FormDirectory.DirectoruNomenclature;
 
-
 	import java.io.IOException;
 	import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+	import java.sql.Connection;
+	import java.sql.ResultSet;
+	import java.sql.SQLException;
 	import java.util.Optional;
 	import java.util.ResourceBundle;
 
 	import Sempel.FormDirectory.DirectoruNomenclature.CreatUpdateNomenclature.ControllerCreatUpdateNomenklature;
-	import com.company.Controller;
+	import Sempel.MainForm.ControllerMainForm;
 	import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
+	import javafx.collections.ObservableList;
+	import javafx.fxml.FXML;
 	import javafx.fxml.FXMLLoader;
 	import javafx.scene.Parent;
 	import javafx.scene.Scene;
@@ -21,10 +20,9 @@ import javafx.fxml.FXML;
 	import javafx.scene.control.cell.PropertyValueFactory;
 	import javafx.stage.Stage;
 	import sql.SelectPost;
-import sql.SettingConnectSQL;
+	import sql.SettingConnectSQL;
 
 	import javax.swing.*;
-	import javax.swing.text.html.Option;
 
 public class ControllerFormNomenclature {
 

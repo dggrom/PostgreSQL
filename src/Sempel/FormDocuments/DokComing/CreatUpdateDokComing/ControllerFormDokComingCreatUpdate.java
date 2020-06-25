@@ -122,7 +122,7 @@ public class ControllerFormDokComingCreatUpdate {
     	refreshNomenPersen();
     	if (NomDokCreat != "New dokument") {
     		refreshTableMoney();
-    		AmountDoc.setText(persUpdateDok.getAmount());
+    		AmountDoc.setText(persUpdateDok.getAmount().toString());
     		EditComments.setText(persUpdateDok.getKoment());
     		} else {
     			NumberTableLine++;
@@ -405,7 +405,7 @@ public class ControllerFormDokComingCreatUpdate {
     		if (newNomSelPost.next() && !updateDok) {
     			NomDokCreat = newNomSelPost.getString(1);
     		} else {
-    			NomDokCreat = persUpdateDok.getNumber();
+    			NomDokCreat = persUpdateDok.getNumber().toString();
     		}
     		
     		//Удаляем все старые строки ТЧ
@@ -477,7 +477,7 @@ public class ControllerFormDokComingCreatUpdate {
 	}
     
 	public ControllerFormDokComingCreatUpdate (boolean updateDok, SettingConnectSQL SetCon, PersenDokComing PersDok) {
-		this.NomDokCreat = PersDok.getNumber();
+		this.NomDokCreat = PersDok.getNumber().toString();
 		this.updateDok = updateDok;
 		this.SetCon = SetCon;
 		this.persUpdateDok = PersDok;
@@ -488,7 +488,7 @@ public class ControllerFormDokComingCreatUpdate {
 		this.NomDokCreat = "New dokument";
 		this.updateDok = updateDok;    		
 		this.SetCon = SetCon;
-		this.persUpdateDok = new PersenDokComing("", "", "", false,emptyParam,emptyParam);
+		this.persUpdateDok = new PersenDokComing(Integer.valueOf(0), Integer.valueOf(0), "", false,emptyParam,emptyParam);
 	}
 	
 }
