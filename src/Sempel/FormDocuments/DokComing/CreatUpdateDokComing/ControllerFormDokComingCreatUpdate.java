@@ -73,6 +73,9 @@ public class ControllerFormDokComingCreatUpdate {
     private TableColumn<PersenTableMoney, Integer> KolTMD;
 
     @FXML
+    private TableColumn<PersenTableMoney, Integer> PriceTMD;
+    
+    @FXML
     private TableColumn<PersenTableMoney, Integer> SumTMD;
 
     @FXML
@@ -124,7 +127,7 @@ public class ControllerFormDokComingCreatUpdate {
     		} else {
     			NumberTableLine++;
     			TableMoney.clear();
-    			TableMoney.add(new PersenTableMoney(NumberTableLine, Integer.valueOf(0), "",Integer.valueOf(0)));
+    			TableMoney.add(new PersenTableMoney(NumberTableLine, Integer.valueOf(0), "",Integer.valueOf(0), Integer.valueOf(0)));
     		}
     	
     	ComboBoxKontragent.getItems().setAll(CombKont);
@@ -234,6 +237,23 @@ public class ControllerFormDokComingCreatUpdate {
     		int rowPos = pos.getRow();
     		PersenTableMoney CurrentPersen = event.getTableView().getItems().get(rowPos);
     		CurrentPersen.setKoll(newKoll);
+    		CurrentPersen.setSum(newKoll * CurrentPersen.getPrice());
+    		TableManeyDoc.refresh();
+    	});
+    	
+    	//Работаем со сталбцом цены;
+    	PriceTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney,Integer>("Price"));
+    	PriceTMD.setCellFactory(TextFieldTableCell.<PersenTableMoney,Integer>forTableColumn(new IntegerStringConverter()));
+    	PriceTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, Integer>event) ->{
+    		TablePosition<PersenTableMoney, Integer> pos = event.getTablePosition();
+    		
+    		Integer newValue = event.getNewValue();
+    		
+    		int rowPos = pos.getRow();
+    		PersenTableMoney CurrentPersen = event.getTableView().getItems().get(rowPos);
+    		CurrentPersen.setPrice(newValue);
+    		CurrentPersen.setSum(newValue * CurrentPersen.getKoll());
+    		TableManeyDoc.refresh();
     	});
 
     	//Столбец с Суммами
@@ -257,7 +277,7 @@ public class ControllerFormDokComingCreatUpdate {
     	//Кнопки для таблиц 
     	ButtonTableADD.setOnAction(event -> {
     		NumberTableLine++;
-    		TableMoney.add(new PersenTableMoney(NumberTableLine, Integer.valueOf(0), "", Integer.valueOf(0)));
+    		TableMoney.add(new PersenTableMoney(NumberTableLine, Integer.valueOf(0), "", Integer.valueOf(0), Integer.valueOf(0)));
     	});
     	ButtonTableDel.setOnAction(event -> {
     		int tablePositionNow = TableManeyDoc.getSelectionModel().getSelectedItem().getNL() - 1;
@@ -315,7 +335,7 @@ public class ControllerFormDokComingCreatUpdate {
     	Integer zeroTableManey = 0;
     	
     	for (PersenTableMoney x : TableMoney) {
-    		zeroTableManey += (Integer.valueOf(x.getSum()) * Integer.valueOf(x.getKoll())); 
+    		zeroTableManey += (Integer.valueOf(x.getSum())); 
     	}
     	
     	if(String.valueOf(zeroTableManey).equals(AmountDoc.getText())) {
@@ -331,7 +351,7 @@ public class ControllerFormDokComingCreatUpdate {
     	Integer zeroTableManey = 0;
     	
     	for (PersenTableMoney x : TableMoney) {
-    		zeroTableManey += (Integer.valueOf(x.getSum()) * Integer.valueOf(x.getKoll())); 
+    		zeroTableManey += (Integer.valueOf(x.getSum())); 
     	}
     	
     	return String.valueOf(zeroTableManey);
@@ -396,8 +416,8 @@ public class ControllerFormDokComingCreatUpdate {
     		for(int x=0; x < NumberTableLine; x++) {
     			PersenTableMoney lineTable = TableManeyDoc.getItems().get(x);
     			boolean resTableCreat = SelPost.UpdateCreatTable(connection, "INSERT INTO public.\"DokComingTableMoney\"(\n" + 
-														    					"	id_dcom, id_nomen, kol_dcomtm, sum_docmtm)\n" + 
-														    					"	VALUES ("+NomDokCreat+", "+getIdByName(lineTable.getNomen()).getId()+", "+lineTable.getKoll()+","+lineTable.getSum()+");");
+														    					"	id_dcom, id_nomen, kol_dcomtm, sum_docmtm, price_docmtm)\n" + 
+														    					"	VALUES ("+NomDokCreat+", "+getIdByName(lineTable.getNomen()).getId()+", "+lineTable.getKoll()+","+lineTable.getSum()+","+lineTable.getPrice()+");");
     		
     		}
     		
@@ -425,10 +445,10 @@ public class ControllerFormDokComingCreatUpdate {
     	Connection connection = SetCon.CreatConnect();
     	
     	SelectPost SelPos = new SelectPost();
-    	ResultSet ResultSetTableMoney = SelPos.SelectInfoBase(connection, "SELECT DC.id_dcomtm, DC.id_dcom, Nom.name_nomen, DC.kol_dcomtm, DC.Sum_docmtm FROM public.\"DokComingTableMoney\" DC, public.\"Nomenclature\" Nom WHERE DC.id_nomen = Nom.id_nomen and DC.id_dcom = " + NomDokCreat.toString() + ";");
+    	ResultSet ResultSetTableMoney = SelPos.SelectInfoBase(connection, "SELECT DC.id_dcomtm, DC.id_dcom, Nom.name_nomen, DC.kol_dcomtm, DC.Sum_docmtm, DC.Price_docmtm FROM public.\"DokComingTableMoney\" DC, public.\"Nomenclature\" Nom WHERE DC.id_nomen = Nom.id_nomen and DC.id_dcom = " + NomDokCreat.toString() + ";");
     	while (ResultSetTableMoney.next()) {
     		NumberTableLine++;
-    		TableMoney.add(new PersenTableMoney(NumberTableLine, ResultSetTableMoney.getInt(4), ResultSetTableMoney.getString(3),ResultSetTableMoney.getInt(5)));
+    		TableMoney.add(new PersenTableMoney(NumberTableLine, ResultSetTableMoney.getInt(4), ResultSetTableMoney.getString(3),ResultSetTableMoney.getInt(5),ResultSetTableMoney.getInt(6)));
     	}
     	
     	connection.close();

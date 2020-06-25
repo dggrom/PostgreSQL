@@ -6,12 +6,14 @@ public class PersenTableMoney {
 	private Integer Koll;
 	private String Nomen;
 	private Integer Sum;
+	private Integer Price;
 	
-	public PersenTableMoney(Integer NL, Integer Koll, String Nomen, Integer Sum) {
+	public PersenTableMoney(Integer NL, Integer Koll, String Nomen, Integer Sum, Integer Price) {
 		this.Koll = Koll;
 		this.NL = NL;
 		this.Nomen = Nomen;
 		this.Sum = Sum;
+		this.Price = Price;
 	}
 	
 	public void setNL(Integer value) {this.NL = value;}
@@ -25,4 +27,8 @@ public class PersenTableMoney {
 	
 	public void setSum(Integer value) {this.Sum = value;}
 	public Integer getSum() {return Sum;}
+	
+	public void setPrice(Integer value) {this.Price = value;}
+	public Integer getPrice() {return this.Price;}
+	
 }
