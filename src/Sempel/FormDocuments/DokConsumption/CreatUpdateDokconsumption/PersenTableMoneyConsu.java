@@ -45,7 +45,7 @@ public class PersenTableMoneyConsu {
 		int lineCount = 0;
 		while (resSet.next()) {
 			lineCount++;
-			Mass.add(new PersenTableMoneyConsu(lineCount, resSet.getInt(2), resSet.getString(3), resSet.getInt(4)));
+			Mass.add(new PersenTableMoneyConsu(lineCount, resSet.getInt(4), resSet.getString(3), resSet.getInt(5)));
 		}
 		
 		return Mass;

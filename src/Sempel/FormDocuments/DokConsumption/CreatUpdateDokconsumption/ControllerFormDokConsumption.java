@@ -294,7 +294,7 @@ public class ControllerFormDokConsumption {
     		
 
 			try {
-				if(!updateCreatDocComing()) {
+				if(updateCreatDocComing()) {
 					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();
 					stageForm.close();
 				} else {
@@ -360,7 +360,7 @@ public class ControllerFormDokConsumption {
     			PersenTableMoneyConsu lineTableMoneyConsu = TableManeyDoc.getItems().get(x);
     			boolean resTableCreat = SelPos.UpdateCreatTable(connection, "INSERT INTO public.\"DokConsumptionTableMoney\"(\n" + 
     					"	id_dcon, id_nomen, kol_dcontm, sum_dcontm)\n" + 
-    					"	VALUES ("+nomerDok+", "+getIdByName(lineTableMoneyConsu.getNomen()).getId()+", "+lineTableMoneyConsu.getKoll()+","+lineTableMoneyConsu.getSum()+");");
+    					"	VALUES ("+nomerDok+", "+getIdByName(lineTableMoneyConsu.getNomen()).getId().toString()+", "+lineTableMoneyConsu.getKoll().toString()+","+lineTableMoneyConsu.getSum().toString()+");");
 
     		}
     	} else {
@@ -416,7 +416,7 @@ public class ControllerFormDokConsumption {
     		numberLinaTable++;
     		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0)));
     	} else {
-    		numberLinaTable = TableMoney.size() - 1;
+    		numberLinaTable = TableMoney.size();
     	}
     }
     
