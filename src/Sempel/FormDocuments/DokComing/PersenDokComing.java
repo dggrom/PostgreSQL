@@ -1,17 +1,16 @@
 package Sempel.FormDocuments.DokComing;
 
-import java.net.IDN;
 
 public class PersenDokComing {
 	
 	private String Number;
 	private String Amount;
 	private String Koment;
-	private String idKontragent;
-	private String idView;
+	private Integer idKontragent;
+	private Integer idView;
 	private Boolean Deleted;
 	
-	public PersenDokComing(String Number, String Amount, String Koment, Boolean Deleted, String idKontragent, String idView){
+	public PersenDokComing(String Number, String Amount, String Koment, Boolean Deleted, Integer idKontragent, Integer idView){
 		this.idKontragent = idKontragent;
 		this.idView = idView;
 		this.Number = Number;
@@ -21,11 +20,11 @@ public class PersenDokComing {
 	}
 	
 
-	public void setIdKontragent(String Value) {idKontragent = Value;}
-	public String getIdKontragent() {return idKontragent;}
+	public void setIdKontragent(Integer Value) {idKontragent = Value;}
+	public Integer getIdKontragent() {return idKontragent;}
 	
-	public void setIdView(String Value) {idView = Value;}
-	public String getIdView() {return idView;}
+	public void setIdView(Integer Value) {idView = Value;}
+	public Integer getIdView() {return idView;}
 
 	public void setNumber(String Value) {Number = Value;}
 	public String getNumber() {return Number;}

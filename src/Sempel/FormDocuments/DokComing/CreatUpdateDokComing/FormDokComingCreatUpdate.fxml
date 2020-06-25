@@ -19,8 +19,10 @@
       <TableView fx:id="TableManeyDoc" layoutY="213.0" prefHeight="383.0" prefWidth="775.0">
          <columns>
             <TableColumn fx:id="NLTMD" prefWidth="75.0" text="N/L" />
-            <TableColumn fx:id="NomenTMD" prefWidth="500.0" text="Nomenclature" />
-            <TableColumn fx:id="KolTMD" minWidth="0.0" prefWidth="199.0" text="Kol" />
+            <TableColumn fx:id="NomenTMD" prefWidth="308.0" text="Nomenclature" />
+            <TableColumn fx:id="KolTMD" minWidth="0.0" prefWidth="150.0" text="Kol" />
+            <TableColumn fx:id="PriceTMD" prefWidth="124.0" text="Price" />
+            <TableColumn fx:id="SumTMD" prefWidth="117.0" text="Sum" />
          </columns>
       </TableView>
       <Button fx:id="ButtonSave" layoutX="700.0" layoutY="37.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="62.0" text="Save" />

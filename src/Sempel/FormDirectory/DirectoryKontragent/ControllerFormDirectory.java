@@ -39,7 +39,7 @@ public class ControllerFormDirectory {
     private TableView<PersenKontragent> Table;
 
     @FXML
-    private TableColumn<PersenKontragent, String> TableColumId;
+    private TableColumn<PersenKontragent, Integer> TableColumId;
 
     @FXML
     private TableColumn<PersenKontragent, String> TableColumName;
@@ -61,7 +61,7 @@ public class ControllerFormDirectory {
 
         refrashTableKontragent();
 
-        TableColumId.setCellValueFactory(new PropertyValueFactory<PersenKontragent, String>("id"));
+        TableColumId.setCellValueFactory(new PropertyValueFactory<PersenKontragent, Integer>("id"));
         TableColumName.setCellValueFactory(new PropertyValueFactory<PersenKontragent, String>("Name"));
         TableColumnDeleted.setCellValueFactory(new PropertyValueFactory<PersenKontragent, Boolean>("Deleted"));
 
@@ -157,7 +157,7 @@ public class ControllerFormDirectory {
         	ControllerDeletCreatDirectory ContrCreatRefresh = new ControllerDeletCreatDirectory(PersSRT.getId(),PersSRT.getName(),updateKontr,SetCon.CreatConnect());
  	        fxmlLoader.setController(ContrCreatRefresh);
         }else {
-	        ControllerDeletCreatDirectory ContrCreatRefresh = new ControllerDeletCreatDirectory("","",updateKontr,SetCon.CreatConnect());
+	        ControllerDeletCreatDirectory ContrCreatRefresh = new ControllerDeletCreatDirectory(Integer.valueOf(0),"",updateKontr,SetCon.CreatConnect());
 	        fxmlLoader.setController(ContrCreatRefresh);
         }
         
@@ -179,6 +179,7 @@ public class ControllerFormDirectory {
                 }
         });
         stage.show();
+        stage.toFront();
     }
 
     public void refrashTableKontragent() throws SQLException {
@@ -190,7 +191,7 @@ public class ControllerFormDirectory {
         SelectPost SelPos = new SelectPost();
         ResultSet ResulKontr = SelPos.SelectInfoBase(connection,"SELECT id_kont, name_kont, deleted_kont FROM public.\"Kontragent\";");
         while (ResulKontr.next()){
-            Kontragents.add(new PersenKontragent(ResulKontr.getString(1),ResulKontr.getString(2),ResulKontr.getBoolean(3)));
+            Kontragents.add(new PersenKontragent(ResulKontr.getInt(1),ResulKontr.getString(2),ResulKontr.getBoolean(3)));
         }
         connection.close();
     }

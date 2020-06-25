@@ -2,15 +2,22 @@ package Sempel.FormDocuments.DokComing.CreatUpdateDokComing;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
+
 
 import Sempel.FormDocuments.DokComing.PersenDokComing;
+import Sempel.FormDirectory.DirectoruViewComingCosts.*;
+import Sempel.FormDirectory.DirectoruNomenclature.*;
+import Sempel.FormDirectory.DirectoryKontragent.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -26,6 +33,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import javafx.util.converter.IntegerStringConverter;
 import sql.SelectPost;
 import sql.SettingConnectSQL;
 
@@ -59,10 +67,16 @@ public class ControllerFormDokComingCreatUpdate {
     private TableColumn<PersenTableMoney, Integer> NLTMD;
 
     @FXML
-    private TableColumn<PersenTableMoney, PersenNomenklatureTable> NomenTMD;
+    private TableColumn<PersenTableMoney, PersenNomenclatura> NomenTMD;
 
     @FXML
-    private TableColumn<PersenTableMoney, String> KolTMD;
+    private TableColumn<PersenTableMoney, Integer> KolTMD;
+
+    @FXML
+    private TableColumn<PersenTableMoney, Integer> PriceTMD;
+    
+    @FXML
+    private TableColumn<PersenTableMoney, Integer> SumTMD;
 
     @FXML
     private Button ButtonSave;
@@ -71,13 +85,13 @@ public class ControllerFormDokComingCreatUpdate {
     private Label LabelDokN1;
 
     @FXML
-    private ComboBox<PersenComboKontragent> ComboBoxKontragent;
+    private ComboBox<PersenKontragent> ComboBoxKontragent;
 
     @FXML
     private Label LabelKontragent;
 
     @FXML
-    private ComboBox<PersenComboView> ComboBoxViewComCos;
+    private ComboBox<PersenViewComCons> ComboBoxViewComCos;
 
     @FXML
     private Label LabelViewComingCos;
@@ -93,10 +107,10 @@ public class ControllerFormDokComingCreatUpdate {
     private SettingConnectSQL SetCon;
     private Integer NumberTableLine;
     private PersenDokComing persUpdateDok;
-    private ObservableList<PersenComboKontragent> CombKont = FXCollections.observableArrayList();
-    private ObservableList<PersenComboView> CombView = FXCollections.observableArrayList();
+    private ObservableList<PersenKontragent> CombKont = FXCollections.observableArrayList();
+    private ObservableList<PersenViewComCons> CombView = FXCollections.observableArrayList();
     private ObservableList<PersenTableMoney> TableMoney = FXCollections.observableArrayList();
-    private ObservableList<PersenNomenklatureTable> TableMoneyNomen = FXCollections.observableArrayList();
+    private ObservableList<PersenNomenclatura> TableMoneyNomen = FXCollections.observableArrayList();
     
     @FXML
     void initialize() throws SQLException {
@@ -113,14 +127,14 @@ public class ControllerFormDokComingCreatUpdate {
     		} else {
     			NumberTableLine++;
     			TableMoney.clear();
-    			TableMoney.add(new PersenTableMoney(NumberTableLine, "0", ""));
+    			TableMoney.add(new PersenTableMoney(NumberTableLine, Integer.valueOf(0), "",Integer.valueOf(0), Integer.valueOf(0)));
     		}
     	
     	ComboBoxKontragent.getItems().setAll(CombKont);
-    	ComboBoxKontragent.setConverter(new StringConverter<PersenComboKontragent>() {
+    	ComboBoxKontragent.setConverter(new StringConverter<PersenKontragent>() {
 
 			@Override
-			public String toString(PersenComboKontragent object) {
+			public String toString(PersenKontragent object) {
 				if (object != null) { 
 					return object.getName();
 					} else {
@@ -129,38 +143,38 @@ public class ControllerFormDokComingCreatUpdate {
 			}
 
 			@Override
-			public PersenComboKontragent fromString(String string) {
+			public PersenKontragent fromString(String string) {
 				return ComboBoxKontragent.getSelectionModel().getSelectedItem();
 			}
         });
     	
     	ComboBoxViewComCos.getItems().setAll(CombView);
-    	ComboBoxViewComCos.setConverter(new StringConverter<PersenComboView>() {
+    	ComboBoxViewComCos.setConverter(new StringConverter<PersenViewComCons>() {
 
 			@Override
-			public String toString(PersenComboView object) {
+			public String toString(PersenViewComCons object) {
 				if (object != null) {	
-					return object.getName();
+					return object.getView();
 				} else {
 					return "";
 				}
 			}
 
 			@Override
-			public PersenComboView fromString(String string) {
+			public PersenViewComCons fromString(String string) {
 				return ComboBoxViewComCos.getSelectionModel().getSelectedItem();
 			}
     		
 		});
     	
     	if (NomDokCreat != "New dokument") {
-    		for (PersenComboKontragent x : CombKont) {
-    			if(x.getCode().equals(persUpdateDok.getIdKontragent())) { 
+    		for (PersenKontragent x : CombKont) {
+    			if(x.getId() == persUpdateDok.getIdKontragent()) { 
     				ComboBoxKontragent.setValue(x);
     				}
     		}
-    		for (PersenComboView y : CombView) {
-    			if(y.getCode().equals(persUpdateDok.getIdView())) { 
+    		for (PersenViewComCons y : CombView) {
+    			if(y.getId() == persUpdateDok.getIdView()) { 
     				ComboBoxViewComCos.setValue(y);
     				}
     		}
@@ -170,59 +184,89 @@ public class ControllerFormDokComingCreatUpdate {
     	NLTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, Integer>("NL"));
     	
     	//Столбец с номенклатурой
-    	NomenTMD.setCellValueFactory(new Callback<CellDataFeatures<PersenTableMoney, PersenNomenklatureTable>, ObservableValue<PersenNomenklatureTable>>() {
+    	NomenTMD.setCellValueFactory(new Callback<CellDataFeatures<PersenTableMoney, PersenNomenclatura>, ObservableValue<PersenNomenclatura>>() {
 	
 			@Override
-			public ObservableValue<PersenNomenklatureTable> call(CellDataFeatures<PersenTableMoney, PersenNomenklatureTable> param) {
+			public ObservableValue<PersenNomenclatura> call(CellDataFeatures<PersenTableMoney, PersenNomenclatura> param) {
 				PersenTableMoney PersNomTab = param.getValue();
-				PersenNomenklatureTable NewNomentable = getIdByName(PersNomTab.getNomen());
-				return new SimpleObjectProperty<PersenNomenklatureTable>(NewNomentable);
+				PersenNomenclatura NewNomentable = getIdByName(PersNomTab.getNomen());
+				return new SimpleObjectProperty<PersenNomenclatura>(NewNomentable);
 			};
 			
 		});
     	
-    	NomenTMD.setCellFactory(ComboBoxTableCell.forTableColumn(new StringConverter<PersenNomenklatureTable>() {
+    	NomenTMD.setCellFactory(ComboBoxTableCell.forTableColumn(new StringConverter<PersenNomenclatura>() {
 
 			@Override
-			public String toString(PersenNomenklatureTable object) {
+			public String toString(PersenNomenclatura object) {
 				if (object != null) {	
-					return object.getNameNomen();
+					return object.getName();
 				} else {
 					return "";
 				}
 			}
 
 			@Override
-			public PersenNomenklatureTable fromString(String string) {
+			public PersenNomenclatura fromString(String string) {
 				return getIdByName(TableManeyDoc.getSelectionModel().getSelectedItem().getNomen());//new PersenNomenklatureTable("", "");
 			}
     		
     	},TableMoneyNomen));
     	
-    	NomenTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, PersenNomenklatureTable> event) -> {
+    	NomenTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, PersenNomenclatura> event) -> {
     	
-    		TablePosition<PersenTableMoney, PersenNomenklatureTable> pos = event.getTablePosition();
+    		TablePosition<PersenTableMoney, PersenNomenclatura> pos = event.getTablePosition();
     		
-    		PersenNomenklatureTable NewNomen = event.getNewValue();
+    		PersenNomenclatura NewNomen = event.getNewValue();
     		
     		int rowPos = pos.getRow();
     		PersenTableMoney CurrentPers = event.getTableView().getItems().get(rowPos);
     		
-    		CurrentPers.setNomen(NewNomen.getNameNomen());
+    		CurrentPers.setNomen(NewNomen.getName());
     		
     	});
     	
     	//Столбец с Количеством
-    	KolTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, String>("Koll"));
-    	KolTMD.setCellFactory(TextFieldTableCell.<PersenTableMoney>forTableColumn());
-    	KolTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, String>event) -> {
-    		TablePosition<PersenTableMoney, String> pos = event.getTablePosition();
+    	KolTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, Integer>("Koll"));
+    	KolTMD.setCellFactory(TextFieldTableCell.<PersenTableMoney, Integer>forTableColumn(new IntegerStringConverter()));
+    	KolTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, Integer>event) -> {
+    		TablePosition<PersenTableMoney, Integer> pos = event.getTablePosition();
     		
-    		String newKoll = event.getNewValue();
+    		Integer newKoll = event.getNewValue();
     		
     		int rowPos = pos.getRow();
     		PersenTableMoney CurrentPersen = event.getTableView().getItems().get(rowPos);
     		CurrentPersen.setKoll(newKoll);
+    		CurrentPersen.setSum(newKoll * CurrentPersen.getPrice());
+    		TableManeyDoc.refresh();
+    	});
+    	
+    	//Работаем со сталбцом цены;
+    	PriceTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney,Integer>("Price"));
+    	PriceTMD.setCellFactory(TextFieldTableCell.<PersenTableMoney,Integer>forTableColumn(new IntegerStringConverter()));
+    	PriceTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, Integer>event) ->{
+    		TablePosition<PersenTableMoney, Integer> pos = event.getTablePosition();
+    		
+    		Integer newValue = event.getNewValue();
+    		
+    		int rowPos = pos.getRow();
+    		PersenTableMoney CurrentPersen = event.getTableView().getItems().get(rowPos);
+    		CurrentPersen.setPrice(newValue);
+    		CurrentPersen.setSum(newValue * CurrentPersen.getKoll());
+    		TableManeyDoc.refresh();
+    	});
+
+    	//Столбец с Суммами
+    	SumTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, Integer>("Sum"));
+    	SumTMD.setCellFactory(TextFieldTableCell.<PersenTableMoney, Integer>forTableColumn(new IntegerStringConverter()));
+    	SumTMD.setOnEditCommit((CellEditEvent<PersenTableMoney, Integer>event) -> {
+    		TablePosition<PersenTableMoney, Integer> pos = event.getTablePosition();
+    		
+    		Integer newSum = event.getNewValue();
+    		
+    		int rowPos = pos.getRow();
+    		PersenTableMoney CurrentPersen = event.getTableView().getItems().get(rowPos);
+    		CurrentPersen.setSum(newSum);
     	});
     	
     	TableManeyDoc.setItems(TableMoney);
@@ -233,17 +277,31 @@ public class ControllerFormDokComingCreatUpdate {
     	//Кнопки для таблиц 
     	ButtonTableADD.setOnAction(event -> {
     		NumberTableLine++;
-    		TableMoney.add(new PersenTableMoney(NumberTableLine, "0", ""));
+    		TableMoney.add(new PersenTableMoney(NumberTableLine, Integer.valueOf(0), "", Integer.valueOf(0), Integer.valueOf(0)));
     	});
     	ButtonTableDel.setOnAction(event -> {
     		int tablePositionNow = TableManeyDoc.getSelectionModel().getSelectedItem().getNL() - 1;
     		TableMoney.remove(tablePositionNow);
     		NumberTableLine--;
-    		recountTableMoney();
+    		recountTableMoneyNumbe();
     	});
     	
     	//Создания дркумента
     	ButtonSave.setOnAction(event ->{
+    		
+    		if(!recountTableManeySum()) {
+    			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
+    			
+    			FormAlert.setTitle("Необходимо пересчитать итоговую сумму");
+    			FormAlert.setHeaderText("Итоговая сумма не сходится, пересчитать ?");
+    			
+    			Optional<ButtonType> optionAlert = FormAlert.showAndWait();
+    			
+    			if(optionAlert.get() == ButtonType.OK){
+    				AmountDoc.setText(recountStrTableManeySum());
+    			}
+    			
+    		}
     		
     		try {
     			
@@ -265,7 +323,6 @@ public class ControllerFormDokComingCreatUpdate {
 				}
 				
     		} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     		
@@ -273,13 +330,41 @@ public class ControllerFormDokComingCreatUpdate {
     	});
     }
 
-	public PersenNomenklatureTable getIdByName(String IdNomen) {
+    public Boolean recountTableManeySum() {
+
+    	Integer zeroTableManey = 0;
+    	
+    	for (PersenTableMoney x : TableMoney) {
+    		zeroTableManey += (Integer.valueOf(x.getSum())); 
+    	}
+    	
+    	if(String.valueOf(zeroTableManey).equals(AmountDoc.getText())) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    	
+    }
+    
+    public String recountStrTableManeySum() {
+
+    	Integer zeroTableManey = 0;
+    	
+    	for (PersenTableMoney x : TableMoney) {
+    		zeroTableManey += (Integer.valueOf(x.getSum())); 
+    	}
+    	
+    	return String.valueOf(zeroTableManey);
+    	
+    }
+    
+    public PersenNomenclatura getIdByName(String IdNomen) {
 		
 		int lineST = TableMoneyNomen.size() - 1;
 		
 		 for (int x = 0; x <= lineST; x++) {
-	         PersenNomenklatureTable checkLine = TableMoneyNomen.get(x);  
-			 if (checkLine.getNameNomen().equals(IdNomen)) {
+	         PersenNomenclatura checkLine = TableMoneyNomen.get(x);  
+			 if (checkLine.getName().equals(IdNomen)) {
 	               return checkLine;
 	           }
 	       }
@@ -292,8 +377,8 @@ public class ControllerFormDokComingCreatUpdate {
     	boolean boolUpCre = true;
     	
     	//Создаем сам документ
-    	String nomerkont = ComboBoxKontragent.getSelectionModel().getSelectedItem().getCode();
-    	String nomerView = ComboBoxViewComCos.getSelectionModel().getSelectedItem().getCode();
+    	String nomerkont = ComboBoxKontragent.getSelectionModel().getSelectedItem().getId().toString();
+    	String nomerView = ComboBoxViewComCos.getSelectionModel().getSelectedItem().getId().toString();
     	
     	Connection connection = SetCon.CreatConnect();
     	SelectPost SelPost = new SelectPost();
@@ -331,8 +416,8 @@ public class ControllerFormDokComingCreatUpdate {
     		for(int x=0; x < NumberTableLine; x++) {
     			PersenTableMoney lineTable = TableManeyDoc.getItems().get(x);
     			boolean resTableCreat = SelPost.UpdateCreatTable(connection, "INSERT INTO public.\"DokComingTableMoney\"(\n" + 
-														    					"	id_dcom, id_nomen, kol_dcomtm)\n" + 
-														    					"	VALUES ("+NomDokCreat+", "+getIdByName(lineTable.getNomen()).getIdNomen()+", "+lineTable.getKoll()+");");
+														    					"	id_dcom, id_nomen, kol_dcomtm, sum_docmtm, price_docmtm)\n" + 
+														    					"	VALUES ("+NomDokCreat+", "+getIdByName(lineTable.getNomen()).getId()+", "+lineTable.getKoll()+","+lineTable.getSum()+","+lineTable.getPrice()+");");
     		
     		}
     		
@@ -344,7 +429,7 @@ public class ControllerFormDokComingCreatUpdate {
     	
     }
     
-    public void recountTableMoney() {
+    public void recountTableMoneyNumbe() {
     	
     	for (int x = 0; x <= NumberTableLine; x++) {
     		PersenTableMoney recountLine = TableManeyDoc.getItems().get(x);
@@ -353,23 +438,6 @@ public class ControllerFormDokComingCreatUpdate {
     	
     }
     
-	public void refreshNomenPersen() throws SQLException {
-		
-		TableMoneyNomen.clear();
-		
-		Connection connection = SetCon.CreatConnect();
-		
-		SelectPost SelPos = new SelectPost();
-		ResultSet ResulSetTable = SelPos.SelectInfoBase(connection, "SELECT id_nomen, name_nomen \n" + 
-																		"	FROM public.\"Nomenclature\";");
-		while (ResulSetTable.next()) {
-			TableMoneyNomen.add(new PersenNomenklatureTable(ResulSetTable.getString(1), ResulSetTable.getString(2)));
-		}
-		
-		connection.close();
-		
-	}
-	
  	public void refreshTableMoney() throws SQLException {
     	
     	TableMoney.clear();
@@ -377,10 +445,10 @@ public class ControllerFormDokComingCreatUpdate {
     	Connection connection = SetCon.CreatConnect();
     	
     	SelectPost SelPos = new SelectPost();
-    	ResultSet ResultSetTableMoney = SelPos.SelectInfoBase(connection, "SELECT DC.id_dcomtm, DC.id_dcom, Nom.name_nomen, DC.kol_dcomtm FROM public.\"DokComingTableMoney\" DC, public.\"Nomenclature\" Nom WHERE DC.id_nomen = Nom.id_nomen and DC.id_dcom = " + NomDokCreat.toString() + ";");
+    	ResultSet ResultSetTableMoney = SelPos.SelectInfoBase(connection, "SELECT DC.id_dcomtm, DC.id_dcom, Nom.name_nomen, DC.kol_dcomtm, DC.Sum_docmtm, DC.Price_docmtm FROM public.\"DokComingTableMoney\" DC, public.\"Nomenclature\" Nom WHERE DC.id_nomen = Nom.id_nomen and DC.id_dcom = " + NomDokCreat.toString() + ";");
     	while (ResultSetTableMoney.next()) {
     		NumberTableLine++;
-    		TableMoney.add(new PersenTableMoney(NumberTableLine, ResultSetTableMoney.getString(4), ResultSetTableMoney.getString(3)));
+    		TableMoney.add(new PersenTableMoney(NumberTableLine, ResultSetTableMoney.getInt(4), ResultSetTableMoney.getString(3),ResultSetTableMoney.getInt(5),ResultSetTableMoney.getInt(6)));
     	}
     	
     	connection.close();
@@ -390,34 +458,23 @@ public class ControllerFormDokComingCreatUpdate {
 	public void refreshComboView() throws SQLException {
     	
     	CombView.clear();
-    	
-    	Connection connection = SetCon.CreatConnect();
-    	
-    	SelectPost SelPos = new SelectPost();
-    	ResultSet ResulComboView = SelPos.SelectInfoBase(connection, "SELECT id_viewcc, name_viewcc FROM public.\"ViewComingConsumption\";");
-    	NumberTableLine = 0;
-    	while (ResulComboView.next()) {
-    		CombView.add(new PersenComboView(ResulComboView.getString(1), ResulComboView.getString(2)));
-    	}
-    	
-    	connection.close();
+    	CombView = PersenViewComCons.getMassivViewComCons(SetCon, CombView);
+
     }
     
 	public void refreshComboKontragent() throws SQLException {
     	
     	CombKont.clear();
-    
-    	Connection connection = SetCon.CreatConnect();
-    	
-    	SelectPost SelPos = new SelectPost();
-    	ResultSet ResulComboKon = SelPos.SelectInfoBase(connection, "SELECT id_kont, name_kont FROM public.\"Kontragent\";");
-    	while (ResulComboKon.next()) {
-    		CombKont.add(new PersenComboKontragent(ResulComboKon.getString(1),ResulComboKon.getString(2)));
-		}
-    	
-    	connection.close();
+    	CombKont = PersenKontragent.getMassivKontragent(SetCon, CombKont); 
     
     }
+	
+	public void refreshNomenPersen() throws SQLException {
+		
+		TableMoneyNomen.clear();
+		TableMoneyNomen = PersenNomenclatura.getMassivNomen(SetCon, TableMoneyNomen);
+		
+	}
     
 	public ControllerFormDokComingCreatUpdate (boolean updateDok, SettingConnectSQL SetCon, PersenDokComing PersDok) {
 		this.NomDokCreat = PersDok.getNumber();
@@ -427,10 +484,11 @@ public class ControllerFormDokComingCreatUpdate {
 	}
 
 	public ControllerFormDokComingCreatUpdate (boolean updateDok, SettingConnectSQL SetCon) {
+		Integer emptyParam = 0;
 		this.NomDokCreat = "New dokument";
 		this.updateDok = updateDok;    		
 		this.SetCon = SetCon;
-		this.persUpdateDok = new PersenDokComing("", "", "", false,"","");
+		this.persUpdateDok = new PersenDokComing("", "", "", false,emptyParam,emptyParam);
 	}
 	
 }

@@ -180,6 +180,7 @@ public class ControllerFormNomenclature {
 				}
 			});
 			StagePar.show();
+			StagePar.toFront();
 	    }
 
 	    public ControllerFormNomenclature(SettingConnectSQL SetCon) {
