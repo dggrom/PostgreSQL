@@ -2,6 +2,7 @@ package Sempel.FormDocuments.DokComing;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -54,6 +55,9 @@ public class ControllerFormSelectionDokComing {
 
     @FXML
     private TableColumn<PersenDokComing, String> TableColumnsKoment;
+
+    @FXML
+    private TableColumn<PersenDokComing, Date> TableColumnsDate;
     
     @FXML
     private TableColumn<PersenDokComing, Boolean> TableColumnsDeleted;
@@ -67,6 +71,7 @@ public class ControllerFormSelectionDokComing {
     	TableColumnsKoment.setCellValueFactory(new PropertyValueFactory<PersenDokComing, String>("Koment"));
     	TableColumnsNumber.setCellValueFactory(new PropertyValueFactory<PersenDokComing, String>("Number"));
     	TableColumnsDeleted.setCellValueFactory(new PropertyValueFactory<PersenDokComing, Boolean>("Deleted"));
+    	TableColumnsDate.setCellValueFactory(new PropertyValueFactory<PersenDokComing, Date>("Date"));
     	
     	TableDocKoming.setItems(DokComing);
     	

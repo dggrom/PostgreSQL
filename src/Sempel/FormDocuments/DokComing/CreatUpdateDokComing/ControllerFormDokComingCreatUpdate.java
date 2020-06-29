@@ -1,7 +1,10 @@
 package Sempel.FormDocuments.DokComing.CreatUpdateDokComing;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 
@@ -19,6 +22,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -53,9 +57,15 @@ public class ControllerFormDokComingCreatUpdate {
 
     @FXML
     private Label LabelNumberDoc;
+    
+    @FXML
+    private Label LabelDateDoc;
 
     @FXML
     private TextField AmountDoc;
+    
+    @FXML
+    private DatePicker DateDoc;
 
     @FXML
     private Label LabelAmount;
@@ -115,6 +125,7 @@ public class ControllerFormDokComingCreatUpdate {
     @FXML
     void initialize() throws SQLException {
     	
+    	DateDocConvert();
     	NumberTableLine = 0;
     	
     	refreshComboKontragent();
@@ -124,6 +135,7 @@ public class ControllerFormDokComingCreatUpdate {
     		refreshTableMoney();
     		AmountDoc.setText(persUpdateDok.getAmount().toString());
     		EditComments.setText(persUpdateDok.getKoment());
+    		DateDoc.setValue(persUpdateDok.getDate().toLocalDate());
     		} else {
     			NumberTableLine++;
     			TableMoney.clear();
@@ -330,6 +342,37 @@ public class ControllerFormDokComingCreatUpdate {
     	});
     }
 
+    private void DateDocConvert() {
+    	
+    	StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
+
+    		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    		
+			@Override
+			public String toString(LocalDate object) {
+				if (object != null) {
+					return dateFormatter.format(object);
+				} else {
+					return "";
+				}
+			}
+
+			@Override
+			public LocalDate fromString(String string) {
+				if(string != null && !string.isEmpty()) {
+					return LocalDate.parse(string, dateFormatter);
+				} else {
+					return null;
+				}
+			}
+    		
+		};
+		
+		DateDoc.setConverter(converter);
+		DateDoc.setPromptText("yyyy-MM-dd");
+    	DateDoc.setValue(persUpdateDok.getDate().toLocalDate());
+    }
+    
     public Boolean recountTableManeySum() {
 
     	Integer zeroTableManey = 0;
@@ -386,12 +429,12 @@ public class ControllerFormDokComingCreatUpdate {
     		ResultCreatUpdate = SelPost.UpdateCreatTable(connection, "UPDATE public.\"DokComing\"\n" + 
     				"	SET id_dcom = "+persUpdateDok.getNumber()+", \"SumMoney_dcom\" = '"+AmountDoc.getText()+"',"+
     				"   \"Komment_dcom\" = '"+EditComments.getText()+"', id_kont = "+nomerkont+", id_viewcc = "+nomerView+
-    				", deleted_dcom = "+persUpdateDok.getDeleted().toString()+"" + 
+    				",date_dcom = '"+DateDoc.getValue().toString()+"', deleted_dcom = "+persUpdateDok.getDeleted().toString()+"" + 
     				"	WHERE id_dcom = "+persUpdateDok.getNumber()+";");
     	} else {
     		ResultCreatUpdate = SelPost.UpdateCreatTable(connection, "INSERT INTO public.\"DokComing\"(\n" + 
-    				"	\"SumMoney_dcom\", \"Komment_dcom\", id_kont, id_viewcc, deleted_dcom)\n" + 
-    				"	VALUES ( '"+AmountDoc.getText()+"', '"+EditComments.getText()+"', "+nomerkont+", "+nomerView+", false);");
+    				"	\"SumMoney_dcom\", \"Komment_dcom\", id_kont, id_viewcc, deleted_dcom, date_dcom)\n" + 
+    				"	VALUES ( '"+AmountDoc.getText()+"', '"+EditComments.getText()+"', "+nomerkont+", "+nomerView+", false, '"+DateDoc.getValue().toString()+"');");
     	}
     		
     	//Если документ содался, начинаем работать с ТЧ
@@ -428,6 +471,7 @@ public class ControllerFormDokComingCreatUpdate {
     	return boolUpCre;
     	
     }
+    
     
     public void recountTableMoneyNumbe() {
     	
@@ -483,7 +527,7 @@ public class ControllerFormDokComingCreatUpdate {
 		this.NomDokCreat = "New dokument";
 		this.updateDok = updateDok;    		
 		this.SetCon = SetCon;
-		this.persUpdateDok = new PersenDokComing(Integer.valueOf(0), Integer.valueOf(0), "", false,emptyParam,emptyParam);
+		this.persUpdateDok = new PersenDokComing(Integer.valueOf(0), Integer.valueOf(0), "", false,emptyParam,emptyParam, Date.valueOf(LocalDate.now()));
 	}
 	
 }
