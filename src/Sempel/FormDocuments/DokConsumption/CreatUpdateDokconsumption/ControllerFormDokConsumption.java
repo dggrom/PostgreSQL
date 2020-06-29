@@ -4,6 +4,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -20,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -110,6 +113,9 @@ public class ControllerFormDokConsumption {
 
     @FXML
     private Button ButtonTableDel;
+    
+    @FXML
+    private DatePicker DateDoc;
 
     private String nomerDok;
     private Boolean updateDok;
@@ -126,6 +132,7 @@ public class ControllerFormDokConsumption {
     void initialize() throws SQLException {
     
     	numberLinaTable = 0;
+    	DateDokConverter();
     	
     	refrashComboComCons();
     	refrashComboKontr();
@@ -335,6 +342,39 @@ public class ControllerFormDokConsumption {
     	});
     }
     
+    private void DateDokConverter() {
+    	
+    	StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
+    			
+    		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    		
+			@Override
+			public String toString(LocalDate object) {
+				
+				if (object != null) {
+					return dateFormatter.format(object);
+				} else {
+					return "";
+				}
+				
+			}
+
+			@Override
+			public LocalDate fromString(String string) {
+				if(string != null && !string.isEmpty()) {
+					return LocalDate.parse(string, dateFormatter);
+				} else {
+					return null;
+				}
+			}
+		};
+		
+		DateDoc.setConverter(converter);
+		DateDoc.setPromptText("yyyy-MM-dd");
+		DateDoc.setValue(persUpdateDok.getDate().toLocalDate());
+		
+    }
+
     public boolean updateCreatDocComing() throws SQLException {
 		
     	boolean ResultCreatUpdate;
@@ -349,12 +389,12 @@ public class ControllerFormDokConsumption {
     		ResultCreatUpdate = SelPos.UpdateCreatTable(connection, "UPDATE public.\"DokConsumption\"\n" + 
     				"	SET id_dcon = "+persUpdateDok.getNumber()+", \"SumMoney_dcon\" = '"+AmountDoc.getText()+"',"+
     				"   \"Komment_dcon\" = '"+EditComments.getText()+"', id_kont = "+nomerKont+", id_viewcc = "+nomerView+
-    				", deleted_dcon = "+persUpdateDok.getDeleted().toString()+"" + 
+    				",date_dcon = '"+DateDoc.getValue().toString()+"' , deleted_dcon = "+persUpdateDok.getDeleted().toString()+"" + 
     				"	WHERE id_dcon = "+persUpdateDok.getNumber()+";");
     	} else {
     		ResultCreatUpdate = SelPos.UpdateCreatTable(connection, "INSERT INTO public.\"DokConsumption\"(\n" + 
-    				"	\"SumMoney_dcon\", \"Komment_dcon\", id_kont, id_viewcc, deleted_dcon)\n" + 
-    				"	VALUES ( '"+AmountDoc.getText()+"', '"+EditComments.getText()+"', "+nomerKont+", "+nomerView+", false);");
+    				"	\"SumMoney_dcon\", \"Komment_dcon\", id_kont, id_viewcc, deleted_dcon, date_dcon)\n" + 
+    				"	VALUES ( '"+AmountDoc.getText()+"', '"+EditComments.getText()+"', "+nomerKont+", "+nomerView+", false, '"+DateDoc.getValue().toString()+"');");
     	}
     	
     	//Если создали или обновили доку, работаем с ТЧ

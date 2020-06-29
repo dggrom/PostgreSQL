@@ -3,6 +3,7 @@ package Sempel.FormDocuments.DokConsumption;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date;
 
 import javafx.collections.ObservableList;
 import sql.SelectPost;
@@ -15,9 +16,10 @@ public class PersenDokConsuption {
 	private String koment;
 	private Integer idKontragent;
 	private Integer idView;
+	private Date date;
 	private Boolean deleted;
 	
-	PersenDokConsuption(Integer idDokConsu, Integer amount,String koments,Integer idKontragent,Integer idView,Boolean deleted){
+	PersenDokConsuption(Integer idDokConsu, Integer amount,String koments,Integer idKontragent,Integer idView,Boolean deleted, Date date){
 		
 		this.Number = idDokConsu;
 		this.amount = amount;
@@ -25,8 +27,11 @@ public class PersenDokConsuption {
 		this.idKontragent = idKontragent;
 		this.idView = idView;
 		this.deleted = deleted;
-		
+		this.date = date;
 	}
+	
+	public void setDate(Date value) {this.date = value;}
+	public Date getDate() {return this.date;}
 	
 	public void setNumber(Integer value) {Number = value;}
 	public Integer getNumber() {return Number;}
@@ -51,11 +56,11 @@ public class PersenDokConsuption {
 		Connection Connect = SetCon.CreatConnect();
 		
 		SelectPost SelPos = new SelectPost();
-		ResultSet resSet = SelPos.SelectInfoBase(Connect, "SELECT id_dcon, \"SumMoney_dcon\", \"Komment_dcon\", id_kont, id_viewcc, deleted_dcon\n" + 
+		ResultSet resSet = SelPos.SelectInfoBase(Connect, "SELECT id_dcon, \"SumMoney_dcon\", \"Komment_dcon\", id_kont, id_viewcc, deleted_dcon, date_dcon\n" + 
 				"	FROM public.\"DokConsumption\";");
 		
 		while (resSet.next()) {
-			Mass.add(new PersenDokConsuption(resSet.getInt(1), resSet.getInt(2), resSet.getString(3), resSet.getInt(4), resSet.getInt(5), resSet.getBoolean(6)));
+			Mass.add(new PersenDokConsuption(resSet.getInt(1), resSet.getInt(2), resSet.getString(3), resSet.getInt(4), resSet.getInt(5), resSet.getBoolean(6), resSet.getDate(7)));
 		}		
 		
 		Connect.close();
