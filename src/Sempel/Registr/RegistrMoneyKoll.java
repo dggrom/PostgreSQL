@@ -1,34 +1,15 @@
 package Sempel.Registr;
 
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.CallableStatement;
-import java.sql.Clob;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.NClob;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Savepoint;
-import java.sql.Statement;
-import java.sql.Struct;
-import java.util.Map;
-import java.util.Observer;
-import java.util.Properties;
-import java.util.concurrent.Executor;
 
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import sql.SelectPost;
 import sql.SettingConnectSQL;
 
 public class RegistrMoneyKoll {
 
-	private static final String TestSel = null;
 	private Integer id_regmonkoll;
 	private Integer id_nomen;
 	private Integer id_docm;
@@ -70,16 +51,70 @@ public class RegistrMoneyKoll {
 	
 	} 
 	
-	static ObservableList<RegistrMoneyKoll> getMassRegistMoneyKoll(ObservableList<RegistrMoneyKoll> mass, Integer id_dcom, Integer id_dcon) {
+	static Boolean CreatPostsRegistr(SettingConnectSQL SetCon, ObservableList<RegistrMoneyKoll> mass, Integer id_docm, Integer id_docn) throws SQLException {
+		
+		String TekstSel;
+		Connection Conn = SetCon.CreatConnect();
+		SelectPost SelPos = new SelectPost();
+		
+		for(RegistrMoneyKoll lineMass : mass) {
+			
+			if(id_docm == 0) {
+				TekstSel = "INSERT INTO public.\"RegistrMoneyKoll\"(\n" + 
+						"	id_nomen, id_dcom, id_dcon, coming, sum_regmk, koll_regmk)\n" + 
+						"	VALUES ("+lineMass.getId_nomen().toString()+", 0, "+lineMass.getId_docn().toString()+", false, "+
+						lineMass.getSum_regmk().toString()+", "+lineMass.getKoll_regmk().toString()+");";
+			} else {
+				TekstSel = "INSERT INTO public.\"RegistrMoneyKoll\"(\n" + 
+						"	id_nomen, id_dcom, id_dcon, coming, sum_regmk, koll_regmk)\n" + 
+						"	VALUES ("+lineMass.getId_nomen().toString()+", "+lineMass.getId_docm().toString()+", 0, true, "+
+						lineMass.getSum_regmk().toString()+", "+lineMass.getKoll_regmk().toString()+");";
+			}	
+		
+			Boolean ResSet = SelPos.UpdateCreatTable(Conn, TekstSel);
+			
+			if(ResSet) {
+				return false;
+			}
+		}
+		
+		
+		Conn.close();
+		return true;
+		
+	}
 	
+	static ObservableList<RegistrMoneyKoll> getMassRegistMoneyKoll(SettingConnectSQL SetCon, ObservableList<RegistrMoneyKoll> mass, Integer id_dcom, Integer id_dcon) throws SQLException {
+	
+		String TekstSel;
+		Connection Conn = SetCon.CreatConnect();
+		SelectPost SelPos = new SelectPost();
+		
+		if(id_dcon == 0) {
+			TekstSel = "SELECT id_regmonkoll, id_nomen, id_dcom, id_dcon, coming, sum_regmk, koll_regmk\n" + 
+					"	FROM public.\"RegistrMoneyKoll\"\n" + 
+					"	WHERE id_dcom = "+id_dcom.toString()+";";
+		} else {
+			TekstSel = "SELECT id_regmonkoll, id_nomen, id_dcom, id_dcon, coming, sum_regmk, koll_regmk\n" + 
+					"	FROM public.\"RegistrMoneyKoll\"\n" + 
+					"	WHERE id_dcom = "+id_dcon.toString()+";";
+		}
+		
+		ResultSet ResSet = SelPos.SelectInfoBase(Conn, TekstSel);
+		
+		while(ResSet.next()) {
+			mass.add(new RegistrMoneyKoll(ResSet.getInt(1), ResSet.getInt(2), ResSet.getInt(3), ResSet.getInt(4), ResSet.getBoolean(5), ResSet.getInt(6), ResSet.getInt(7)));
+		}
+		Conn.close();
+		
 		return mass;
 		
 	}
 	
-	static boolean DellAllLines(SettingConnectSQL SetCon, Integer id_dcom, Integer id_dcon) throws SQLException{
+	static Boolean DellAllLines(SettingConnectSQL SetCon, Integer id_dcom, Integer id_dcon) throws SQLException{
 		
 		String TestSel;
-		Connection Com = SetCon.CreatConnect();
+		Connection Conn = SetCon.CreatConnect();
 		
 		SelectPost SelPos = new SelectPost();
 
@@ -91,7 +126,8 @@ public class RegistrMoneyKoll {
 					"	WHERE id_dcon = "+id_dcom.toString()+";";
 		}
 		
-		Boolean ResSet = SelPos.UpdateCreatTable(Com, TestSel);
+		Boolean ResSet = SelPos.UpdateCreatTable(Conn, TestSel);
+		Conn.close();
 		
 		return ResSet;
 		
