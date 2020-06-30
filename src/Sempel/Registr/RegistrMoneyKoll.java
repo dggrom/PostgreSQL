@@ -39,7 +39,7 @@ public class RegistrMoneyKoll {
 	public void setKoll_regmk(Integer value) {this.Koll_regmk = value;}
 	public Integer getKoll_regmk() {return this.Koll_regmk;}
 	
-	RegistrMoneyKoll (Integer id_regmonkoll, Integer id_nomen, Integer id_docm, Integer id_docn, Boolean Coming, Integer Sum_regmk, Integer Koll_regkm){
+	public RegistrMoneyKoll (Integer id_regmonkoll, Integer id_nomen, Integer id_docm, Integer id_docn, Boolean Coming, Integer Sum_regmk, Integer Koll_regkm){
 		
 		this.id_regmonkoll = id_regmonkoll;
 		this.id_nomen = id_nomen;
@@ -51,7 +51,7 @@ public class RegistrMoneyKoll {
 	
 	} 
 	
-	static Boolean CreatPostsRegistr(SettingConnectSQL SetCon, ObservableList<RegistrMoneyKoll> mass, Integer id_docm, Integer id_docn) throws SQLException {
+	public static Boolean CreatPostsRegistr(SettingConnectSQL SetCon, ObservableList<RegistrMoneyKoll> mass, Integer id_docm, Integer id_docn) throws SQLException {
 		
 		String TekstSel;
 		Connection Conn = SetCon.CreatConnect();
@@ -84,7 +84,7 @@ public class RegistrMoneyKoll {
 		
 	}
 	
-	static ObservableList<RegistrMoneyKoll> getMassRegistMoneyKoll(SettingConnectSQL SetCon, ObservableList<RegistrMoneyKoll> mass, Integer id_dcom, Integer id_dcon) throws SQLException {
+	public static ObservableList<RegistrMoneyKoll> getMassRegistMoneyKoll(SettingConnectSQL SetCon, ObservableList<RegistrMoneyKoll> mass, Integer id_dcom, Integer id_dcon) throws SQLException {
 	
 		String TekstSel;
 		Connection Conn = SetCon.CreatConnect();
@@ -111,7 +111,7 @@ public class RegistrMoneyKoll {
 		
 	}
 	
-	static Boolean DellAllLines(SettingConnectSQL SetCon, Integer id_dcom, Integer id_dcon) throws SQLException{
+	public static Boolean DellAllLines(SettingConnectSQL SetCon, Integer id_dcom, Integer id_dcon) throws SQLException{
 		
 		String TestSel;
 		Connection Conn = SetCon.CreatConnect();
@@ -123,7 +123,7 @@ public class RegistrMoneyKoll {
 							"	WHERE id_dcon = "+id_dcon.toString()+";";
 		} else {
 			TestSel = "DELETE FROM public.\"RegistrMoneyKoll\"\n" + 
-					"	WHERE id_dcon = "+id_dcom.toString()+";";
+					"	WHERE id_dcom = "+id_dcom.toString()+";";
 		}
 		
 		Boolean ResSet = SelPos.UpdateCreatTable(Conn, TestSel);

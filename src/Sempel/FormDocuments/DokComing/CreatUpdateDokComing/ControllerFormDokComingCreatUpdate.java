@@ -9,6 +9,7 @@ import java.util.Optional;
 
 
 import Sempel.FormDocuments.DokComing.PersenDokComing;
+import Sempel.Registr.RegistrMoneyKoll;
 import Sempel.FormDirectory.DirectoruViewComingCosts.*;
 import Sempel.FormDirectory.DirectoruNomenclature.*;
 import Sempel.FormDirectory.DirectoryKontragent.*;
@@ -464,6 +465,8 @@ public class ControllerFormDokComingCreatUpdate {
     		
     		}
     		
+    		updateRegistrMoneyKoll();
+    		
     	} else {
     		boolUpCre = false;
     	}	
@@ -472,6 +475,28 @@ public class ControllerFormDokComingCreatUpdate {
     	
     }
     
+    public void updateRegistrMoneyKoll() {
+    	
+    	ObservableList<RegistrMoneyKoll> RegMass = FXCollections.observableArrayList();
+		
+    	for(PersenTableMoney lineTable : TableMoney) {
+    		RegMass.add(new RegistrMoneyKoll(0, getIdByName(lineTable.getNomen()).getId(), Integer.valueOf(NomDokCreat), Integer.valueOf(0), true, lineTable.getSum(), lineTable.getKoll()));
+    	}
+    	
+    	try {
+			Boolean DellRegistrLines = RegistrMoneyKoll.DellAllLines(SetCon, Integer.valueOf(NomDokCreat), Integer.valueOf(0));
+		
+			if(!DellRegistrLines) {
+	    		Boolean CreatLineRegistr = RegistrMoneyKoll.CreatPostsRegistr(SetCon, RegMass, Integer.valueOf(NomDokCreat), 0);
+	    	}
+			
+    	} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    }
     
     public void recountTableMoneyNumbe() {
     	
