@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import Sempel.FormDocuments.DokComing.PersenDokComing;
 import Sempel.Registr.RegistrMoneyKoll;
+import Sempel.Registr.RegistrPrice;
 import Sempel.FormDirectory.DirectoruViewComingCosts.*;
 import Sempel.FormDirectory.DirectoruNomenclature.*;
 import Sempel.FormDirectory.DirectoryKontragent.*;
@@ -466,12 +467,31 @@ public class ControllerFormDokComingCreatUpdate {
     		}
     		
     		updateRegistrMoneyKoll();
+    		updateCreatRegistrPrice();
     		
     	} else {
     		boolUpCre = false;
     	}	
     	
     	return boolUpCre;
+    	
+    }
+    
+    public void updateCreatRegistrPrice() {
+    	
+    	ObservableList<RegistrPrice> RegMass = FXCollections.observableArrayList();
+    	
+    	try {
+			
+    		for(PersenTableMoney linePer : TableMoney) {
+    			RegMass.add(new RegistrPrice(0, getIdByName(linePer.getNomen()).getId(), linePer.getPrice(), DateDoc.getValue(), Integer.valueOf(NomDokCreat)));
+    		}
+    		
+    		RegistrPrice.dellDocLineRegistrPrice(SetCon, Integer.valueOf(NomDokCreat));
+			RegistrPrice.CreatLineRegistrPrice(SetCon, RegMass);
+    	} catch (SQLException e) {
+			e.printStackTrace();
+		}
     	
     }
     
