@@ -462,7 +462,7 @@ public class ControllerFormDokConsumption {
     
     public void recountTableMoneyNumbe() {
     	
-    	for (int x = 0; x <= numberLinaTable; x++) {
+    	for (int x = 0; x < numberLinaTable; x++) {
     		PersenTableMoneyConsu recountLine = TableManeyDoc.getItems().get(x);
     		recountLine.setNL(x + 1);
     	}

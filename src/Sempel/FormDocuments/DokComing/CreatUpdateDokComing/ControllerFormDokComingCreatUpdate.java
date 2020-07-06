@@ -460,7 +460,7 @@ public class ControllerFormDokComingCreatUpdate {
     			PersenTableMoney lineTable = TableManeyDoc.getItems().get(x);
     			boolean resTableCreat = SelPost.UpdateCreatTable(connection, "INSERT INTO public.\"DokComingTableMoney\"(\n" + 
 														    					"	id_dcom, id_nomen, kol_dcomtm, sum_docmtm, price_docmtm)\n" + 
-														    					"	VALUES ("+NomDokCreat+", "+getIdByName(lineTable.getNomen()).getId()+", "+lineTable.getKoll()+","+lineTable.getSum()+","+lineTable.getPrice()+");");
+														    					"	VALUES ("+NomDokCreat+", "+getIdByName(lineTable.getNomen()).getId().toString()+", "+lineTable.getKoll().toString()+","+lineTable.getSum().toString()+","+lineTable.getPrice().toString()+");");
     		
     		}
     		
@@ -471,11 +471,10 @@ public class ControllerFormDokComingCreatUpdate {
     	return boolUpCre;
     	
     }
-    
-    
+        
     public void recountTableMoneyNumbe() {
     	
-    	for (int x = 0; x <= NumberTableLine; x++) {
+    	for (int x = 0; x < NumberTableLine; x++) {
     		PersenTableMoney recountLine = TableManeyDoc.getItems().get(x);
     		recountLine.setNL(x + 1);
     	}
@@ -489,6 +488,13 @@ public class ControllerFormDokComingCreatUpdate {
     	Connection connection = SetCon.CreatConnect();
     	
     	TableMoney = PersenTableMoney.getMassivPersenTableMoney(TableMoney, connection, NumberTableLine, NomDokCreat.toString());
+    	
+    	if(TableMoney.size() == 0) {
+    		NumberTableLine++;
+    		TableMoney.add(new PersenTableMoney(NumberTableLine, Integer.valueOf(0), "", Integer.valueOf(0), Integer.valueOf(0)));
+    	} else {
+    		NumberTableLine = TableMoney.size();
+    	}
     	
     	connection.close();
     	
