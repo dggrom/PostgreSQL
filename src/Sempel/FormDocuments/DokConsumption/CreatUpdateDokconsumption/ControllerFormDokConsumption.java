@@ -438,6 +438,7 @@ public class ControllerFormDokConsumption {
     		boolUpCre = false;
     	}
     	
+    	connection.close();
     	
     	return boolUpCre;
     	

@@ -480,6 +480,8 @@ public class ControllerFormDokComingCreatUpdate {
     		boolUpCre = false;
     	}	
     	
+    	connection.close();
+    	
     	return boolUpCre;
     	
     }
