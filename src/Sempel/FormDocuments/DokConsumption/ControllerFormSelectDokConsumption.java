@@ -64,14 +64,8 @@ public class ControllerFormSelectDokConsumption {
     void initialize() throws SQLException {
 
     	refreshTableForm();
+    	initTable();
     	
-    	TableColumnsNumber.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Integer>("Number"));
-    	TableColumnsAmount.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Integer>("Amount"));
-    	TableColumnsKoment.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, String>("Koment"));
-    	TableColumnsDeleted.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Boolean>("Deleted"));	
-    	TableColumnsDate.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Date>("Date"));
-    	
-    	TableCunsu.setItems(TableForm);
     	
     	ButtonCreat.setOnAction(event->{
     		try {
@@ -89,6 +83,18 @@ public class ControllerFormSelectDokConsumption {
 				// TODO: handle exception
 			}
     	});
+    	
+    }
+    
+    private void initTable() {
+    	
+    	TableColumnsNumber.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Integer>("Number"));
+    	TableColumnsAmount.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Integer>("Amount"));
+    	TableColumnsKoment.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, String>("Koment"));
+    	TableColumnsDeleted.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Boolean>("Deleted"));	
+    	TableColumnsDate.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Date>("Date"));
+    	
+    	TableCunsu.setItems(TableForm);
     	
     }
     

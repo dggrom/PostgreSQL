@@ -148,54 +148,63 @@ public class ControllerFormDokConsumption {
     		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0), Integer.valueOf(0)));
     	}
     	
-    	ComboBoxKontragent.getItems().setAll(ComboKontr);
-    	ComboBoxKontragent.setConverter(new StringConverter<PersenKontragent>() {
-			
-			@Override
-			public String toString(PersenKontragent object) {
-				if(object != null) {
-					return object.getName();
-				} else {
-					return "";
-				}
-			}
-			
-			@Override
-			public PersenKontragent fromString(String string) {
-				return ComboBoxKontragent.getSelectionModel().getSelectedItem();
-			}
-		});
+    	initComboBox();
+    	initTable();
     	
-    	ComboBoxViewComCos.getItems().setAll(ComboComCons);
-    	ComboBoxViewComCos.setConverter(new StringConverter<PersenViewComCons>() {
-
-			@Override
-			public String toString(PersenViewComCons object) {
-				if (object != null) {
-					return object.getView();
-				} else {
-					return "";
-				}
-			}
-
-			@Override
-			public PersenViewComCons fromString(String string) {
-				return ComboBoxViewComCos.getSelectionModel().getSelectedItem(); 
-			}
-		});
+    	LabelNumberDoc.setText(nomerDok);
     	
-    	if (updateDok) {
-    		for (PersenKontragent x : ComboKontr) {
-    			if(x.getId() == persUpdateDok.getIdKontragent()) {
-    				ComboBoxKontragent.setValue(x);
-    			}
-    		}	
-    		for (PersenViewComCons y : ComboComCons) {
-    			if (y.getId() == persUpdateDok.getIdView()) {
-    				ComboBoxViewComCos.setValue(y);
+    	ButtonTableADD.setOnAction(event -> {
+    		numberLinaTable++;
+    		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0), Integer.valueOf(0)));
+    	});
+    	ButtonTableDel.setOnAction(event ->{
+    		int tablePositionNow = TableManeyDoc.getSelectionModel().getSelectedItem().getNL() - 1;
+    		TableMoney.remove(tablePositionNow);
+    		numberLinaTable--;
+    		recountTableMoneyNumbe();
+    	});
+    	
+    	ButtonSave.setOnAction(event -> {
+    		
+    		if(!recountTableManeySum()) {
+    			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
+    			
+    			FormAlert.setTitle("Необходимо еперсчитать итоговую сумму");
+    			FormAlert.setHeaderText("Итоговая сумма не соходится, пересчитать ?");
+    			
+    			Optional<ButtonType> optionalAlert = FormAlert.showAndWait();
+    		
+    			if(optionalAlert.get() == ButtonType.OK) {
+    					AmountDoc.setText(recountStrTableManeySum());
     			}
     		}
-    	}
+    		
+    		LabelNumberDoc.setText(nomerDok);
+    		
+
+			try {
+				if(updateCreatDocComing()) {
+					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();
+					stageForm.close();
+				} else {
+					Alert alertForm = new Alert(Alert.AlertType.ERROR);
+					if(updateDok) {
+						alertForm.setTitle("Ошибка перезаписи документа");
+						alertForm.setHeaderText("Ошибка перезаписи документа");	
+					} else {
+						alertForm.setTitle("Ошибка создания нового документа");
+						alertForm.setHeaderText("Ошибка создания нового документа");
+					}
+					alertForm.show();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+    	});
+    }
+
+    private void initTable() {
     	
     	//Уникальный строки
     	NLTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoneyConsu, Integer>("NL"));
@@ -289,57 +298,59 @@ public class ControllerFormDokConsumption {
     	TableManeyDoc.setItems(TableMoney);
     	TableManeyDoc.setEditable(true);
     	
-    	LabelNumberDoc.setText(nomerDok);
+    }
+    
+    private void initComboBox() {
     	
-    	ButtonTableADD.setOnAction(event -> {
-    		numberLinaTable++;
-    		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0), Integer.valueOf(0)));
-    	});
-    	ButtonTableDel.setOnAction(event ->{
-    		int tablePositionNow = TableManeyDoc.getSelectionModel().getSelectedItem().getNL() - 1;
-    		TableMoney.remove(tablePositionNow);
-    		numberLinaTable--;
-    		recountTableMoneyNumbe();
-    	});
-    	
-    	ButtonSave.setOnAction(event -> {
-    		
-    		if(!recountTableManeySum()) {
-    			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
-    			
-    			FormAlert.setTitle("Необходимо еперсчитать итоговую сумму");
-    			FormAlert.setHeaderText("Итоговая сумма не соходится, пересчитать ?");
-    			
-    			Optional<ButtonType> optionalAlert = FormAlert.showAndWait();
-    		
-    			if(optionalAlert.get() == ButtonType.OK) {
-    					AmountDoc.setText(recountStrTableManeySum());
-    			}
-    		}
-    		
-    		LabelNumberDoc.setText(nomerDok);
-    		
-
-			try {
-				if(updateCreatDocComing()) {
-					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();
-					stageForm.close();
+    	ComboBoxKontragent.getItems().setAll(ComboKontr);
+    	ComboBoxKontragent.setConverter(new StringConverter<PersenKontragent>() {
+			
+			@Override
+			public String toString(PersenKontragent object) {
+				if(object != null) {
+					return object.getName();
 				} else {
-					Alert alertForm = new Alert(Alert.AlertType.ERROR);
-					if(updateDok) {
-						alertForm.setTitle("Ошибка перезаписи документа");
-						alertForm.setHeaderText("Ошибка перезаписи документа");	
-					} else {
-						alertForm.setTitle("Ошибка создания нового документа");
-						alertForm.setHeaderText("Ошибка создания нового документа");
-					}
-					alertForm.show();
+					return "";
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+			}
+			
+			@Override
+			public PersenKontragent fromString(String string) {
+				return ComboBoxKontragent.getSelectionModel().getSelectedItem();
+			}
+		});
+    	
+    	ComboBoxViewComCos.getItems().setAll(ComboComCons);
+    	ComboBoxViewComCos.setConverter(new StringConverter<PersenViewComCons>() {
+
+			@Override
+			public String toString(PersenViewComCons object) {
+				if (object != null) {
+					return object.getView();
+				} else {
+					return "";
+				}
 			}
 
-    	});
+			@Override
+			public PersenViewComCons fromString(String string) {
+				return ComboBoxViewComCos.getSelectionModel().getSelectedItem(); 
+			}
+		});
+    	
+    	if (updateDok) {
+    		for (PersenKontragent x : ComboKontr) {
+    			if(x.getId() == persUpdateDok.getIdKontragent()) {
+    				ComboBoxKontragent.setValue(x);
+    			}
+    		}	
+    		for (PersenViewComCons y : ComboComCons) {
+    			if (y.getId() == persUpdateDok.getIdView()) {
+    				ComboBoxViewComCos.setValue(y);
+    			}
+    		}
+    	}
+    	
     }
     
     private void DateDokConverter() {

@@ -142,55 +142,55 @@ public class ControllerFormDokComingCreatUpdate {
     			TableMoney.add(new PersenTableMoney(NumberTableLine, Integer.valueOf(0), "",Integer.valueOf(0), Integer.valueOf(0)));
     		}
     	
-    	ComboBoxKontragent.getItems().setAll(CombKont);
-    	ComboBoxKontragent.setConverter(new StringConverter<PersenKontragent>() {
-
-			@Override
-			public String toString(PersenKontragent object) {
-				if (object != null) { 
-					return object.getName();
-					} else {
-						return "";
-					}
-			}
-
-			@Override
-			public PersenKontragent fromString(String string) {
-				return ComboBoxKontragent.getSelectionModel().getSelectedItem();
-			}
-        });
+    	initComboBox();
+    	initTable();
     	
-    	ComboBoxViewComCos.getItems().setAll(CombView);
-    	ComboBoxViewComCos.setConverter(new StringConverter<PersenViewComCons>() {
-
-			@Override
-			public String toString(PersenViewComCons object) {
-				if (object != null) {	
-					return object.getView();
+    	
+    	//Создания дркумента
+    	ButtonSave.setOnAction(event ->{
+    		
+    		if(!recountTableManeySum()) {
+    			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
+    			
+    			FormAlert.setTitle("Необходимо пересчитать итоговую сумму");
+    			FormAlert.setHeaderText("Итоговая сумма не сходится, пересчитать ?");
+    			
+    			Optional<ButtonType> optionAlert = FormAlert.showAndWait();
+    			
+    			if(optionAlert.get() == ButtonType.OK){
+    				AmountDoc.setText(recountStrTableManeySum());
+    			}
+    			
+    		}
+    		
+    		try {
+    			
+				LabelNumberDoc.setText(NomDokCreat);
+	    		
+				if(updateCreatDocComing()) {
+					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();
+					stageForm.close();
 				} else {
-					return "";
+					Alert aletForm = new Alert(Alert.AlertType.ERROR);
+					if(updateDok) {
+						aletForm.setTitle("Ошибка перезаписи документа");
+						aletForm.setHeaderText("Ошибка перезаписи документа");	
+					}else {
+						aletForm.setTitle("Ошибка создания нового документа");
+						aletForm.setHeaderText("Ошибка создания нового документа");
+					}
+					aletForm.show();
 				}
-			}
-
-			@Override
-			public PersenViewComCons fromString(String string) {
-				return ComboBoxViewComCos.getSelectionModel().getSelectedItem();
+				
+    		} catch (SQLException e) {
+				e.printStackTrace();
 			}
     		
-		});
-    	
-    	if (NomDokCreat != "New dokument") {
-    		for (PersenKontragent x : CombKont) {
-    			if(x.getId() == persUpdateDok.getIdKontragent()) { 
-    				ComboBoxKontragent.setValue(x);
-    				}
-    		}
-    		for (PersenViewComCons y : CombView) {
-    			if(y.getId() == persUpdateDok.getIdView()) { 
-    				ComboBoxViewComCos.setValue(y);
-    				}
-    		}
-    	}
+    		    		
+    	});
+    }
+
+    private void initTable() {
     	
     	//Id строки
     	NLTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, Integer>("NL"));
@@ -298,50 +298,62 @@ public class ControllerFormDokComingCreatUpdate {
     		recountTableMoneyNumbe();
     	});
     	
-    	//Создания дркумента
-    	ButtonSave.setOnAction(event ->{
-    		
-    		if(!recountTableManeySum()) {
-    			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
-    			
-    			FormAlert.setTitle("Необходимо пересчитать итоговую сумму");
-    			FormAlert.setHeaderText("Итоговая сумма не сходится, пересчитать ?");
-    			
-    			Optional<ButtonType> optionAlert = FormAlert.showAndWait();
-    			
-    			if(optionAlert.get() == ButtonType.OK){
-    				AmountDoc.setText(recountStrTableManeySum());
-    			}
-    			
-    		}
-    		
-    		try {
-    			
-				LabelNumberDoc.setText(NomDokCreat);
-	    		
-				if(updateCreatDocComing()) {
-					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();
-					stageForm.close();
-				} else {
-					Alert aletForm = new Alert(Alert.AlertType.ERROR);
-					if(updateDok) {
-						aletForm.setTitle("Ошибка перезаписи документа");
-						aletForm.setHeaderText("Ошибка перезаписи документа");	
-					}else {
-						aletForm.setTitle("Ошибка создания нового документа");
-						aletForm.setHeaderText("Ошибка создания нового документа");
+    }
+    
+    private void initComboBox() {
+    	
+    	ComboBoxKontragent.getItems().setAll(CombKont);
+    	ComboBoxKontragent.setConverter(new StringConverter<PersenKontragent>() {
+
+			@Override
+			public String toString(PersenKontragent object) {
+				if (object != null) { 
+					return object.getName();
+					} else {
+						return "";
 					}
-					aletForm.show();
+			}
+
+			@Override
+			public PersenKontragent fromString(String string) {
+				return ComboBoxKontragent.getSelectionModel().getSelectedItem();
+			}
+        });
+    	
+    	ComboBoxViewComCos.getItems().setAll(CombView);
+    	ComboBoxViewComCos.setConverter(new StringConverter<PersenViewComCons>() {
+
+			@Override
+			public String toString(PersenViewComCons object) {
+				if (object != null) {	
+					return object.getView();
+				} else {
+					return "";
 				}
-				
-    		} catch (SQLException e) {
-				e.printStackTrace();
+			}
+
+			@Override
+			public PersenViewComCons fromString(String string) {
+				return ComboBoxViewComCos.getSelectionModel().getSelectedItem();
 			}
     		
-    		    		
-    	});
+		});
+    	
+    	if (NomDokCreat != "New dokument") {
+    		for (PersenKontragent x : CombKont) {
+    			if(x.getId() == persUpdateDok.getIdKontragent()) { 
+    				ComboBoxKontragent.setValue(x);
+    				}
+    		}
+    		for (PersenViewComCons y : CombView) {
+    			if(y.getId() == persUpdateDok.getIdView()) { 
+    				ComboBoxViewComCos.setValue(y);
+    				}
+    		}
+    	}
+    	
     }
-
+    
     private void DateDocConvert() {
     	
     	StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
