@@ -180,7 +180,7 @@ public class ControllerViewComongConsts {
 
         Connection conn = SetCon.CreatConnect();
         SelectPost selPost = new SelectPost();
-        ResultSet resSt = selPost.SelectInfoBase(conn,"SELECT id_viewcc, name_viewcc, deleted_viewcc FROM public.\"ViewComingConsumption\";");
+        ResultSet resSt = selPost.SelectInfoBase(conn,"SELECT id_viewcc, name_viewcc, deleted_viewcc FROM public.\"ViewComingConsumption\" ORDER BY id_viewcc;");
 
         while (resSt.next()) {
             PersenViewComCon.add(new PersenViewComCons(resSt.getInt("id_viewcc"),resSt.getString("name_viewcc"),resSt.getBoolean("deleted_viewcc")));

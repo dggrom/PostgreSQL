@@ -189,7 +189,7 @@ public class ControllerFormNomenclature {
 	    	PersenNomen.clear();
 	    	
 	    	SelectPost selPost = new SelectPost();
-	    	String SQLtext = "SELECT id_nomen, name_nomen, deleted_nomen FROM public.\"Nomenclature\";";
+	    	String SQLtext = "SELECT id_nomen, name_nomen, deleted_nomen FROM public.\"Nomenclature\" ORDER BY id_nomen;";
 	    	Connection con = SetCon.CreatConnect();
 	    	ResultSet rezSet = selPost.SelectInfoBase(con, SQLtext);
 	    	

@@ -189,7 +189,7 @@ public class ControllerFormDirectory {
         Connection connection = SetCon.CreatConnect();
 
         SelectPost SelPos = new SelectPost();
-        ResultSet ResulKontr = SelPos.SelectInfoBase(connection,"SELECT id_kont, name_kont, deleted_kont FROM public.\"Kontragent\";");
+        ResultSet ResulKontr = SelPos.SelectInfoBase(connection,"SELECT id_kont, name_kont, deleted_kont FROM public.\"Kontragent\" ORDER BY id_kont");
         while (ResulKontr.next()){
             Kontragents.add(new PersenKontragent(ResulKontr.getInt(1),ResulKontr.getString(2),ResulKontr.getBoolean(3)));
         }
