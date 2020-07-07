@@ -14,6 +14,7 @@ import Sempel.FormDirectory.DirectoruNomenclature.PersenNomenclatura;
 import Sempel.FormDirectory.DirectoruViewComingCosts.PersenViewComCons;
 import Sempel.FormDirectory.DirectoryKontragent.PersenKontragent;
 import Sempel.FormDocuments.DokConsumption.PersenDokConsuption;
+import Sempel.Registr.RegistrMoneyKoll;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -385,7 +386,7 @@ public class ControllerFormDokConsumption {
 		
     }
 
-    public boolean updateCreatDocComing() throws SQLException {
+    private boolean updateCreatDocComing() throws SQLException {
 		
     	boolean ResultCreatUpdate;
     	boolean boolUpCre = true;
@@ -433,6 +434,9 @@ public class ControllerFormDokConsumption {
     					"	VALUES ("+nomerDok+", "+getIdByName(lineTableMoneyConsu.getNomen()).getId().toString()+", "+lineTableMoneyConsu.getKoll().toString()+","+lineTableMoneyConsu.getSum().toString()+","+lineTableMoneyConsu.getPrice().toString()+");");
 
     		}
+    		
+    		updateRegistrMoneyKoll();
+    		
     	} else {
     		boolUpCre = false;
     	}
@@ -440,6 +444,25 @@ public class ControllerFormDokConsumption {
     	connection.close();
     	
     	return boolUpCre;
+    	
+    }
+    
+    private void updateRegistrMoneyKoll() {
+    	
+    	ObservableList<RegistrMoneyKoll> MassReg = FXCollections.observableArrayList();
+    	
+    	for(PersenTableMoneyConsu lineTable : TableMoney) {
+    		MassReg.add(new RegistrMoneyKoll(Integer.valueOf(0), getIdByName(lineTable.getNomen()).getId(), Integer.valueOf(0), Integer.valueOf(nomerDok), true, lineTable.getSum() * -1, lineTable.getKoll() * -1));
+    	}
+    	
+    	try {
+			Boolean DellLineRegistr = RegistrMoneyKoll.DellAllLines(SetCon, 0, Integer.valueOf(nomerDok));
+			if(!DellLineRegistr) {
+				Boolean UpdateLineRegistr = RegistrMoneyKoll.CreatPostsRegistr(SetCon, MassReg, Integer.valueOf(0), Integer.valueOf(nomerDok));
+			}
+    	} catch (NumberFormatException | SQLException e) {
+			e.printStackTrace();
+		}
     	
     }
     

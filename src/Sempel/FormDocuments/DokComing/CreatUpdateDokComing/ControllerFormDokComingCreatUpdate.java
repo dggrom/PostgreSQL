@@ -9,6 +9,8 @@ import java.util.Optional;
 
 
 import Sempel.FormDocuments.DokComing.PersenDokComing;
+import Sempel.Registr.RegistrMoneyKoll;
+import Sempel.Registr.RegistrPrice;
 import Sempel.FormDirectory.DirectoruViewComingCosts.*;
 import Sempel.FormDirectory.DirectoruNomenclature.*;
 import Sempel.FormDirectory.DirectoryKontragent.*;
@@ -476,6 +478,9 @@ public class ControllerFormDokComingCreatUpdate {
     		
     		}
     		
+    		updateRegistrMoneyKoll();
+    		updateCreatRegistrPrice();
+    		
     	} else {
     		boolUpCre = false;
     	}	
@@ -485,7 +490,48 @@ public class ControllerFormDokComingCreatUpdate {
     	return boolUpCre;
     	
     }
-        
+
+    public void updateCreatRegistrPrice() {
+    	
+    	ObservableList<RegistrPrice> RegMass = FXCollections.observableArrayList();
+    	
+    	try {
+			
+    		for(PersenTableMoney linePer : TableMoney) {
+    			RegMass.add(new RegistrPrice(0, getIdByName(linePer.getNomen()).getId(), linePer.getPrice(), DateDoc.getValue(), Integer.valueOf(NomDokCreat)));
+    		}
+    		
+    		RegistrPrice.dellDocLineRegistrPrice(SetCon, Integer.valueOf(NomDokCreat));
+			RegistrPrice.CreatLineRegistrPrice(SetCon, RegMass);
+    	} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    }
+    
+    public void updateRegistrMoneyKoll() {
+    	
+    	ObservableList<RegistrMoneyKoll> RegMass = FXCollections.observableArrayList();
+		
+    	for(PersenTableMoney lineTable : TableMoney) {
+    		RegMass.add(new RegistrMoneyKoll(0, getIdByName(lineTable.getNomen()).getId(), Integer.valueOf(NomDokCreat), Integer.valueOf(0), true, lineTable.getSum(), lineTable.getKoll()));
+    	}
+    	
+    	try {
+			Boolean DellRegistrLines = RegistrMoneyKoll.DellAllLines(SetCon, Integer.valueOf(NomDokCreat), Integer.valueOf(0));
+		
+			if(!DellRegistrLines) {
+	    		Boolean CreatLineRegistr = RegistrMoneyKoll.CreatPostsRegistr(SetCon, RegMass, Integer.valueOf(NomDokCreat), 0);
+	    	}
+			
+    	} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    }
+    
     public void recountTableMoneyNumbe() {
     	
     	for (int x = 0; x < NumberTableLine; x++) {
