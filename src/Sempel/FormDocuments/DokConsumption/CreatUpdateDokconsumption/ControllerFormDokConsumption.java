@@ -181,7 +181,6 @@ public class ControllerFormDokConsumption {
     		
     		LabelNumberDoc.setText(nomerDok);
     		
-
 			try {
 				if(updateCreatDocComing()) {
 					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();

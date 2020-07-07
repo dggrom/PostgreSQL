@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
-
 import javafx.collections.ObservableList;
 import sql.SelectPost;
 import sql.SettingConnectSQL;
@@ -20,7 +19,7 @@ public class PersenDokConsuption {
 	private Boolean deleted;
 	
 	PersenDokConsuption(Integer idDokConsu, Integer amount,String koments,Integer idKontragent,Integer idView,Boolean deleted, Date date){
-		
+
 		this.Number = idDokConsu;
 		this.amount = amount;
 		this.koment = koments;
@@ -61,6 +60,7 @@ public class PersenDokConsuption {
 		
 		while (resSet.next()) {
 			Mass.add(new PersenDokConsuption(resSet.getInt(1), resSet.getInt(2), resSet.getString(3), resSet.getInt(4), resSet.getInt(5), resSet.getBoolean(6), resSet.getDate(7)));
+
 		}		
 		
 		Connect.close();

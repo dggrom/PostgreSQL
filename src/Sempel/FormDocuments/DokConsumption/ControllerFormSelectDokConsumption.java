@@ -56,7 +56,7 @@ public class ControllerFormSelectDokConsumption {
     
     @FXML
     private TableColumn<PersenDokConsuption, Date> TableColumnsDate;
-    
+
     SettingConnectSQL SetCon;
     ObservableList<PersenDokConsuption> TableForm = FXCollections.observableArrayList();
 
@@ -65,7 +65,6 @@ public class ControllerFormSelectDokConsumption {
 
     	refreshTableForm();
     	initTable();
-    	
     	
     	ButtonCreat.setOnAction(event->{
     		try {
@@ -106,6 +105,7 @@ public class ControllerFormSelectDokConsumption {
     	
     	if(!updateCreat) {
     		ControllerFormDokConsumption DocConsuCreatUpdate = new ControllerFormDokConsumption(updateCreat, SetCon, new PersenDokConsuption(0, 0, "", 0, 0, false,Date.valueOf(LocalDate.now())));
+
     		fxmLoad.setController(DocConsuCreatUpdate);
     	} else {
     		ControllerFormDokConsumption DocConsuCreatUpdate = new ControllerFormDokConsumption(updateCreat, SetCon, persSRT);
