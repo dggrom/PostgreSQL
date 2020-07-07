@@ -44,4 +44,26 @@ public class PersenViewComCons {
     	return Mass;
     }
     
+    public static ObservableList<PersenViewComCons> getMassivviewComConsTable(SettingConnectSQL SetCon, ObservableList<PersenViewComCons> Mass, boolean TrueDell) throws SQLException{
+		
+    	Connection Conn = SetCon.CreatConnect();
+    	
+    	String TextSQL;
+    	if(TrueDell) {
+    		TextSQL = "SELECT id_viewcc, name_viewcc, deleted_viewcc FROM public.\"ViewComingConsumption\" WHERE deleted_viewcc = false ORDER BY id_viewcc;";
+        } else {
+        	TextSQL = "SELECT id_viewcc, name_viewcc, deleted_viewcc FROM public.\"ViewComingConsumption\" ORDER BY id_viewcc;";
+        }
+    	SelectPost SelPos = new SelectPost();
+    	ResultSet ResSet = SelPos.SelectInfoBase(Conn, TextSQL);
+    	
+    	while(ResSet.next()) {
+    		Mass.add(new PersenViewComCons(ResSet.getInt(1), ResSet.getString(2), ResSet.getBoolean(3)));
+    	}
+    	
+    	Conn.close();
+    	return Mass;
+    	
+    }
+    
 }

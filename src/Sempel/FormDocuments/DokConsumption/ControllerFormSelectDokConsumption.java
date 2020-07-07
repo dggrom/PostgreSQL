@@ -2,7 +2,9 @@ package Sempel.FormDocuments.DokConsumption;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import Sempel.FormDocuments.DokConsumption.CreatUpdateDokconsumption.ControllerFormDokConsumption;
@@ -52,6 +54,9 @@ public class ControllerFormSelectDokConsumption {
     @FXML
     private TableColumn<PersenDokConsuption, Boolean> TableColumnsDeleted;
     
+    @FXML
+    private TableColumn<PersenDokConsuption, Date> TableColumnsDate;
+
     SettingConnectSQL SetCon;
     ObservableList<PersenDokConsuption> TableForm = FXCollections.observableArrayList();
 
@@ -59,13 +64,7 @@ public class ControllerFormSelectDokConsumption {
     void initialize() throws SQLException {
 
     	refreshTableForm();
-    	
-    	TableColumnsNumber.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Integer>("Number"));
-    	TableColumnsAmount.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Integer>("Amount"));
-    	TableColumnsKoment.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, String>("Koment"));
-    	TableColumnsDeleted.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Boolean>("Deleted"));	
-    	
-    	TableCunsu.setItems(TableForm);
+    	initTable();
     	
     	ButtonCreat.setOnAction(event->{
     		try {
@@ -86,6 +85,18 @@ public class ControllerFormSelectDokConsumption {
     	
     }
     
+    private void initTable() {
+    	
+    	TableColumnsNumber.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Integer>("Number"));
+    	TableColumnsAmount.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Integer>("Amount"));
+    	TableColumnsKoment.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, String>("Koment"));
+    	TableColumnsDeleted.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Boolean>("Deleted"));	
+    	TableColumnsDate.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Date>("Date"));
+    	
+    	TableCunsu.setItems(TableForm);
+    	
+    }
+    
     private void openFormUpdateCreat(Boolean updateCreat) throws IOException {
     	
     	FXMLLoader fxmLoad =new FXMLLoader(ControllerMainForm.class.getResource("/Sempel/FormDocuments/DokConsumption/CreatUpdateDokconsumption/FormDokConsumptionCreatUpdate.fxml"));
@@ -93,7 +104,8 @@ public class ControllerFormSelectDokConsumption {
     	PersenDokConsuption persSRT = TableCunsu.getSelectionModel().getSelectedItem();
     	
     	if(!updateCreat) {
-    		ControllerFormDokConsumption DocConsuCreatUpdate = new ControllerFormDokConsumption(updateCreat, SetCon, new PersenDokConsuption(0, 0, "", 0, 0, false));
+    		ControllerFormDokConsumption DocConsuCreatUpdate = new ControllerFormDokConsumption(updateCreat, SetCon, new PersenDokConsuption(0, 0, "", 0, 0, false,Date.valueOf(LocalDate.now())));
+
     		fxmLoad.setController(DocConsuCreatUpdate);
     	} else {
     		ControllerFormDokConsumption DocConsuCreatUpdate = new ControllerFormDokConsumption(updateCreat, SetCon, persSRT);

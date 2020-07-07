@@ -1,7 +1,10 @@
 package Sempel.FormDocuments.DokComing.CreatUpdateDokComing;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 
@@ -19,6 +22,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -53,9 +57,15 @@ public class ControllerFormDokComingCreatUpdate {
 
     @FXML
     private Label LabelNumberDoc;
+    
+    @FXML
+    private Label LabelDateDoc;
 
     @FXML
     private TextField AmountDoc;
+    
+    @FXML
+    private DatePicker DateDoc;
 
     @FXML
     private Label LabelAmount;
@@ -115,6 +125,7 @@ public class ControllerFormDokComingCreatUpdate {
     @FXML
     void initialize() throws SQLException {
     	
+    	DateDocConvert();
     	NumberTableLine = 0;
     	
     	refreshComboKontragent();
@@ -124,61 +135,62 @@ public class ControllerFormDokComingCreatUpdate {
     		refreshTableMoney();
     		AmountDoc.setText(persUpdateDok.getAmount().toString());
     		EditComments.setText(persUpdateDok.getKoment());
+    		DateDoc.setValue(persUpdateDok.getDate().toLocalDate());
     		} else {
     			NumberTableLine++;
     			TableMoney.clear();
     			TableMoney.add(new PersenTableMoney(NumberTableLine, Integer.valueOf(0), "",Integer.valueOf(0), Integer.valueOf(0)));
     		}
     	
-    	ComboBoxKontragent.getItems().setAll(CombKont);
-    	ComboBoxKontragent.setConverter(new StringConverter<PersenKontragent>() {
-
-			@Override
-			public String toString(PersenKontragent object) {
-				if (object != null) { 
-					return object.getName();
-					} else {
-						return "";
-					}
-			}
-
-			@Override
-			public PersenKontragent fromString(String string) {
-				return ComboBoxKontragent.getSelectionModel().getSelectedItem();
-			}
-        });
+    	initComboBox();
+    	initTable();
     	
-    	ComboBoxViewComCos.getItems().setAll(CombView);
-    	ComboBoxViewComCos.setConverter(new StringConverter<PersenViewComCons>() {
-
-			@Override
-			public String toString(PersenViewComCons object) {
-				if (object != null) {	
-					return object.getView();
+    	
+    	//Создания дркумента
+    	ButtonSave.setOnAction(event ->{
+    		
+    		if(!recountTableManeySum()) {
+    			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
+    			
+    			FormAlert.setTitle("Необходимо пересчитать итоговую сумму");
+    			FormAlert.setHeaderText("Итоговая сумма не сходится, пересчитать ?");
+    			
+    			Optional<ButtonType> optionAlert = FormAlert.showAndWait();
+    			
+    			if(optionAlert.get() == ButtonType.OK){
+    				AmountDoc.setText(recountStrTableManeySum());
+    			}
+    			
+    		}
+    		
+    		try {
+    			
+				LabelNumberDoc.setText(NomDokCreat);
+	    		
+				if(updateCreatDocComing()) {
+					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();
+					stageForm.close();
 				} else {
-					return "";
+					Alert aletForm = new Alert(Alert.AlertType.ERROR);
+					if(updateDok) {
+						aletForm.setTitle("Ошибка перезаписи документа");
+						aletForm.setHeaderText("Ошибка перезаписи документа");	
+					}else {
+						aletForm.setTitle("Ошибка создания нового документа");
+						aletForm.setHeaderText("Ошибка создания нового документа");
+					}
+					aletForm.show();
 				}
-			}
-
-			@Override
-			public PersenViewComCons fromString(String string) {
-				return ComboBoxViewComCos.getSelectionModel().getSelectedItem();
+				
+    		} catch (SQLException e) {
+				e.printStackTrace();
 			}
     		
-		});
-    	
-    	if (NomDokCreat != "New dokument") {
-    		for (PersenKontragent x : CombKont) {
-    			if(x.getId() == persUpdateDok.getIdKontragent()) { 
-    				ComboBoxKontragent.setValue(x);
-    				}
-    		}
-    		for (PersenViewComCons y : CombView) {
-    			if(y.getId() == persUpdateDok.getIdView()) { 
-    				ComboBoxViewComCos.setValue(y);
-    				}
-    		}
-    	}
+    		    		
+    	});
+    }
+
+    private void initTable() {
     	
     	//Id строки
     	NLTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoney, Integer>("NL"));
@@ -286,50 +298,93 @@ public class ControllerFormDokComingCreatUpdate {
     		recountTableMoneyNumbe();
     	});
     	
-    	//Создания дркумента
-    	ButtonSave.setOnAction(event ->{
-    		
-    		if(!recountTableManeySum()) {
-    			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
-    			
-    			FormAlert.setTitle("Необходимо пересчитать итоговую сумму");
-    			FormAlert.setHeaderText("Итоговая сумма не сходится, пересчитать ?");
-    			
-    			Optional<ButtonType> optionAlert = FormAlert.showAndWait();
-    			
-    			if(optionAlert.get() == ButtonType.OK){
-    				AmountDoc.setText(recountStrTableManeySum());
-    			}
-    			
-    		}
-    		
-    		try {
-    			
-				LabelNumberDoc.setText(NomDokCreat);
-	    		
-				if(updateCreatDocComing()) {
-					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();
-					stageForm.close();
-				} else {
-					Alert aletForm = new Alert(Alert.AlertType.ERROR);
-					if(updateDok) {
-						aletForm.setTitle("Ошибка перезаписи документа");
-						aletForm.setHeaderText("Ошибка перезаписи документа");	
-					}else {
-						aletForm.setTitle("Ошибка создания нового документа");
-						aletForm.setHeaderText("Ошибка создания нового документа");
+    }
+    
+    private void initComboBox() {
+    	
+    	ComboBoxKontragent.getItems().setAll(CombKont);
+    	ComboBoxKontragent.setConverter(new StringConverter<PersenKontragent>() {
+
+			@Override
+			public String toString(PersenKontragent object) {
+				if (object != null) { 
+					return object.getName();
+					} else {
+						return "";
 					}
-					aletForm.show();
+			}
+
+			@Override
+			public PersenKontragent fromString(String string) {
+				return ComboBoxKontragent.getSelectionModel().getSelectedItem();
+			}
+        });
+    	
+    	ComboBoxViewComCos.getItems().setAll(CombView);
+    	ComboBoxViewComCos.setConverter(new StringConverter<PersenViewComCons>() {
+
+			@Override
+			public String toString(PersenViewComCons object) {
+				if (object != null) {	
+					return object.getView();
+				} else {
+					return "";
 				}
-				
-    		} catch (SQLException e) {
-				e.printStackTrace();
+			}
+
+			@Override
+			public PersenViewComCons fromString(String string) {
+				return ComboBoxViewComCos.getSelectionModel().getSelectedItem();
 			}
     		
-    		    		
-    	});
+		});
+    	
+    	if (NomDokCreat != "New dokument") {
+    		for (PersenKontragent x : CombKont) {
+    			if(x.getId() == persUpdateDok.getIdKontragent()) { 
+    				ComboBoxKontragent.setValue(x);
+    				}
+    		}
+    		for (PersenViewComCons y : CombView) {
+    			if(y.getId() == persUpdateDok.getIdView()) { 
+    				ComboBoxViewComCos.setValue(y);
+    				}
+    		}
+    	}
+    	
     }
+    
+    private void DateDocConvert() {
+    	
+    	StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
 
+    		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    		
+			@Override
+			public String toString(LocalDate object) {
+				if (object != null) {
+					return dateFormatter.format(object);
+				} else {
+					return "";
+				}
+			}
+
+			@Override
+			public LocalDate fromString(String string) {
+				if(string != null && !string.isEmpty()) {
+					return LocalDate.parse(string, dateFormatter);
+				} else {
+					return null;
+				}
+			}
+    		
+		};
+		
+		DateDoc.setConverter(converter);
+		DateDoc.setPromptText("yyyy-MM-dd");
+    	DateDoc.setValue(persUpdateDok.getDate().toLocalDate());
+    }
+    
     public Boolean recountTableManeySum() {
 
     	Integer zeroTableManey = 0;
@@ -386,12 +441,12 @@ public class ControllerFormDokComingCreatUpdate {
     		ResultCreatUpdate = SelPost.UpdateCreatTable(connection, "UPDATE public.\"DokComing\"\n" + 
     				"	SET id_dcom = "+persUpdateDok.getNumber()+", \"SumMoney_dcom\" = '"+AmountDoc.getText()+"',"+
     				"   \"Komment_dcom\" = '"+EditComments.getText()+"', id_kont = "+nomerkont+", id_viewcc = "+nomerView+
-    				", deleted_dcom = "+persUpdateDok.getDeleted().toString()+"" + 
+    				",date_dcom = '"+DateDoc.getValue().toString()+"', deleted_dcom = "+persUpdateDok.getDeleted().toString()+"" + 
     				"	WHERE id_dcom = "+persUpdateDok.getNumber()+";");
     	} else {
     		ResultCreatUpdate = SelPost.UpdateCreatTable(connection, "INSERT INTO public.\"DokComing\"(\n" + 
-    				"	\"SumMoney_dcom\", \"Komment_dcom\", id_kont, id_viewcc, deleted_dcom)\n" + 
-    				"	VALUES ( '"+AmountDoc.getText()+"', '"+EditComments.getText()+"', "+nomerkont+", "+nomerView+", false);");
+    				"	\"SumMoney_dcom\", \"Komment_dcom\", id_kont, id_viewcc, deleted_dcom, date_dcom)\n" + 
+    				"	VALUES ( '"+AmountDoc.getText()+"', '"+EditComments.getText()+"', "+nomerkont+", "+nomerView+", false, '"+DateDoc.getValue().toString()+"');");
     	}
     		
     	//Если документ содался, начинаем работать с ТЧ
@@ -417,7 +472,7 @@ public class ControllerFormDokComingCreatUpdate {
     			PersenTableMoney lineTable = TableManeyDoc.getItems().get(x);
     			boolean resTableCreat = SelPost.UpdateCreatTable(connection, "INSERT INTO public.\"DokComingTableMoney\"(\n" + 
 														    					"	id_dcom, id_nomen, kol_dcomtm, sum_docmtm, price_docmtm)\n" + 
-														    					"	VALUES ("+NomDokCreat+", "+getIdByName(lineTable.getNomen()).getId()+", "+lineTable.getKoll()+","+lineTable.getSum()+","+lineTable.getPrice()+");");
+														    					"	VALUES ("+NomDokCreat+", "+getIdByName(lineTable.getNomen()).getId().toString()+", "+lineTable.getKoll().toString()+","+lineTable.getSum().toString()+","+lineTable.getPrice().toString()+");");
     		
     		}
     		
@@ -425,13 +480,15 @@ public class ControllerFormDokComingCreatUpdate {
     		boolUpCre = false;
     	}	
     	
+    	connection.close();
+    	
     	return boolUpCre;
     	
     }
-    
+        
     public void recountTableMoneyNumbe() {
     	
-    	for (int x = 0; x <= NumberTableLine; x++) {
+    	for (int x = 0; x < NumberTableLine; x++) {
     		PersenTableMoney recountLine = TableManeyDoc.getItems().get(x);
     		recountLine.setNL(x + 1);
     	}
@@ -445,6 +502,13 @@ public class ControllerFormDokComingCreatUpdate {
     	Connection connection = SetCon.CreatConnect();
     	
     	TableMoney = PersenTableMoney.getMassivPersenTableMoney(TableMoney, connection, NumberTableLine, NomDokCreat.toString());
+    	
+    	if(TableMoney.size() == 0) {
+    		NumberTableLine++;
+    		TableMoney.add(new PersenTableMoney(NumberTableLine, Integer.valueOf(0), "", Integer.valueOf(0), Integer.valueOf(0)));
+    	} else {
+    		NumberTableLine = TableMoney.size();
+    	}
     	
     	connection.close();
     	
@@ -483,7 +547,7 @@ public class ControllerFormDokComingCreatUpdate {
 		this.NomDokCreat = "New dokument";
 		this.updateDok = updateDok;    		
 		this.SetCon = SetCon;
-		this.persUpdateDok = new PersenDokComing(Integer.valueOf(0), Integer.valueOf(0), "", false,emptyParam,emptyParam);
+		this.persUpdateDok = new PersenDokComing(Integer.valueOf(0), Integer.valueOf(0), "", false,emptyParam,emptyParam, Date.valueOf(LocalDate.now()));
 	}
 	
 }

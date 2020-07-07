@@ -7,9 +7,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="491.0" prefWidth="708.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="485.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
    <children>
-      <VBox layoutX="555.0" prefHeight="491.0" prefWidth="153.0" AnchorPane.leftAnchor="555.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="642.0" prefHeight="491.0" prefWidth="153.0" AnchorPane.leftAnchor="642.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button fx:id="ButtonUpdate" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" text="Изменить ">
                <VBox.margin>
@@ -28,12 +29,13 @@
             </Button>
          </children>
       </VBox>
-      <TableView fx:id="TableCunsu" layoutX="-1.0" prefHeight="491.0" prefWidth="557.0">
+      <TableView fx:id="TableCunsu" layoutX="-1.0" prefHeight="491.0" prefWidth="640.0">
          <columns>
             <TableColumn fx:id="TableColumnsNumber" prefWidth="91.0" text="Number" />
             <TableColumn fx:id="TableColumnsAmount" prefWidth="168.0" text="Amount" />
-            <TableColumn fx:id="TableColumnsKoment" minWidth="0.0" prefWidth="153.0" text="Koment" />
-            <TableColumn fx:id="TableColumnsDeleted" minWidth="0.0" prefWidth="144.0" text="Deleted" />
+            <TableColumn fx:id="TableColumnsKoment" minWidth="0.0" prefWidth="114.0" text="Koment" />
+            <TableColumn fx:id="TableColumnsDate" minWidth="0.0" prefWidth="132.0" text="Date" />
+            <TableColumn fx:id="TableColumnsDeleted" minWidth="0.0" prefWidth="134.0" text="Deleted" />
          </columns>
       </TableView>
    </children>

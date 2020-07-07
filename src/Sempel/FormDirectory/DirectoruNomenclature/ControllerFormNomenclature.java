@@ -22,7 +22,7 @@ package Sempel.FormDirectory.DirectoruNomenclature;
 	import sql.SelectPost;
 	import sql.SettingConnectSQL;
 
-	import javax.swing.*;
+import javax.swing.*;
 
 public class ControllerFormNomenclature {
 
@@ -42,6 +42,9 @@ public class ControllerFormNomenclature {
 	    private Button ButtonCreat;
 
 	    @FXML
+	    private CheckBox TrueDell;
+	    
+	    @FXML
 	    private TableView<PersenNomenclatura> TableNomenclature;
 
 	    @FXML
@@ -58,7 +61,8 @@ public class ControllerFormNomenclature {
 	    
 	    @FXML
 	    void initialize() throws SQLException {
-	    	
+
+	    	TrueDell.setSelected(true);
 	    	refrashTableNomenclature();
 	    	//
 	    	TableColumnsID.setCellValueFactory(new PropertyValueFactory<PersenNomenclatura, Integer>("id"));
@@ -113,6 +117,16 @@ public class ControllerFormNomenclature {
 
 			});
 
+	    	TrueDell.setOnAction(event -> {
+	    		
+	    		try {
+					refrashTableNomenclature();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	    		
+	    	});
+	    	
 	    }
 
 	    private void DeletedNomenklatureBase(String textSQL) throws SQLException {
@@ -186,18 +200,10 @@ public class ControllerFormNomenclature {
 	    }
 	    
 	    private void refrashTableNomenclature() throws SQLException {
+	    	
 	    	PersenNomen.clear();
+	    	PersenNomen = PersenNomenclatura.getMassivNomenTable(SetCon, PersenNomen, TrueDell.isSelected()); 
 	    	
-	    	SelectPost selPost = new SelectPost();
-	    	String SQLtext = "SELECT id_nomen, name_nomen, deleted_nomen FROM public.\"Nomenclature\";";
-	    	Connection con = SetCon.CreatConnect();
-	    	ResultSet rezSet = selPost.SelectInfoBase(con, SQLtext);
-	    	
-	    	while (rezSet.next()) {
-	    		PersenNomen.add(new PersenNomenclatura(rezSet.getInt("id_nomen"), rezSet.getString("name_nomen"), rezSet.getBoolean("deleted_nomen")));
-	    	}
-	    	
-	    	con.close();
 	    	
 		}
 	}

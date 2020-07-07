@@ -4,6 +4,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -20,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -110,6 +113,9 @@ public class ControllerFormDokConsumption {
 
     @FXML
     private Button ButtonTableDel;
+    
+    @FXML
+    private DatePicker DateDoc;
 
     private String nomerDok;
     private Boolean updateDok;
@@ -126,6 +132,7 @@ public class ControllerFormDokConsumption {
     void initialize() throws SQLException {
     
     	numberLinaTable = 0;
+    	DateDokConverter();
     	
     	refrashComboComCons();
     	refrashComboKontr();
@@ -141,54 +148,62 @@ public class ControllerFormDokConsumption {
     		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0), Integer.valueOf(0)));
     	}
     	
-    	ComboBoxKontragent.getItems().setAll(ComboKontr);
-    	ComboBoxKontragent.setConverter(new StringConverter<PersenKontragent>() {
-			
-			@Override
-			public String toString(PersenKontragent object) {
-				if(object != null) {
-					return object.getName();
-				} else {
-					return "";
-				}
-			}
-			
-			@Override
-			public PersenKontragent fromString(String string) {
-				return ComboBoxKontragent.getSelectionModel().getSelectedItem();
-			}
-		});
+    	initComboBox();
+    	initTable();
     	
-    	ComboBoxViewComCos.getItems().setAll(ComboComCons);
-    	ComboBoxViewComCos.setConverter(new StringConverter<PersenViewComCons>() {
-
-			@Override
-			public String toString(PersenViewComCons object) {
-				if (object != null) {
-					return object.getView();
-				} else {
-					return "";
-				}
-			}
-
-			@Override
-			public PersenViewComCons fromString(String string) {
-				return ComboBoxViewComCos.getSelectionModel().getSelectedItem(); 
-			}
-		});
+    	LabelNumberDoc.setText(nomerDok);
     	
-    	if (updateDok) {
-    		for (PersenKontragent x : ComboKontr) {
-    			if(x.getId() == persUpdateDok.getIdKontragent()) {
-    				ComboBoxKontragent.setValue(x);
-    			}
-    		}	
-    		for (PersenViewComCons y : ComboComCons) {
-    			if (y.getId() == persUpdateDok.getIdView()) {
-    				ComboBoxViewComCos.setValue(y);
+    	ButtonTableADD.setOnAction(event -> {
+    		numberLinaTable++;
+    		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0), Integer.valueOf(0)));
+    	});
+    	ButtonTableDel.setOnAction(event ->{
+    		int tablePositionNow = TableManeyDoc.getSelectionModel().getSelectedItem().getNL() - 1;
+    		TableMoney.remove(tablePositionNow);
+    		numberLinaTable--;
+    		recountTableMoneyNumbe();
+    	});
+    	
+    	ButtonSave.setOnAction(event -> {
+    		
+    		if(!recountTableManeySum()) {
+    			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
+    			
+    			FormAlert.setTitle("Необходимо еперсчитать итоговую сумму");
+    			FormAlert.setHeaderText("Итоговая сумма не соходится, пересчитать ?");
+    			
+    			Optional<ButtonType> optionalAlert = FormAlert.showAndWait();
+    		
+    			if(optionalAlert.get() == ButtonType.OK) {
+    					AmountDoc.setText(recountStrTableManeySum());
     			}
     		}
-    	}
+    		
+    		LabelNumberDoc.setText(nomerDok);
+    		
+			try {
+				if(updateCreatDocComing()) {
+					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();
+					stageForm.close();
+				} else {
+					Alert alertForm = new Alert(Alert.AlertType.ERROR);
+					if(updateDok) {
+						alertForm.setTitle("Ошибка перезаписи документа");
+						alertForm.setHeaderText("Ошибка перезаписи документа");	
+					} else {
+						alertForm.setTitle("Ошибка создания нового документа");
+						alertForm.setHeaderText("Ошибка создания нового документа");
+					}
+					alertForm.show();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+    	});
+    }
+
+    private void initTable() {
     	
     	//Уникальный строки
     	NLTMD.setCellValueFactory(new PropertyValueFactory<PersenTableMoneyConsu, Integer>("NL"));
@@ -282,59 +297,94 @@ public class ControllerFormDokConsumption {
     	TableManeyDoc.setItems(TableMoney);
     	TableManeyDoc.setEditable(true);
     	
-    	LabelNumberDoc.setText(nomerDok);
-    	
-    	ButtonTableADD.setOnAction(event -> {
-    		numberLinaTable++;
-    		TableMoney.add(new PersenTableMoneyConsu(numberLinaTable, Integer.valueOf(0), "", Integer.valueOf(0), Integer.valueOf(0)));
-    	});
-    	ButtonTableDel.setOnAction(event ->{
-    		int tablePositionNow = TableManeyDoc.getSelectionModel().getSelectedItem().getNL() - 1;
-    		TableMoney.remove(tablePositionNow);
-    		numberLinaTable--;
-    		recountTableMoneyNumbe();
-    	});
-    	
-    	ButtonSave.setOnAction(event -> {
-    		
-    		if(!recountTableManeySum()) {
-    			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
-    			
-    			FormAlert.setTitle("Необходимо еперсчитать итоговую сумму");
-    			FormAlert.setHeaderText("Итоговая сумма не соходится, пересчитать ?");
-    			
-    			Optional<ButtonType> optionalAlert = FormAlert.showAndWait();
-    		
-    			if(optionalAlert.get() == ButtonType.OK) {
-    					AmountDoc.setText(recountStrTableManeySum());
-    			}
-    		}
-    		
-    		LabelNumberDoc.setText(nomerDok);
-    		
-
-			try {
-				if(updateCreatDocComing()) {
-					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();
-					stageForm.close();
-				} else {
-					Alert alertForm = new Alert(Alert.AlertType.ERROR);
-					if(updateDok) {
-						alertForm.setTitle("Ошибка перезаписи документа");
-						alertForm.setHeaderText("Ошибка перезаписи документа");	
-					} else {
-						alertForm.setTitle("Ошибка создания нового документа");
-						alertForm.setHeaderText("Ошибка создания нового документа");
-					}
-					alertForm.show();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-    	});
     }
     
+    private void initComboBox() {
+    	
+    	ComboBoxKontragent.getItems().setAll(ComboKontr);
+    	ComboBoxKontragent.setConverter(new StringConverter<PersenKontragent>() {
+			
+			@Override
+			public String toString(PersenKontragent object) {
+				if(object != null) {
+					return object.getName();
+				} else {
+					return "";
+				}
+			}
+			
+			@Override
+			public PersenKontragent fromString(String string) {
+				return ComboBoxKontragent.getSelectionModel().getSelectedItem();
+			}
+		});
+    	
+    	ComboBoxViewComCos.getItems().setAll(ComboComCons);
+    	ComboBoxViewComCos.setConverter(new StringConverter<PersenViewComCons>() {
+
+			@Override
+			public String toString(PersenViewComCons object) {
+				if (object != null) {
+					return object.getView();
+				} else {
+					return "";
+				}
+			}
+
+			@Override
+			public PersenViewComCons fromString(String string) {
+				return ComboBoxViewComCos.getSelectionModel().getSelectedItem(); 
+			}
+		});
+    	
+    	if (updateDok) {
+    		for (PersenKontragent x : ComboKontr) {
+    			if(x.getId() == persUpdateDok.getIdKontragent()) {
+    				ComboBoxKontragent.setValue(x);
+    			}
+    		}	
+    		for (PersenViewComCons y : ComboComCons) {
+    			if (y.getId() == persUpdateDok.getIdView()) {
+    				ComboBoxViewComCos.setValue(y);
+    			}
+    		}
+    	}
+    	
+    }
+    
+    private void DateDokConverter() {
+    	
+    	StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
+    			
+    		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    		
+			@Override
+			public String toString(LocalDate object) {
+				
+				if (object != null) {
+					return dateFormatter.format(object);
+				} else {
+					return "";
+				}
+				
+			}
+
+			@Override
+			public LocalDate fromString(String string) {
+				if(string != null && !string.isEmpty()) {
+					return LocalDate.parse(string, dateFormatter);
+				} else {
+					return null;
+				}
+			}
+		};
+		
+		DateDoc.setConverter(converter);
+		DateDoc.setPromptText("yyyy-MM-dd");
+		DateDoc.setValue(persUpdateDok.getDate().toLocalDate());
+		
+    }
+
     public boolean updateCreatDocComing() throws SQLException {
 		
     	boolean ResultCreatUpdate;
@@ -349,12 +399,12 @@ public class ControllerFormDokConsumption {
     		ResultCreatUpdate = SelPos.UpdateCreatTable(connection, "UPDATE public.\"DokConsumption\"\n" + 
     				"	SET id_dcon = "+persUpdateDok.getNumber()+", \"SumMoney_dcon\" = '"+AmountDoc.getText()+"',"+
     				"   \"Komment_dcon\" = '"+EditComments.getText()+"', id_kont = "+nomerKont+", id_viewcc = "+nomerView+
-    				", deleted_dcon = "+persUpdateDok.getDeleted().toString()+"" + 
+    				",date_dcon = '"+DateDoc.getValue().toString()+"' , deleted_dcon = "+persUpdateDok.getDeleted().toString()+"" + 
     				"	WHERE id_dcon = "+persUpdateDok.getNumber()+";");
     	} else {
     		ResultCreatUpdate = SelPos.UpdateCreatTable(connection, "INSERT INTO public.\"DokConsumption\"(\n" + 
-    				"	\"SumMoney_dcon\", \"Komment_dcon\", id_kont, id_viewcc, deleted_dcon)\n" + 
-    				"	VALUES ( '"+AmountDoc.getText()+"', '"+EditComments.getText()+"', "+nomerKont+", "+nomerView+", false);");
+    				"	\"SumMoney_dcon\", \"Komment_dcon\", id_kont, id_viewcc, deleted_dcon, date_dcon)\n" + 
+    				"	VALUES ( '"+AmountDoc.getText()+"', '"+EditComments.getText()+"', "+nomerKont+", "+nomerView+", false, '"+DateDoc.getValue().toString()+"');");
     	}
     	
     	//Если создали или обновили доку, работаем с ТЧ
@@ -387,6 +437,7 @@ public class ControllerFormDokConsumption {
     		boolUpCre = false;
     	}
     	
+    	connection.close();
     	
     	return boolUpCre;
     	
@@ -422,7 +473,7 @@ public class ControllerFormDokConsumption {
     
     public void recountTableMoneyNumbe() {
     	
-    	for (int x = 0; x <= numberLinaTable; x++) {
+    	for (int x = 0; x < numberLinaTable; x++) {
     		PersenTableMoneyConsu recountLine = TableManeyDoc.getItems().get(x);
     		recountLine.setNL(x + 1);
     	}
