@@ -199,21 +199,8 @@ public class ControllerFormDirectory {
     public void refrashTableKontragent() throws SQLException {
 
         Kontragents.clear();
-
-        Connection connection = SetCon.CreatConnect();
-
-        String TextSQL;
-        if(TrueDell.isSelected()) {
-        	TextSQL = "SELECT id_kont, name_kont, deleted_kont FROM public.\"Kontragent\" WHERE deleted_kont = false ORDER BY id_kont";
-        } else {
-        	TextSQL = "SELECT id_kont, name_kont, deleted_kont FROM public.\"Kontragent\" ORDER BY id_kont";
-        }
-        SelectPost SelPos = new SelectPost();
-        ResultSet ResulKontr = SelPos.SelectInfoBase(connection,TextSQL);
-        while (ResulKontr.next()){
-            Kontragents.add(new PersenKontragent(ResulKontr.getInt(1),ResulKontr.getString(2),ResulKontr.getBoolean(3)));
-        }
-        connection.close();
+        Kontragents = PersenKontragent.getMassivkontragentTable(SetCon, Kontragents, TrueDell.isSelected());
+        
     }
 
 }

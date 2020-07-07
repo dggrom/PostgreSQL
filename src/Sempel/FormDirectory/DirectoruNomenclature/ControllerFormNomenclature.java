@@ -22,7 +22,6 @@ package Sempel.FormDirectory.DirectoruNomenclature;
 	import sql.SelectPost;
 	import sql.SettingConnectSQL;
 
-import javax.security.auth.Refreshable;
 import javax.swing.*;
 
 public class ControllerFormNomenclature {
@@ -203,22 +202,8 @@ public class ControllerFormNomenclature {
 	    private void refrashTableNomenclature() throws SQLException {
 	    	
 	    	PersenNomen.clear();
+	    	PersenNomen = PersenNomenclatura.getMassivNomenTable(SetCon, PersenNomen, TrueDell.isSelected()); 
 	    	
-	    	String SQLtext;
-	    	SelectPost selPost = new SelectPost();
-	    	if(TrueDell.isSelected()) {
-	    		SQLtext = "SELECT id_nomen, name_nomen, deleted_nomen FROM public.\"Nomenclature\" WHERE deleted_nomen = false ORDER BY id_nomen;";
-	    	}else {
-	    		SQLtext = "SELECT id_nomen, name_nomen, deleted_nomen FROM public.\"Nomenclature\" ORDER BY id_nomen;";
-	    	}
-	    	Connection con = SetCon.CreatConnect();
-	    	ResultSet rezSet = selPost.SelectInfoBase(con, SQLtext);
-	    	
-	    	while (rezSet.next()) {
-	    		PersenNomen.add(new PersenNomenclatura(rezSet.getInt("id_nomen"), rezSet.getString("name_nomen"), rezSet.getBoolean("deleted_nomen")));
-	    	}
-	    	
-	    	con.close();
 	    	
 		}
 	}
