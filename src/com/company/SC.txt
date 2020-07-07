@@ -1,0 +1,8 @@
+//AdresServer
+127.0.0.1:5432
+//NameBase
+HellowPost
+//NameUser
+postgres
+//PassUser
+12481248

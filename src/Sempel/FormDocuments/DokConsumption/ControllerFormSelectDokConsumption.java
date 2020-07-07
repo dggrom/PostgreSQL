@@ -56,7 +56,7 @@ public class ControllerFormSelectDokConsumption {
     
     @FXML
     private TableColumn<PersenDokConsuption, Date> TableColumnsDate;
-    
+
     SettingConnectSQL SetCon;
     ObservableList<PersenDokConsuption> TableForm = FXCollections.observableArrayList();
 
@@ -64,14 +64,7 @@ public class ControllerFormSelectDokConsumption {
     void initialize() throws SQLException {
 
     	refreshTableForm();
-    	
-    	TableColumnsNumber.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Integer>("Number"));
-    	TableColumnsAmount.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Integer>("Amount"));
-    	TableColumnsKoment.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, String>("Koment"));
-    	TableColumnsDeleted.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Boolean>("Deleted"));	
-    	TableColumnsDate.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Date>("Date"));
-    	
-    	TableCunsu.setItems(TableForm);
+    	initTable();
     	
     	ButtonCreat.setOnAction(event->{
     		try {
@@ -92,6 +85,18 @@ public class ControllerFormSelectDokConsumption {
     	
     }
     
+    private void initTable() {
+    	
+    	TableColumnsNumber.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Integer>("Number"));
+    	TableColumnsAmount.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Integer>("Amount"));
+    	TableColumnsKoment.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, String>("Koment"));
+    	TableColumnsDeleted.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Boolean>("Deleted"));	
+    	TableColumnsDate.setCellValueFactory(new PropertyValueFactory<PersenDokConsuption, Date>("Date"));
+    	
+    	TableCunsu.setItems(TableForm);
+    	
+    }
+    
     private void openFormUpdateCreat(Boolean updateCreat) throws IOException {
     	
     	FXMLLoader fxmLoad =new FXMLLoader(ControllerMainForm.class.getResource("/Sempel/FormDocuments/DokConsumption/CreatUpdateDokconsumption/FormDokConsumptionCreatUpdate.fxml"));
@@ -100,6 +105,7 @@ public class ControllerFormSelectDokConsumption {
     	
     	if(!updateCreat) {
     		ControllerFormDokConsumption DocConsuCreatUpdate = new ControllerFormDokConsumption(updateCreat, SetCon, new PersenDokConsuption(0, 0, "", 0, 0, false,Date.valueOf(LocalDate.now())));
+
     		fxmLoad.setController(DocConsuCreatUpdate);
     	} else {
     		ControllerFormDokConsumption DocConsuCreatUpdate = new ControllerFormDokConsumption(updateCreat, SetCon, persSRT);
