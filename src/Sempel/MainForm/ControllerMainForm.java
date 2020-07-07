@@ -60,6 +60,12 @@ public class ControllerMainForm {
     private MenuItem MenuDokConsu;
 
     @FXML
+    private Menu MenuStting;
+
+    @FXML
+    private MenuItem MenuSettingDellRash;
+    
+    @FXML
     private ImageView DokComing;
     
     //Мои переменные

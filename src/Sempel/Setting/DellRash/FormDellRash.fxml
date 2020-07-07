@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="996.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <SplitPane dividerPositions="0.5" layoutX="796.0" orientation="VERTICAL" prefHeight="553.0" prefWidth="200.0">
+        <items>
+            <TitledPane fx:id="TitledPaneDir" animated="false" prefHeight="116.0" prefWidth="200.0" text="Справочники">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="90.0" prefWidth="191.0">
+                     <children>
+                        <RadioButton fx:id="RadioButtonKontr" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="172.0" text="Контрагенты" />
+                        <RadioButton fx:id="RadioButtonNomen" layoutX="14.0" layoutY="37.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="172.0" text="Номенклатура" />
+                        <RadioButton fx:id="RadioButtonView" layoutX="13.0" layoutY="62.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="172.0" text="ВидыРасход" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="TitledPaneDoc" animated="false" prefHeight="84.0" prefWidth="198.0" text="Документы">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="90.0" prefWidth="191.0">
+                     <children>
+                        <RadioButton fx:id="RadioButtonDocCon" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="172.0" text="Приход" />
+                        <RadioButton fx:id="RadioButtonDocCom" layoutX="14.0" layoutY="37.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="172.0" text="Расход" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
+        </items>
+      </SplitPane>
+      <TableView fx:id="TableObject" prefHeight="553.0" prefWidth="251.0">
+        <columns>
+          <TableColumn fx:id="TableColumnObject" prefWidth="250.0" text="Объект" />
+        </columns>
+      </TableView>
+      <TableView fx:id="TableDependence" layoutX="251.0" prefHeight="553.0" prefWidth="548.0">
+         <columns>
+            <TableColumn fx:id="TableDepColumnViewObject" prefWidth="374.0" text="Вид объекта" />
+            <TableColumn fx:id="TableDepColumnNomer" minWidth="0.0" prefWidth="173.0" text="Номер" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>
