@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import sql.SelectPost;
 import sql.SettingConnectSQL;
@@ -47,5 +46,28 @@ public class PersenNomenclatura {
 		return Mass;
 		
 	}
+	
+	public static ObservableList<PersenNomenclatura> getMassivNomenTable(SettingConnectSQL SetCon, ObservableList<PersenNomenclatura> Mass, boolean TrueDell) throws SQLException{
+		
+		Connection Conn = SetCon.CreatConnect();
+		
+		String TextSQl;
+		if(TrueDell) {
+			TextSQl = "SELECT id_nomen, name_nomen, deleted_nomen FROM public.\"Nomenclature\" WHERE deleted_nomen = false ORDER BY id_nomen;";
+    	}else {
+    		TextSQl = "SELECT id_nomen, name_nomen, deleted_nomen FROM public.\"Nomenclature\" ORDER BY id_nomen;";
+    	}
+		SelectPost SelPos = new SelectPost();
+		ResultSet ResSet = SelPos.SelectInfoBase(Conn,TextSQl);
+		
+		while(ResSet.next()) {
+			Mass.add(new PersenNomenclatura(ResSet.getInt(1), ResSet.getString(2), ResSet.getBoolean(3)));
+		}
+		
+		Conn.close();
+		
+		return Mass;
+	}
+	 
 	
 }

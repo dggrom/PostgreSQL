@@ -2,13 +2,13 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane prefHeight="491.0" prefWidth="708.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="491.0" prefWidth="708.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox layoutX="555.0" prefHeight="491.0" prefWidth="153.0" AnchorPane.leftAnchor="555.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -27,6 +27,14 @@
                   <Insets bottom="5.0" left="25.0" right="5.0" top="10.0" />
                </VBox.margin>
             </Button>
+            <CheckBox fx:id="TrueDell" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="17.0" prefWidth="106.0" text="Удаленные" textOverrun="CENTER_ELLIPSIS">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="25.0" right="5.0" top="10.0" />
+               </VBox.margin>
+            </CheckBox>
          </children>
       </VBox>
       <TableView fx:id="TableViewComCon" layoutX="-1.0" prefHeight="491.0" prefWidth="557.0">

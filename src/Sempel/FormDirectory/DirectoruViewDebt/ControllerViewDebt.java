@@ -71,7 +71,7 @@ public class ControllerViewDebt {
         private void RefreshTable() throws SQLException {
                 PersViewDebt.clear();
 
-                String textSQl = "SELECT id_debt, view_debt, deleted_debt FROM public.\"ViewDebt\";";
+                String textSQl = "SELECT id_debt, view_debt, deleted_debt FROM public.\"ViewDebt\" ORDER BY id_debt;";
 
                 SelectPost SelPost = new SelectPost();
                 Connection con = SetCon.CreatConnect();

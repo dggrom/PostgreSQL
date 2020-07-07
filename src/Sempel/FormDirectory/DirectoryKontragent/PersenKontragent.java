@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javafx.collections.ObservableList;
+import sql.Connect;
 import sql.SelectPost;
 import sql.SettingConnectSQL;
 
@@ -43,6 +44,27 @@ public class PersenKontragent {
     	
     	return Mass;
     	
+    }
+    
+    public static ObservableList<PersenKontragent> getMassivkontragentTable(SettingConnectSQL SetCon, ObservableList<PersenKontragent> Mass, Boolean TrueDell) throws SQLException{
+    	
+    	Connection Conn = SetCon.CreatConnect();
+    	
+    	String TextSQL;
+    	if(TrueDell) {
+    		TextSQL = "SELECT id_kont, name_kont, deleted_kont FROM public.\"Kontragent\" WHERE deleted_kont = false ORDER BY id_kont";
+        } else {
+        	TextSQL = "SELECT id_kont, name_kont, deleted_kont FROM public.\"Kontragent\" ORDER BY id_kont";
+        }
+    	SelectPost SelPos = new SelectPost();
+    	ResultSet ResSet = SelPos.SelectInfoBase(Conn, TextSQL);
+    	while(ResSet.next()) {
+    		Mass.add(new PersenKontragent(ResSet.getInt(1), ResSet.getString(2), ResSet.getBoolean(3)));
+    	}
+    	
+    	Conn.close();
+    	
+    	return Mass;
     }
     
 }
