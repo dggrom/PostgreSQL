@@ -53,18 +53,7 @@ public class ControllerDellRash {
 
     @FXML
     void initialize() {
-        assert TitledPaneDir != null : "fx:id=\"TitledPaneDir\" was not injected: check your FXML file 'FormDellRash.fxml'.";
-        assert RadioButtonKontr != null : "fx:id=\"RadioButtonKontr\" was not injected: check your FXML file 'FormDellRash.fxml'.";
-        assert RadioButtonNomen != null : "fx:id=\"RadioButtonNomen\" was not injected: check your FXML file 'FormDellRash.fxml'.";
-        assert RadioButtonView != null : "fx:id=\"RadioButtonView\" was not injected: check your FXML file 'FormDellRash.fxml'.";
-        assert TitledPaneDoc != null : "fx:id=\"TitledPaneDoc\" was not injected: check your FXML file 'FormDellRash.fxml'.";
-        assert RadioButtonDocCon != null : "fx:id=\"RadioButtonDocCon\" was not injected: check your FXML file 'FormDellRash.fxml'.";
-        assert RadioButtonDocCom != null : "fx:id=\"RadioButtonDocCom\" was not injected: check your FXML file 'FormDellRash.fxml'.";
-        assert TableObject != null : "fx:id=\"TableObject\" was not injected: check your FXML file 'FormDellRash.fxml'.";
-        assert TableColumnObject != null : "fx:id=\"TableColumnObject\" was not injected: check your FXML file 'FormDellRash.fxml'.";
-        assert TableDependence != null : "fx:id=\"TableDependence\" was not injected: check your FXML file 'FormDellRash.fxml'.";
-        assert TableDepColumnViewObject != null : "fx:id=\"TableDepColumnViewObject\" was not injected: check your FXML file 'FormDellRash.fxml'.";
-        assert TableDepColumnNomer != null : "fx:id=\"TableDepColumnNomer\" was not injected: check your FXML file 'FormDellRash.fxml'.";
+
 
     }
 }
