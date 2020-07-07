@@ -22,7 +22,8 @@ package Sempel.FormDirectory.DirectoruNomenclature;
 	import sql.SelectPost;
 	import sql.SettingConnectSQL;
 
-	import javax.swing.*;
+import javax.security.auth.Refreshable;
+import javax.swing.*;
 
 public class ControllerFormNomenclature {
 
@@ -42,6 +43,9 @@ public class ControllerFormNomenclature {
 	    private Button ButtonCreat;
 
 	    @FXML
+	    private CheckBox TrueDell;
+	    
+	    @FXML
 	    private TableView<PersenNomenclatura> TableNomenclature;
 
 	    @FXML
@@ -58,7 +62,8 @@ public class ControllerFormNomenclature {
 	    
 	    @FXML
 	    void initialize() throws SQLException {
-	    	
+
+	    	TrueDell.setSelected(true);
 	    	refrashTableNomenclature();
 	    	//
 	    	TableColumnsID.setCellValueFactory(new PropertyValueFactory<PersenNomenclatura, Integer>("id"));
@@ -113,6 +118,16 @@ public class ControllerFormNomenclature {
 
 			});
 
+	    	TrueDell.setOnAction(event -> {
+	    		
+	    		try {
+					refrashTableNomenclature();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	    		
+	    	});
+	    	
 	    }
 
 	    private void DeletedNomenklatureBase(String textSQL) throws SQLException {
@@ -186,10 +201,16 @@ public class ControllerFormNomenclature {
 	    }
 	    
 	    private void refrashTableNomenclature() throws SQLException {
+	    	
 	    	PersenNomen.clear();
 	    	
+	    	String SQLtext;
 	    	SelectPost selPost = new SelectPost();
-	    	String SQLtext = "SELECT id_nomen, name_nomen, deleted_nomen FROM public.\"Nomenclature\" ORDER BY id_nomen;";
+	    	if(TrueDell.isSelected()) {
+	    		SQLtext = "SELECT id_nomen, name_nomen, deleted_nomen FROM public.\"Nomenclature\" WHERE deleted_nomen = false ORDER BY id_nomen;";
+	    	}else {
+	    		SQLtext = "SELECT id_nomen, name_nomen, deleted_nomen FROM public.\"Nomenclature\" ORDER BY id_nomen;";
+	    	}
 	    	Connection con = SetCon.CreatConnect();
 	    	ResultSet rezSet = selPost.SelectInfoBase(con, SQLtext);
 	    	

@@ -40,6 +40,9 @@ public class ControllerViewComongConsts {
 
     @FXML
     private Button ButtonCreat;
+    
+    @FXML
+   	private CheckBox TrueDell;
 
     @FXML
     private TableView<PersenViewComCons> TableViewComCon;
@@ -58,7 +61,10 @@ public class ControllerViewComongConsts {
 
     @FXML
     void initialize() throws SQLException {
-        refrashTableView();
+        
+    	TrueDell.setSelected(true);
+    	
+    	refrashTableView();
 
         TableColumnsID.setCellValueFactory(new PropertyValueFactory<PersenViewComCons, Integer>("id"));
         TableColumnsView.setCellValueFactory(new PropertyValueFactory<PersenViewComCons, String>("View"));
@@ -98,6 +104,14 @@ public class ControllerViewComongConsts {
                     e.printStackTrace();
                 }
             }
+        });
+        
+        TrueDell.setOnAction(event -> {
+        	try {
+				refrashTableView();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
         });
     }
 
@@ -178,9 +192,15 @@ public class ControllerViewComongConsts {
     private void refrashTableView() throws SQLException {
         PersenViewComCon.clear();
 
+        String TextSQL;
+        if(TrueDell.isSelected()) {
+        	TextSQL = "SELECT id_viewcc, name_viewcc, deleted_viewcc FROM public.\"ViewComingConsumption\" WHERE deleted_viewcc = false ORDER BY id_viewcc;";
+        } else {
+        	TextSQL = "SELECT id_viewcc, name_viewcc, deleted_viewcc FROM public.\"ViewComingConsumption\" ORDER BY id_viewcc;";
+        }
         Connection conn = SetCon.CreatConnect();
         SelectPost selPost = new SelectPost();
-        ResultSet resSt = selPost.SelectInfoBase(conn,"SELECT id_viewcc, name_viewcc, deleted_viewcc FROM public.\"ViewComingConsumption\" ORDER BY id_viewcc;");
+        ResultSet resSt = selPost.SelectInfoBase(conn,TextSQL);
 
         while (resSt.next()) {
             PersenViewComCon.add(new PersenViewComCons(resSt.getInt("id_viewcc"),resSt.getString("name_viewcc"),resSt.getBoolean("deleted_viewcc")));

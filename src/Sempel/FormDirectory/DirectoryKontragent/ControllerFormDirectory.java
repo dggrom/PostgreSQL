@@ -36,6 +36,9 @@ public class ControllerFormDirectory {
     private URL location;
 
     @FXML
+    private CheckBox TrueDell;
+    
+    @FXML
     private TableView<PersenKontragent> Table;
 
     @FXML
@@ -59,6 +62,8 @@ public class ControllerFormDirectory {
     @FXML
     void initialize() throws SQLException {
 
+    	TrueDell.setSelected(true);
+    	
         refrashTableKontragent();
 
         TableColumId.setCellValueFactory(new PropertyValueFactory<PersenKontragent, Integer>("id"));
@@ -97,6 +102,15 @@ public class ControllerFormDirectory {
                 e.printStackTrace();
             }
         });
+        
+        TrueDell.setOnAction(event -> {
+        	try {
+				refrashTableKontragent();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+        });
+        
     }
 
     private boolean ShowFormDelet(){
@@ -188,8 +202,14 @@ public class ControllerFormDirectory {
 
         Connection connection = SetCon.CreatConnect();
 
+        String TextSQL;
+        if(TrueDell.isSelected()) {
+        	TextSQL = "SELECT id_kont, name_kont, deleted_kont FROM public.\"Kontragent\" WHERE deleted_kont = false ORDER BY id_kont";
+        } else {
+        	TextSQL = "SELECT id_kont, name_kont, deleted_kont FROM public.\"Kontragent\" ORDER BY id_kont";
+        }
         SelectPost SelPos = new SelectPost();
-        ResultSet ResulKontr = SelPos.SelectInfoBase(connection,"SELECT id_kont, name_kont, deleted_kont FROM public.\"Kontragent\" ORDER BY id_kont");
+        ResultSet ResulKontr = SelPos.SelectInfoBase(connection,TextSQL);
         while (ResulKontr.next()){
             Kontragents.add(new PersenKontragent(ResulKontr.getInt(1),ResulKontr.getString(2),ResulKontr.getBoolean(3)));
         }
