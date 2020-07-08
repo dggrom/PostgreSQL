@@ -35,6 +35,11 @@
                         <MenuItem fx:id="MenuDokConsu" mnemonicParsing="false" text="Расход" />
                   </items>
                 </Menu>
+                  <Menu fx:id="MenuReports" mnemonicParsing="false" text="Отчет">
+                     <items>
+                        <MenuItem fx:id="MenuReportPriceNomen" mnemonicParsing="false" text="Цена номенклатур" />
+                     </items>
+                  </Menu>
               </menus>
                <rotationAxis>
                   <Point3D />

@@ -37,7 +37,9 @@ public class PersenReportPriceNomen {
 		ObservableList<PersenReportPriceNomen> Mass = FXCollections.observableArrayList();
 		
 		Integer linePer = 0;
-		String TextSQL = "";
+		String TextSQL = "SELECT Nom.name_nomen, RP.price_rp\n" + 
+				"	FROM public.\"RegistrPrice\" RP, public.\"Nomenclature\" Nom\n" + 
+				"	WHERE Nom.id_nomen = RP.id_nomen;";
 		
 		Connection Conn = SetCon.CreatConnect();
 		SelectPost SelPos = new SelectPost();

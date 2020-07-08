@@ -1,6 +1,7 @@
 package Sempel.MainForm;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import Sempel.FormDirectory.DirectoruNomenclature.ControllerFormNomenclature;
 import Sempel.FormDirectory.DirectoruViewComingCosts.ControllerViewComongConsts;
@@ -8,6 +9,7 @@ import Sempel.FormDirectory.DirectoruViewDebt.ControllerViewDebt;
 import Sempel.FormDirectory.DirectoryKontragent.ControllerFormDirectory;
 import Sempel.FormDocuments.DokComing.ControllerFormSelectionDokComing;
 import Sempel.FormDocuments.DokConsumption.ControllerFormSelectDokConsumption;
+import Sempel.Reports.PriceNomen.DataReportPriceNomen;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,6 +19,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.JRException;
 import sql.SettingConnectSQL;
 
 
@@ -58,6 +61,12 @@ public class ControllerMainForm {
 
     @FXML
     private MenuItem MenuDokConsu;
+    
+    @FXML
+    private Menu MenuReports;
+
+    @FXML
+    private MenuItem MenuReportPriceNomen;
 
     @FXML
     private ImageView DokComing;
@@ -103,6 +112,16 @@ public class ControllerMainForm {
     	   try {
 			CreatForm("../FormDocuments/DokConsumption/FormSelectDokConsumption.fxml", "ControllerFormSelectDokConsumption");
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+       });
+       
+       MenuReportPriceNomen.setOnAction(event -> {
+    	   try {
+    		   new DataReportPriceNomen().creatREportPriceNomen(SettConn);;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (JRException e) {
 			e.printStackTrace();
 		}
        });

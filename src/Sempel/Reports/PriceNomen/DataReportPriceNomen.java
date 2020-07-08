@@ -6,25 +6,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Parameter;
-
-import javafx.collections.ObservableList;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperCompileManager;
+
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import javafx.collections.ObservableList;
 import sql.SettingConnectSQL;
 
 public class DataReportPriceNomen {
-
-	 	private String PATH           = "/Sempel/Reports/PriceNomen";
-	    private String REPORT_pdf     = "/report.pdf";
-	    private String REPORT_pattern = "/ReportsPrice_A4.jrxml";
 
 	    private File                        				   reportPattern;
 	    private Map<String, Object>         				   parameters;
@@ -42,8 +38,7 @@ public class DataReportPriceNomen {
 	    	
 	    	parameters = new HashMap<String, Object>();
 	    	parameters.put("DataReport", new Date());
-	    	
-	    	reportPattern = new File("/Sempel/Reports/PriceNomen/ReportsPrice_A4.jrxml");
+	    	reportPattern = new File("/Sempel/Reports/PriceNomen/ReportsPriceA4.jrxml");
 	    	jasperDesign  = JRXmlLoader.load(reportPattern);
 	    	jasperReport  = JasperCompileManager.compileReport(jasperDesign);
 	        jasperPrint   = JasperFillManager.fillReport(jasperReport, 
@@ -51,7 +46,7 @@ public class DataReportPriceNomen {
 	                                                     beanColDataSource);
 	        
 	        JasperExportManager.exportReportToPdfFile(jasperPrint, 
-	        		"/Sempel/Reports/PriceNomen" + REPORT_pdf);
+	        		"/home/dggrom/Документы/java/EclipseProject/PostgreSQL/src/Sempel/Reports/PriceNomen/reportPDF.pdf");
 	    	
 	    }
 
