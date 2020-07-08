@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -48,6 +50,25 @@ public class DataReportPriceNomen {
 	        JasperExportManager.exportReportToPdfFile(jasperPrint, 
 	        		"/home/dggrom/Документы/java/EclipseProject/PostgreSQL/src/Sempel/Reports/PriceNomen/reportPDF.pdf");
 	    	
+	    	
+	        /*
+	    	JasperReport jasperReport = JasperCompileManager
+	                .compileReport("ReportsPriceA4.jrxml");
+	  
+	        Map<String, Object> parameters = new HashMap<String, Object>();
+	  
+
+	        JRDataSource dataSource = new JREmptyDataSource();
+	  
+	        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,
+	                parameters, dataSource);
+	  
+	  
+	        JasperExportManager.exportReportToPdfFile(jasperPrint,
+	                "/home/dggrom/Документы/java/EclipseProject/PostgreSQL/src/Sempel/Reports/PriceNomen/reportPDF.pdf");
+	         
+	        System.out.println("Done!");
+	        */
 	    }
 
 }
