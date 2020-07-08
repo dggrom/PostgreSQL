@@ -38,7 +38,7 @@ public class DataReportPriceNomen {
 	    	
 	    	parameters = new HashMap<String, Object>();
 	    	parameters.put("DataReport", new Date());
-	    	reportPattern = new File("/Sempel/Reports/PriceNomen/ReportsPriceA4.jrxml");
+	    	reportPattern = new File("ReportsPriceA4.jrxml");
 	    	jasperDesign  = JRXmlLoader.load(reportPattern);
 	    	jasperReport  = JasperCompileManager.compileReport(jasperDesign);
 	        jasperPrint   = JasperFillManager.fillReport(jasperReport, 

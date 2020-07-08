@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportsPrice_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3c54a8ba-137c-403e-9bb2-db6193233e94">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
+	<subDataset name="HellowPost" uuid="7e8111bf-91d8-4ef2-9495-2f67a57514ef">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="160" y="18" width="180" height="18" uuid="773ff15d-67bc-417d-aa30-29c50e262731"/>
+				<text><![CDATA[Отчет по ценам номенклатур от ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="360" y="20" width="110" height="16" uuid="89163df2-3da5-460a-bb50-1c407fc3bf0a"/>
+				<textFieldExpression><![CDATA[$P{DataReport}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="180" y="11" width="50" height="23" uuid="3d860aa2-dfd0-4d3d-9f40-5ad6fb15c69c"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="19"/>
+				</textElement>
+				<text><![CDATA[Н/П]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="11" width="110" height="23" uuid="b47c285b-51c1-4ab9-9f37-748eb4316638"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="19"/>
+				</textElement>
+				<text><![CDATA[Номенклатура]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="11" width="80" height="23" uuid="74fcfd02-b0cf-40e3-89ab-29307529ad31"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="19"/>
+				</textElement>
+				<text><![CDATA[Цена]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="180" y="0" width="50" height="28" uuid="a037098f-63da-4062-aa3e-2f4b8586de12"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="0" width="110" height="28" uuid="b0b05a98-ac6d-4efa-a197-f6f07a924aa8"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NomenName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="0" width="80" height="28" uuid="6fc4b9e6-04e2-42e5-b293-0bc4a96ebd11"/>
+				<box>
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SumNomen}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
