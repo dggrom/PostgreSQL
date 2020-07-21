@@ -9,9 +9,13 @@
 			<![CDATA[]]>
 		</queryString>
 	</subDataset>
+	<parameter name="DataReport" class="java.util.Date"/>
 	<queryString language="SQL">
 		<![CDATA[]]>
 	</queryString>
+	<field name="NP" class="java.lang.String"/>
+	<field name="NomenName" class="java.lang.String"/>
+	<field name="SumNomen" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

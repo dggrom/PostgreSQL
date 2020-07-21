@@ -11,11 +11,11 @@ import sql.SettingConnectSQL;
 
 public class PersenReportPriceNomen {
 
-	private Integer NP;
+	private String NP;
 	private String NomenName;
-	private Integer SumNomen;
+	private String SumNomen;
 	
-	public PersenReportPriceNomen(Integer NP, String NomenName, Integer SumNomen){
+	public PersenReportPriceNomen(String NP, String NomenName, String SumNomen){
 		
 		this.NP = NP;
 		this.NomenName = NomenName;
@@ -23,14 +23,14 @@ public class PersenReportPriceNomen {
 		
 	}
 	
-	public void setNP(Integer value) {this.NP = value;}
-	public Integer getNP() {return this.NP;}
+	public void setNP(String value) {this.NP = value;}
+	public String getNP() {return this.NP;}
 	
 	public void setNomenName(String value) {this.NomenName = value;}
 	public String getNomenName() {return this.NomenName;}
 	
-	public void setSumNomen(Integer value) {this.SumNomen = value;}
-	public Integer getSumNomen() {return this.SumNomen;}
+	public void setSumNomen(String value) {this.SumNomen = value;}
+	public String getSumNomen() {return this.SumNomen;}
 	
 	public static ObservableList<PersenReportPriceNomen> getMassivReportPrice(SettingConnectSQL SetCon) throws SQLException {
 		
@@ -48,7 +48,7 @@ public class PersenReportPriceNomen {
 		
 		while(ResSet.next()) {
 			linePer++;
-			Mass.add(new PersenReportPriceNomen(linePer, ResSet.getString(1), ResSet.getInt(2)));
+			Mass.add(new PersenReportPriceNomen(linePer.toString(), ResSet.getString(1), ResSet.getString(2)));
 		}
 		
 		Conn.close();

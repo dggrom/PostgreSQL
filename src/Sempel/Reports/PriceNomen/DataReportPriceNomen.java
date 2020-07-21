@@ -38,6 +38,7 @@ public class DataReportPriceNomen {
 	    	
 	    	ObservableList<PersenReportPriceNomen> dataBeanList = PersenReportPriceNomen.getMassivReportPrice(SetCon);
 	    	
+	    	/*
 	    	parameters = new HashMap<String, Object>();
 	    	parameters.put("DataReport", new Date());
 	    	reportPattern = new File("ReportsPriceA4.jrxml");
@@ -50,6 +51,17 @@ public class DataReportPriceNomen {
 	        JasperExportManager.exportReportToPdfFile(jasperPrint, 
 	        		"/home/dggrom/Документы/java/EclipseProject/PostgreSQL/src/Sempel/Reports/PriceNomen/reportPDF.pdf");
 	    	
+	        */
+	    	
+	        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataBeanList); 
+	        Map<String, Object> parameters = new HashMap<String, Object>(); 
+	        parameters.put("DataReport", new Date()); 
+	        File reportPattern = new File("ReportsPriceA4.jrxml"); 
+	        JasperDesign jasperDesign = JRXmlLoader.load(reportPattern); 
+	        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign); 
+	        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, 
+	                parameters, beanColDataSource); 
+	        JasperExportManager.exportReportToPdfFile(jasperPrint, "reportPDF.pdf"); 
 	    	
 	        /*
 	    	JasperReport jasperReport = JasperCompileManager
