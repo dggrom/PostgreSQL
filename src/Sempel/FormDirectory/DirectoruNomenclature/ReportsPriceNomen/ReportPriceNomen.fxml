@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="491.0" prefWidth="541.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TableView fx:id="TableNomenclature" layoutX="-1.0" prefHeight="491.0" prefWidth="557.0">
+         <columns>
+            <TableColumn fx:id="TableColumnsPriceNomen" prefWidth="169.0" text="Цена" />
+            <TableColumn fx:id="TableColumnsDateNomen" prefWidth="387.0" text="Дата" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>
