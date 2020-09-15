@@ -91,6 +91,9 @@ public class ControllerFormDokComingCreatUpdate {
 
     @FXML
     private Button ButtonSave;
+    
+    @FXML
+    private Button ButtonSaveAndClose;
 
     @FXML
     private Label LabelDokN1;
@@ -149,6 +152,50 @@ public class ControllerFormDokComingCreatUpdate {
     	
     	//Создания дркумента
     	ButtonSave.setOnAction(event ->{
+    		
+    		if(!recountTableManeySum()) {
+    			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
+    			
+    			FormAlert.setTitle("Необходимо пересчитать итоговую сумму");
+    			FormAlert.setHeaderText("Итоговая сумма не сходится, пересчитать ?");
+    			
+    			Optional<ButtonType> optionAlert = FormAlert.showAndWait();
+    			
+    			if(optionAlert.get() == ButtonType.OK){
+    				AmountDoc.setText(recountStrTableManeySum());
+    			}
+    			
+    		}
+    		
+    		try {
+    			
+				LabelNumberDoc.setText(NomDokCreat);
+	    		
+				if(updateCreatDocComing()) {
+					Alert aletForm = new Alert(Alert.AlertType.INFORMATION);
+					aletForm.setTitle("Документ записан");
+					aletForm.setHeaderText("Документ записан");
+					aletForm.show();
+				} else {
+					Alert aletForm = new Alert(Alert.AlertType.ERROR);
+					if(updateDok) {
+						aletForm.setTitle("Ошибка перезаписи документа");
+						aletForm.setHeaderText("Ошибка перезаписи документа");	
+					}else {
+						aletForm.setTitle("Ошибка создания нового документа");
+						aletForm.setHeaderText("Ошибка создания нового документа");
+					}
+					aletForm.show();
+				}
+				
+    		} catch (SQLException e) {
+				e.printStackTrace();
+			}
+    		
+    		    		
+    	});
+    	
+    	ButtonSaveAndClose.setOnAction(event ->{
     		
     		if(!recountTableManeySum()) {
     			Alert FormAlert = new Alert(AlertType.CONFIRMATION);

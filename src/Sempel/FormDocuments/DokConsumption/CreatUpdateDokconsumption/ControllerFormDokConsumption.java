@@ -93,6 +93,9 @@ public class ControllerFormDokConsumption {
 
     @FXML
     private Button ButtonSave;
+    
+    @FXML
+    private Button ButtonSaveAndClose;
 
     @FXML
     private Label LabelDokN1;
@@ -165,7 +168,7 @@ public class ControllerFormDokConsumption {
     		recountTableMoneyNumbe();
     	});
     	
-    	ButtonSave.setOnAction(event -> {
+    	ButtonSaveAndClose.setOnAction(event -> {
     		
     		if(!recountTableManeySum()) {
     			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
@@ -186,6 +189,46 @@ public class ControllerFormDokConsumption {
 				if(updateCreatDocComing()) {
 					Stage stageForm = (Stage) ButtonSave.getScene().getWindow();
 					stageForm.close();
+				} else {
+					Alert alertForm = new Alert(Alert.AlertType.ERROR);
+					if(updateDok) {
+						alertForm.setTitle("Ошибка перезаписи документа");
+						alertForm.setHeaderText("Ошибка перезаписи документа");	
+					} else {
+						alertForm.setTitle("Ошибка создания нового документа");
+						alertForm.setHeaderText("Ошибка создания нового документа");
+					}
+					alertForm.show();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+    	});
+    	
+    	ButtonSave.setOnAction(event -> {
+    		
+    		if(!recountTableManeySum()) {
+    			Alert FormAlert = new Alert(AlertType.CONFIRMATION);
+    			
+    			FormAlert.setTitle("Необходимо еперсчитать итоговую сумму");
+    			FormAlert.setHeaderText("Итоговая сумма не соходится, пересчитать ?");
+    			
+    			Optional<ButtonType> optionalAlert = FormAlert.showAndWait();
+    		
+    			if(optionalAlert.get() == ButtonType.OK) {
+    					AmountDoc.setText(recountStrTableManeySum());
+    			}
+    		}
+    		
+    		LabelNumberDoc.setText(nomerDok);
+    		
+			try {
+				if(updateCreatDocComing()) {
+					Alert aletForm = new Alert(Alert.AlertType.INFORMATION);
+					aletForm.setTitle("Документ записан");
+					aletForm.setHeaderText("Документ записан");
+					aletForm.show();
 				} else {
 					Alert alertForm = new Alert(Alert.AlertType.ERROR);
 					if(updateDok) {
