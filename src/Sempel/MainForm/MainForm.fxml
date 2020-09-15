@@ -29,12 +29,17 @@
                         <MenuItem fx:id="MenuNASIViewReturn" mnemonicParsing="false" text="View return" />
                   </items>
                 </Menu>
-                <Menu fx:id="MenuDocument" mnemonicParsing="false" text="Dokument">
+                <Menu fx:id="MenuDocument" mnemonicParsing="false" text="Документы">
                   <items>
                     <MenuItem fx:id="MenuDokComing" mnemonicParsing="false" text="Приход" />
                         <MenuItem fx:id="MenuDokConsu" mnemonicParsing="false" text="Расход" />
                   </items>
                 </Menu>
+                  <Menu fx:id="MenuStting" mnemonicParsing="false" text="Настройки">
+                     <items>
+                        <MenuItem fx:id="MenuSettingDellRash" mnemonicParsing="false" text="Удаляемые обьекты." />
+                     </items>
+                  </Menu>
               </menus>
                <rotationAxis>
                   <Point3D />
