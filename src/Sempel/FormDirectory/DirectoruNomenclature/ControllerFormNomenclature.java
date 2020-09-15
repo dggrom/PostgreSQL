@@ -9,7 +9,8 @@ package Sempel.FormDirectory.DirectoruNomenclature;
 	import java.util.ResourceBundle;
 
 	import Sempel.FormDirectory.DirectoruNomenclature.CreatUpdateNomenclature.ControllerCreatUpdateNomenklature;
-	import Sempel.MainForm.ControllerMainForm;
+import Sempel.FormDirectory.DirectoruNomenclature.ReportsPriceNomen.ControllerReportPriceNomen;
+import Sempel.MainForm.ControllerMainForm;
 	import javafx.collections.FXCollections;
 	import javafx.collections.ObservableList;
 	import javafx.fxml.FXML;
@@ -40,6 +41,9 @@ public class ControllerFormNomenclature {
 
 	    @FXML
 	    private Button ButtonCreat;
+	    
+	    @FXML
+	    private Button ButtonReportPrice;
 
 	    @FXML
 	    private CheckBox TrueDell;
@@ -91,6 +95,15 @@ public class ControllerFormNomenclature {
 				}
 			});
 
+	    	ButtonReportPrice.setOnAction(value -> {
+	    		try {
+					OpenReportPriceNomen();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	});
+	    	
 	    	ButtonDeleted.setOnAction(event -> {
 	    		boolean RezDelet = DeletedNomenklature();
 
@@ -129,6 +142,37 @@ public class ControllerFormNomenclature {
 	    	
 	    }
 
+	    private void OpenReportPriceNomen() throws IOException {
+	    	
+	    	FXMLLoader loaderFXM = new FXMLLoader(ControllerFormNomenclature.class.getResource("ReportsPriceNomen/ReportPriceNomen.fxml"));
+	    	
+	    	PersenNomenclatura tekNomen = TableNomenclature.getSelectionModel().getSelectedItem();
+	    
+	    	ControllerReportPriceNomen ContRep = new ControllerReportPriceNomen(tekNomen.getName(),SetCon);
+	    	loaderFXM.setController(ContRep);
+	    	
+	    	Parent Par = (Parent) loaderFXM.load();
+	    	Stage StagePar = new Stage();
+	    	StagePar.setScene(new Scene(Par));
+	    	StagePar.setOnHiding(event -> {
+	    		try {
+					refrashTableNomenclature();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	    	});
+			StagePar.setOnCloseRequest(event -> {
+				try {
+					refrashTableNomenclature();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			});
+			StagePar.show();
+			StagePar.toFront();
+	    
+	    } 
+	    
 	    private void DeletedNomenklatureBase(String textSQL) throws SQLException {
 
 	    	PersenNomenclatura tekLine = TableNomenclature.getSelectionModel().getSelectedItem();
