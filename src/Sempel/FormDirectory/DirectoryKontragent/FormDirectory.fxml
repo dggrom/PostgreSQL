@@ -14,7 +14,7 @@
         <columns>
           <TableColumn fx:id="TableColumId" prefWidth="112.0" text="id" />
           <TableColumn fx:id="TableColumName" minWidth="3.0" prefWidth="356.0" text="Name" />
-            <TableColumn fx:id="TableColumnDeleted" prefWidth="88.0" text="Deleted" />
+            <TableColumn fx:id="TableColumnDeleted" prefWidth="88.0" text="Удалить" />
         </columns>
       </TableView>
       <VBox alignment="TOP_CENTER" layoutX="557.0" layoutY="-5.0" prefHeight="491.0" prefWidth="151.0">

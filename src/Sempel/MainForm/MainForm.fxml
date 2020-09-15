@@ -15,18 +15,18 @@
          <children>
             <MenuBar fx:id="MenyBar" prefHeight="25.0" prefWidth="1079.0" AnchorPane.rightAnchor="0.0">
               <menus>
-                <Menu fx:id="MenuFiles" mnemonicParsing="false" text="File">
+                <Menu fx:id="MenuFiles" mnemonicParsing="false" text="Основное">
                   <items>
-                    <MenuItem fx:id="MenuFilesClose" mnemonicParsing="false" text="Close" />
+                    <MenuItem fx:id="MenuFilesClose" mnemonicParsing="false" text="Закрыть" />
                   </items>
                 </Menu>
                 <Menu fx:id="MenuNSI" mnemonicParsing="false" text="NSI">
                   <items>
-                    <MenuItem fx:id="MenuNASIKontragent" mnemonicParsing="false" text="Kontragent" />
+                    <MenuItem fx:id="MenuNASIKontragent" mnemonicParsing="false" text="Контрагент" />
                         <MenuItem fx:id="MenuNASIViewComCon" mnemonicParsing="false" text="View Coming/Consts" />
-                        <MenuItem fx:id="MenuNASINomenclature" mnemonicParsing="false" text="Nomenclature" />
-                        <MenuItem fx:id="MenuNASIViewDebt" mnemonicParsing="false" text="View debt" />
-                        <MenuItem fx:id="MenuNASIViewReturn" mnemonicParsing="false" text="View return" />
+                        <MenuItem fx:id="MenuNASINomenclature" mnemonicParsing="false" text="Номенклатура" />
+                        <MenuItem fx:id="MenuNASIViewDebt" mnemonicParsing="false" text="Дебет" />
+                        <MenuItem fx:id="MenuNASIViewReturn" mnemonicParsing="false" text="Кредет" />
                   </items>
                 </Menu>
                 <Menu fx:id="MenuDocument" mnemonicParsing="false" text="Документы">

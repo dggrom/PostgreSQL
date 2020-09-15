@@ -31,11 +31,11 @@
       </VBox>
       <TableView fx:id="TableCunsu" layoutX="-1.0" prefHeight="491.0" prefWidth="640.0">
          <columns>
-            <TableColumn fx:id="TableColumnsNumber" prefWidth="91.0" text="Number" />
-            <TableColumn fx:id="TableColumnsAmount" prefWidth="168.0" text="Amount" />
-            <TableColumn fx:id="TableColumnsKoment" minWidth="0.0" prefWidth="114.0" text="Koment" />
-            <TableColumn fx:id="TableColumnsDate" minWidth="0.0" prefWidth="132.0" text="Date" />
-            <TableColumn fx:id="TableColumnsDeleted" minWidth="0.0" prefWidth="134.0" text="Deleted" />
+            <TableColumn fx:id="TableColumnsNumber" prefWidth="91.0" text="Номер" />
+            <TableColumn fx:id="TableColumnsAmount" prefWidth="168.0" text="Сумма" />
+            <TableColumn fx:id="TableColumnsKoment" minWidth="0.0" prefWidth="114.0" text="Комментарий" />
+            <TableColumn fx:id="TableColumnsDate" minWidth="0.0" prefWidth="132.0" text="Дата" />
+            <TableColumn fx:id="TableColumnsDeleted" minWidth="0.0" prefWidth="134.0" text="Удалить" />
          </columns>
       </TableView>
    </children>

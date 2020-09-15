@@ -11,19 +11,19 @@
 
 <AnchorPane fx:id="ArchPnelForm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="594.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="LabelDokN" layoutX="14.0" layoutY="37.0" prefHeight="23.0" prefWidth="132.0" text="Document number:" />
+      <Label fx:id="LabelDokN" layoutX="14.0" layoutY="37.0" prefHeight="23.0" prefWidth="132.0" text="Номер документа:" />
       <TextField fx:id="EditComments" layoutX="394.0" layoutY="83.0" prefHeight="68.0" prefWidth="372.0" />
-      <Label fx:id="LabelEditComments" layoutX="394.0" layoutY="60.0" prefHeight="23.0" prefWidth="260.0" text="Comments:" />
+      <Label fx:id="LabelEditComments" layoutX="394.0" layoutY="60.0" prefHeight="23.0" prefWidth="260.0" text="Комментарий:" />
       <Label fx:id="LabelNumberDoc" layoutX="146.0" layoutY="37.0" prefHeight="23.0" prefWidth="141.0" text="(Number dokumetns)" />
       <TextField fx:id="AmountDoc" layoutX="14.0" layoutY="79.0" prefHeight="26.0" prefWidth="372.0" />
-      <Label fx:id="LabelAmount" layoutX="14.0" layoutY="56.0" prefHeight="23.0" prefWidth="260.0" text="documents amount:" />
+      <Label fx:id="LabelAmount" layoutX="14.0" layoutY="56.0" prefHeight="23.0" prefWidth="260.0" text="Сумма документа:" />
       <TableView fx:id="TableManeyDoc" layoutY="213.0" prefHeight="383.0" prefWidth="775.0">
          <columns>
             <TableColumn fx:id="NLTMD" prefWidth="75.0" text="N/L" />
-            <TableColumn fx:id="NomenTMD" prefWidth="308.0" text="Nomenclature" />
-            <TableColumn fx:id="KolTMD" minWidth="0.0" prefWidth="150.0" text="Kol" />
-            <TableColumn fx:id="PriceTMD" prefWidth="124.0" text="Price" />
-            <TableColumn fx:id="SumTMD" prefWidth="117.0" text="Sum" />
+            <TableColumn fx:id="NomenTMD" prefWidth="308.0" text="Номенклатура" />
+            <TableColumn fx:id="KolTMD" minWidth="0.0" prefWidth="150.0" text="Кол." />
+            <TableColumn fx:id="PriceTMD" prefWidth="124.0" text="Цена" />
+            <TableColumn fx:id="SumTMD" prefWidth="117.0" text="Сумма" />
          </columns>
       </TableView>
       <Button fx:id="ButtonSave" layoutX="580.0" layoutY="9.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="184.0" text="Save" />

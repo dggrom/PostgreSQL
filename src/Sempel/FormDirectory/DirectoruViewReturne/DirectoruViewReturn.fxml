@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="491.0" prefWidth="708.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="491.0" prefWidth="708.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox layoutX="555.0" prefHeight="491.0" prefWidth="153.0" AnchorPane.leftAnchor="555.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -32,7 +32,7 @@
          <columns>
             <TableColumn fx:id="TableColumnsID" prefWidth="91.0" text="id" />
             <TableColumn fx:id="TableColumnsView" prefWidth="376.0" text="View" />
-            <TableColumn fx:id="TableColumnsDeleted" minWidth="0.0" prefWidth="89.0" text="Deleted" />
+            <TableColumn fx:id="TableColumnsDeleted" minWidth="0.0" prefWidth="89.0" text="Удалить" />
          </columns>
       </TableView>
    </children>
