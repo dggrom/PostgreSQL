@@ -12,7 +12,7 @@
 <AnchorPane fx:id="ArchPnelForm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="594.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="LabelDokN" layoutX="14.0" layoutY="37.0" prefHeight="23.0" prefWidth="132.0" text="Document number:" />
-      <TextField fx:id="EditComments" layoutX="394.0" layoutY="83.0" prefHeight="68.0" prefWidth="299.0" />
+      <TextField fx:id="EditComments" layoutX="394.0" layoutY="83.0" prefHeight="68.0" prefWidth="372.0" />
       <Label fx:id="LabelEditComments" layoutX="394.0" layoutY="60.0" prefHeight="23.0" prefWidth="260.0" text="Comments:" />
       <Label fx:id="LabelNumberDoc" layoutX="146.0" layoutY="37.0" prefHeight="23.0" prefWidth="141.0" text="(Number dokumetns)" />
       <TextField fx:id="AmountDoc" layoutX="14.0" layoutY="79.0" prefHeight="26.0" prefWidth="372.0" />
@@ -26,7 +26,7 @@
             <TableColumn fx:id="SumTMD" prefWidth="117.0" text="Sum" />
          </columns>
       </TableView>
-      <Button fx:id="ButtonSave" layoutX="706.0" layoutY="83.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="62.0" text="Save" />
+      <Button fx:id="ButtonSave" layoutX="580.0" layoutY="9.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="184.0" text="Save" />
       <Label fx:id="LabelDokN1" layoutX="14.0" layoutY="14.0" prefHeight="23.0" prefWidth="132.0" text="Document Coming" />
       <ComboBox fx:id="ComboBoxKontragent" editable="true" layoutX="14.0" layoutY="131.0" prefHeight="26.0" prefWidth="372.0" />
       <Label fx:id="LabelKontragent" layoutX="14.0" layoutY="114.0" text="Контрагент" />
@@ -36,5 +36,6 @@
       <Button fx:id="ButtonTableDel" layoutX="495.0" layoutY="180.0" mnemonicParsing="false" text="Удалить" />
       <Label fx:id="LabelDateDoc" layoutX="332.0" layoutY="14.0" prefHeight="23.0" prefWidth="260.0" text="Дата документа:" />
       <DatePicker fx:id="DateDoc" layoutX="332.0" layoutY="36.0" prefHeight="25.0" prefWidth="233.0" />
+      <Button fx:id="ButtonSaveAndClose" layoutX="580.0" layoutY="44.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="184.0" text="Save and close" />
    </children>
 </AnchorPane>
