@@ -8,6 +8,7 @@ import Sempel.FormDirectory.DirectoruViewDebt.ControllerViewDebt;
 import Sempel.FormDirectory.DirectoryKontragent.ControllerFormDirectory;
 import Sempel.FormDocuments.DokComing.ControllerFormSelectionDokComing;
 import Sempel.FormDocuments.DokConsumption.ControllerFormSelectDokConsumption;
+import Sempel.FormReports.ReportView.ControllerReportView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -62,6 +63,18 @@ public class ControllerMainForm {
     @FXML
     private ImageView DokComing;
     
+    @FXML
+    private Menu MenuStting;
+
+    @FXML
+    private MenuItem MenuSettingDellRash;
+
+    @FXML
+    private Menu MenuReport;
+
+    @FXML
+    private MenuItem MenuReportLef;
+    
     //Мои переменные
     SettingConnectSQL SettConn;
 
@@ -107,6 +120,14 @@ public class ControllerMainForm {
 		}
        });
 
+       MenuReportLef.setOnAction(event -> {
+    	   try {
+			CreatForm("../FormReports/ReportView/ReportView.fxml", "ControllerReportView");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+       });
+       
        /* MenuNASIViewDebt.setOnAction(event -> {
             try {
                 CreatForm("../FormDirectory/DirectoruViewDebt/DirectoruViewDebt.fxml","ControllerViewDebt");
@@ -124,6 +145,7 @@ public class ControllerMainForm {
         });*/
     }
 
+    
     void CreatForm(String FXMLdir, String contrName) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ControllerMainForm.class.getResource(FXMLdir));
 
@@ -147,6 +169,9 @@ public class ControllerMainForm {
         	fxmlLoader.setController(ContrDir);
         } else if (contrName == "ControllerFormSelectDokConsumption") {
         	ControllerFormSelectDokConsumption ContrDir = new ControllerFormSelectDokConsumption(SettConn);
+        	fxmlLoader.setController(ContrDir);
+        } else if (contrName == "ControllerReportView") {
+        	ControllerReportView ContrDir = new ControllerReportView(SettConn);
         	fxmlLoader.setController(ContrDir);
         }
 

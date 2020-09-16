@@ -40,6 +40,11 @@
                         <MenuItem fx:id="MenuSettingDellRash" mnemonicParsing="false" text="Удаляемые обьекты." />
                      </items>
                   </Menu>
+                  <Menu fx:id="MenuReport" mnemonicParsing="false" text="Отчеты">
+                     <items>
+                        <MenuItem fx:id="MenuReportLef" mnemonicParsing="false" text="Удаляемые обьекты." />
+                     </items>
+                  </Menu>
               </menus>
                <rotationAxis>
                   <Point3D />
