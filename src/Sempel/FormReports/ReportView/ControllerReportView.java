@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -56,6 +57,15 @@ public class ControllerReportView {
 
 	    @FXML
 	    private Button ButtonReport;
+	    
+	    @FXML
+	    private CheckBox CheckBoxDate;
+
+	    @FXML
+	    private CheckBox CheckBoxView;
+
+	    @FXML
+	    private CheckBox CheckBoxNomen;
 
 	    SettingConnectSQL SetCon;
 	    ObservableList<PersenTableReportView> TableReportView = FXCollections.observableArrayList();
@@ -66,12 +76,61 @@ public class ControllerReportView {
 	    @FXML
 	    void initialize() throws SQLException {
 	
+	    	CheckBoxDate.setSelected(true);
+	    	CheckBoxNomen.setSelected(true);
+	    	CheckBoxView.setSelected(true);
+	    	DateFerst.setDisable(true);
+			DateLast.setDisable(true);
+			ComboBoxNomen.setDisable(true);
+			ComboBoxView.setDisable(true);
+	    	
 	    	refrashComboBoxNomenclature();
 	    	refrashComboBoxViewComCons();
 	    	refrashTableReportView();
 	    	initComboBox();
 	    	initTable();
 	    	DateConverter();
+	    	CheckBoxEvents();
+	    	
+	    	ButtonReport.setOnAction(event -> {
+	    		
+	    		try {
+					refrashTableReportView();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	    		
+	    	});
+	    	
+	    }
+	    
+	    private void CheckBoxEvents() {
+	    	
+	    	CheckBoxDate.setOnAction(event -> {
+	    		if(CheckBoxDate.isSelected()) {
+	    			DateFerst.setDisable(true);
+	    			DateLast.setDisable(true);
+	    		} else {
+	    			DateFerst.setDisable(false);
+	    			DateLast.setDisable(false);
+	    		}
+	    	});
+	    	
+	    	CheckBoxNomen.setOnAction(event -> {
+	    		if(CheckBoxNomen.isSelected()) {
+	    			ComboBoxNomen.setDisable(true);
+	    		} else {
+	    			ComboBoxNomen.setDisable(false);
+	    		}
+	    	});
+	    	
+	    	CheckBoxView.setOnAction(event -> {
+	    		if(CheckBoxView.isSelected()) {
+	    			ComboBoxView.setDisable(true);
+	    		} else {
+	    			ComboBoxView.setDisable(false);
+	    		}
+	    	});
 	    	
 	    }
 	    
@@ -108,13 +167,13 @@ public class ControllerReportView {
 	    
 	    private void initTable() {
 	    	
-	    	TableColumnReportsNomen.setCellValueFactory(new PropertyValueFactory<PersenTableReportView, String>("Номенклатура"));
-	    	TableColumnReportsSumm.setCellValueFactory(new PropertyValueFactory<PersenTableReportView, Integer>("Сумма"));
-	    	TableColumnReportsView.setCellValueFactory(new PropertyValueFactory<PersenTableReportView, String>("Вид"));
+	    	TableColumnReportsNomen.setCellValueFactory(new PropertyValueFactory<PersenTableReportView, String>("nomen"));
+	    	TableColumnReportsSumm.setCellValueFactory(new PropertyValueFactory<PersenTableReportView, Integer>("summ"));
+	    	TableColumnReportsView.setCellValueFactory(new PropertyValueFactory<PersenTableReportView, String>("view"));
 	    
+	    	TableReports.setItems(TableReportView);
 	    }
-	    
-	    
+	     
 	    private void initComboBox() {
 	    	
 	    	ComboBoxNomen.getItems().setAll(ComboBoxNomenclature);
@@ -165,8 +224,15 @@ public class ControllerReportView {
 	    }
 	    
 	    private void refrashTableReportView() throws SQLException {
+	    	
+	    	Boolean[] MassParBool= new Boolean[3];
+	    	MassParBool[1] = CheckBoxDate.isSelected();
+	    	MassParBool[2] = CheckBoxNomen.isSelected();
+	    	MassParBool[3] = CheckBoxView.isSelected();
+	    	
 	    	TableReportView.clear();
-	    	TableReportView = PersenTableReportView.getMassReportView(TableReportView, SetCon);
+	    	TableReportView = PersenTableReportView.getMassReportView(TableReportView, SetCon, MassParBool, CheckBoxView.getText(), CheckBoxNomen.getText(),
+	    			DateFerst.getValue().toString(), DateLast.getValue().toString());
 	    }
 	    
 	    public ControllerReportView(SettingConnectSQL SetCon) {

@@ -1,6 +1,7 @@
 package Sempel.FormReports.ReportView;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -29,13 +30,33 @@ public class PersenTableReportView {
 		this.summ = Summ;
 	}
 	
-	static ObservableList<PersenTableReportView> getMassReportView(ObservableList<PersenTableReportView> mass, SettingConnectSQL setCom) throws SQLException{
+	//Date
+	//Nomen
+	//View
+	static ObservableList<PersenTableReportView> getMassReportView(ObservableList<PersenTableReportView> mass, SettingConnectSQL setCom,
+			Boolean[] MassParBoll, String CheckBoxView, String CheckBoxNomen, String DateFirst, String DateLast) throws SQLException{
 		
 		mass.clear();
 		
 		Connection con = setCom.CreatConnect();
 		SelectPost selPos = new SelectPost();
-		String SQLtext = "";
+		
+		String SQLtext = "SELECT RM.coming, NOM.name_nomen, RM.sum_regmk\n" + 
+				"	FROM public.\"RegistrMoneyKoll\" RM, public.\"Nomenclature\" NOM\n" + 
+				"	WHERE NOM.id_nomen = RM.id_nomen ";
+		
+		if(MassParBoll[1]) {
+			SQLtext = SQLtext + "AND NOM.name_nomen = '"+CheckBoxNomen+"' ";
+		}
+		
+		if(MassParBoll[2]) {
+			SQLtext = SQLtext + "  ";
+		}
+		
+		if(MassParBoll[3]) {
+			SQLtext = SQLtext + "  ";
+		}
+		
 		ResultSet resSet = selPos.SelectInfoBase(con, SQLtext);
 		
 		while (resSet.next()) {
